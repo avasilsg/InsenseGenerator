@@ -14,6 +14,7 @@ import Units.Behaviour;
 import Units.Component;
 import Units.Connect;
 import Units.Interface;
+import Units.Struct;
 import Units.BasicUnits.Channel;
 import Units.BasicUnits.Field;
 import Units.BasicUnits.Instance;
@@ -283,25 +284,7 @@ public class XmlParser
             // <field type = "" name = "avgTemp" value ="0.0"/>
             if ("field".equals(node.getNodeName().toLowerCase()))
             {
-                Field field = new Field();
-                if (null != node.getAttributes())
-                {
-                    for (int i = 0; i < node.getAttributes().getLength(); i++)
-                    {
-                        if ("type".equals(node.getAttributes().item(i).getNodeName()))
-                        {
-                            field.setType(node.getAttributes().item(i).getNodeValue());
-                        }
-                        if ("name".equals(node.getAttributes().item(i).getNodeName()))
-                        {
-                            field.setName(node.getAttributes().item(i).getNodeValue());
-                        }
-                        if ("value".equals(node.getAttributes().item(i).getNodeName()))
-                        {
-                            field.setValue(node.getAttributes().item(i).getNodeValue());
-                        }
-                    }
-                }
+                Field field = parseField(node);
                 component.setField(field);
             }
             
@@ -318,6 +301,30 @@ public class XmlParser
             }
         }
         return component;
+    }
+    
+    private Field parseField(Node node)
+    {
+        Field field = new Field();
+        if (null != node.getAttributes())
+        {
+            for (int i = 0; i < node.getAttributes().getLength(); i++)
+            {
+                if ("type".equals(node.getAttributes().item(i).getNodeName()))
+                {
+                    field.setType(node.getAttributes().item(i).getNodeValue());
+                }
+                if ("name".equals(node.getAttributes().item(i).getNodeName()))
+                {
+                    field.setName(node.getAttributes().item(i).getNodeValue());
+                }
+                if ("value".equals(node.getAttributes().item(i).getNodeName()))
+                {
+                    field.setValue(node.getAttributes().item(i).getNodeValue());
+                }
+            }
+        }
+        return field;
     }
     
     private Behaviour parseBehaviour(NodeList childNodes)
@@ -433,8 +440,40 @@ public class XmlParser
     
     private void parseStruct(Node currentNode)
     {
-        // TODO Auto-generated method stub
-        
+        if (true == currentNode.hasChildNodes())
+        {
+            Struct struct = parseStructAttributes(currentNode.getChildNodes());
+            codeGenerator.writeStruct(struct);
+            struct = null;
+        }
+    }
+    
+    private Struct parseStructAttributes(NodeList childNodes)
+    {
+        Struct struct = new Struct();
+        for (int count = 0; count < childNodes.getLength(); count++)
+        {
+            Node node = childNodes.item(count);
+            if ("attribute".equals(node.getNodeName().toLowerCase()))
+            {
+                if (null != node.getAttributes())
+                {
+                    for (int i = 0; i < node.getAttributes().getLength(); i++)
+                    {
+                        if ("name".equals(node.getAttributes().item(i).getNodeName()))
+                        {
+                            struct.setName(node.getAttributes().item(i).getNodeValue());
+                        }
+                    }
+                }
+            }
+            if ("field".equals(node.getNodeName().toLowerCase()))
+            {
+                Field field = parseField(node);
+                struct.setField(field);
+            }
+        }
+        return struct;
     }
     
     // region Interface

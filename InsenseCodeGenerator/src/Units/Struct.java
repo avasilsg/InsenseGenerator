@@ -34,4 +34,12 @@ public class Struct
     {
         this.fields = fields;
     }
+
+    public void setField(Field field)
+    {
+        if (null != field)
+        {
+            fields.add(field);
+        }
+    }
 }

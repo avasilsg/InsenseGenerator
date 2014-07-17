@@ -10,6 +10,7 @@ import Units.Behaviour;
 import Units.Component;
 import Units.Connect;
 import Units.Interface;
+import Units.Struct;
 import Units.BasicUnits.Field;
 import Units.BasicUnits.Instance;
 import Units.BasicUnits.Print;
@@ -143,11 +144,20 @@ public class TextWriter
             {
                 writer.println();
                 Field field = fields.get(i);
-                if ((null == field.getType() || "".equals(field.getType())) && (null != field.getName() && !"".equals(field.getName())))
+                
+                boolean flagType = (null == field.getType() || "".equals(field.getType()));
+                boolean flagValue = (null == field.getValue() || "".equals(field.getValue()));
+                boolean flagName = (null == field.getName() || "".equals(field.getName()));
+                
+                if (flagType && !flagName && !flagValue)
                 {
                     writer.write("\t" + String.format(Clauses.fieldTypeLess, field.getName(), field.getValue()));
                 }
-                else if (null != field.getName() && !"".equals(field.getName()))
+                else if (flagValue &&  !flagType && !flagName)
+                {
+                    writer.write("\t" + String.format(Clauses.fieldEmpty, field.getType(), field.getName()));
+                }
+                else if (!flagValue &&  !flagType && !flagName)
                 {
                     writer.write("\t" + String.format(Clauses.fieldFull, field.getType(), field.getName(), field.getValue()));
                 }
@@ -181,8 +191,6 @@ public class TextWriter
         behaviour.getSends().remove(0);
     }
     
-    // <print variable = "reading" type = "Real" attribute = "photo" titleString
-    // = "Photo"/>
     private void writePrint(Behaviour behaviour)
     {
         Print print = behaviour.getPrints().get(0);
@@ -263,5 +271,15 @@ public class TextWriter
         {
             writer.write(String.format(Clauses.connectFull, connect.getFromName(), connect.getFromNameOn(), connect.getToName(), connect.getToNameOn()));
         }
+    }
+    
+    public void writeStruct(Struct struct)
+    {
+        writer.println();
+        writer.write(String.format(Clauses.structSyntax, struct.getName()));
+        writer.write(Clauses.openBracket);
+        writeFields(struct.getFields());
+        writer.write(Clauses.closeBracket);
+        writer.println();
     }
 }

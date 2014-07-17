@@ -36,11 +36,16 @@ public class Clauses
 
    public static final String fieldFull = "%s %s = %s";
    public static final String fieldTypeLess = "%s = %s";
-   public static final String fieldShort = "%s";   
+   public static final String fieldShort = "%s"; 
+   public static final String fieldEmpty = "%s %s;";   
+
    
    public static final String printString = "printString%s";
    public static final String printReal  =  "printReal%s";
    public static final String printInt   =  "printInt%s";
    public static final String printUnsignedInt = "printUnsignedInt%s";
+   
+   public static final String structSyntax = "type %s is struct";
+
 }
 
