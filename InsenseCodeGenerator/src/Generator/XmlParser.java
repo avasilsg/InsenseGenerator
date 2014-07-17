@@ -261,7 +261,7 @@ public class XmlParser
                 // component.variables);
             }
         }
-        return null;
+        return behaviour;
     }
     
     private Receive parseAttributesReceive(NamedNodeMap attributes)

@@ -6,8 +6,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 
 import GrammarAndClauses.Clauses;
+import Units.Behaviour;
 import Units.Component;
 import Units.Interface;
+import Units.BasicUnits.Receive;
+import Units.BasicUnits.Send;
 
 public class TextWriter
 {
@@ -63,87 +66,70 @@ public class TextWriter
         }
         writer.println();
 
-        int count = 0;
         if (null != component.getName())
         {
             this.componentNames.add(component.getName());
         }
-        string compTitle = String.Format(Grammar.component, component.name);
-        foreach (String str in component.presentedInterfaces)
+        String compTitle = String.format(Clauses.component, component.getName());
+        for (int i = 0; i < component.getPresents().size(); i++)
         {
-            if (0 < count)
+            if (1 < component.getPresents().size())
             {
-                compTitle = compTitle + Grammar.comma;
+                compTitle = compTitle + Clauses.comma;
             }
-            compTitle = compTitle + str;
-            ++count;     
+            compTitle = compTitle + component.getPresents().get(i);
         }
-        writer.Write(compTitle);
-        writer.Write(Environment.NewLine);
-        writer.Write(Grammar.openCurlyBracket);
-        writer.Write(Environment.NewLine);
-        if (0 < component.fields.Count())
+        writer.write(compTitle);
+        writer.println();
+        writer.write(Clauses.openCurlyBracket);
+        writer.println();
+        //TODO: fields
+        writer.println();
+        writer.write("\t" + Clauses.constructor);
+        writer.write(Clauses.openBracket);
+        //TODO: contructors body
+        writer.write(Clauses.closeBracket);
+        writer.println();
+        writer.write("\t" + Clauses.openCurlyBracket);
+        writer.println();
+        writer.write("\t" + Clauses.closeCurlyBracket);
+        writer.println();
+        writer.write("\t" + Clauses.behaviour);
+        writer.write(Clauses.openCurlyBracket);
+        Behaviour behaviour = component.getBehaviour();
+        if (behaviour == null)
         {
-            foreach (String str in component.fields)
-            {
-                writer.Write("\t" + str);
-                writer.Write(Environment.NewLine);
-            }
+            throw new NullPointerException();
         }
-        writer.Write(Environment.NewLine);
-        writer.Write("\t" + Grammar.constructor);
-        writer.Write(Grammar.openBracket);
-        writer.Write(Grammar.closeBracket);
-        writer.Write(Environment.NewLine);
-        writer.Write("\t" + Grammar.openCurlyBracket);
-        writer.Write(Environment.NewLine);
-        writer.Write("\t" + Grammar.closeCurlyBracket);
-        writer.Write(Environment.NewLine);
-        writer.Write("\t" + Grammar.behaviour);
-        writer.Write(Grammar.openCurlyBracket);
-        foreach (String str in component.behaviourContent)
+        
+        for(int i = 0; i < behaviour.getSends().size(); i++)
         {
-            String[] array = str.Split(',');
-            if (true == "send".Equals(array[0]))
-            {
-                writer.Write(Environment.NewLine);
-                writer.Write("\t\t" + String.Format(Grammar.send, array[1], array[2]));
-            }
-            
-            if (true == "receive".Equals(array[0]))
-            {
-                writer.Write(Environment.NewLine);
-                writer.Write("\t\t" + String.Format(Grammar.receive, array[1], array[2]));
-            }
+            Send send = behaviour.getSends().get(i);
+           if ((null == send.getValue()) && (false == "any".equals(send.getInderntifier())))
+           {
+               writer.println();
+               writer.write("\t\t" + String.format(Clauses.send, send.getInderntifier(), send.getOn()));
+           }
+           else 
+           {
+               writer.println();
+               writer.write("\t\t" + String.format(Clauses.sendWithValue, send.getInderntifier(), send.getValue(), send.getOn()));
+           }
+           
 
-            if (true == "print".Equals(array[0]))
-            {
-                writer.Write(Environment.NewLine);
-                if (3 == array.Length)
-                {
-                   // writer.Write("\t" 
-                }
-            }
-
-            if (true == "variable".Equals(array[0]))
-            {
-                writer.Write(Environment.NewLine);
-                foreach (String field in component.fields)
-                {
-                    string[] fields = field.Split(',');
-                    if (2 < array.Length)
-                    {
-                        continue;
-                    }
-                    writer.Write(Environment.NewLine);
-                    writer.Write("\t" + String.Format(Grammar.field, field[0], field[1]));
-                }
-            }
         }
-        writer.Write(Environment.NewLine);
-        writer.Write("\t"+Grammar.closeCurlyBracket);
-        writer.Write(Environment.NewLine);
-        writer.Write(Grammar.closeCurlyBracket);      
+        
+        for(int i = 0; i < behaviour.getReceives().size(); i++)
+        {
+            Receive receive =  behaviour.getReceives().get(i);
+
+            writer.println();
+            writer.write("\t\t" + String.format(Clauses.receive, receive.getInderntifier(), receive.getFrom()));
+        }
+        writer.println();
+        writer.write("\t"+Clauses.closeCurlyBracket);
+        writer.println();
+        writer.write(Clauses.closeCurlyBracket);      
     }
     
 }

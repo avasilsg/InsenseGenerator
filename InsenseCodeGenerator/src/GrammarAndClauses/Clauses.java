@@ -18,4 +18,14 @@ public class Clauses
    public static final String interfaceGrammar = "type %s is interface";
    // direction type name
    public static final String channel = "%s %s %s;";
+   
+   
+   public static final String component =   "component %s presents ";
+   public static final String constructor = "constructor";
+   public static final String behaviour =   "behaviour";
+
+   public static final String send = "send %s on %s";
+   public static final String sendWithValue = "send %s(%s) on %s";
+   public static final String receive = "receive %s from %s";
 }
+
