@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import GrammarAndClauses.Clauses;
 import Units.Behaviour;
 import Units.Component;
+import Units.Connect;
 import Units.Interface;
 import Units.BasicUnits.Instance;
 import Units.BasicUnits.Receive;
@@ -15,8 +16,8 @@ import Units.BasicUnits.Send;
 
 public class TextWriter
 {
-    private  PrintWriter writer;
-    private  LinkedList<String> componentNames;
+    private PrintWriter        writer;
+    private LinkedList<String> componentNames;
     
     public TextWriter()
     {
@@ -30,15 +31,17 @@ public class TextWriter
     }
     
     public void writeInterface(Interface interfs)
-    {      
+    {
         writer.println();
         writer.write(String.format(Clauses.interfaceGrammar, interfs.getName()));
         writer.println();
         writer.write(Clauses.openBracket);
         writer.println();
-        for(int i = 0; i < interfs.getChannels().size(); i++)
+        for (int i = 0; i < interfs.getChannels().size(); i++)
         {
-            writer.write("\t" + String.format(Clauses.channel, interfs.getChannels().get(i).getDirection(), interfs.getChannels().get(i).getType(), interfs.getChannels().get(i).getName()));
+            writer.write("\t"
+                    + String.format(Clauses.channel, interfs.getChannels().get(i).getDirection(), interfs.getChannels().get(i).getType(), interfs.getChannels()
+                            .get(i).getName()));
             writer.println();
         }
         writer.write(Clauses.closeBracket);
@@ -58,7 +61,7 @@ public class TextWriter
     {
         this.componentNames = componentNames;
     }
-
+    
     public void writeComponent(Component component)
     {
         if (null == component)
@@ -66,7 +69,7 @@ public class TextWriter
             throw new NullPointerException();
         }
         writer.println();
-
+        
         if (null != component.getName())
         {
             this.componentNames.add(component.getName());
@@ -84,11 +87,11 @@ public class TextWriter
         writer.println();
         writer.write(Clauses.openCurlyBracket);
         writer.println();
-        //TODO: fields
+        // TODO: fields
         writer.println();
         writer.write("\t" + Clauses.constructor);
         writer.write(Clauses.openBracket);
-        //TODO: contructors body
+        // TODO: contructors body
         writer.write(Clauses.closeBracket);
         writer.println();
         writer.write("\t" + Clauses.openCurlyBracket);
@@ -103,9 +106,9 @@ public class TextWriter
             throw new NullPointerException();
         }
         
-        for(int i = 0; i < behaviour.getOrder().size(); i++)
+        for (int i = 0; i < behaviour.getOrder().size(); i++)
         {
-            switch(behaviour.getOrder().get(i))
+            switch (behaviour.getOrder().get(i))
             {
                 case "send":
                 {
@@ -119,44 +122,65 @@ public class TextWriter
                 }
             }
         }
-
+        
         writer.println();
-        writer.write("\t"+Clauses.closeCurlyBracket);
+        writer.write("\t" + Clauses.closeCurlyBracket);
         writer.println();
-        writer.write(Clauses.closeCurlyBracket);      
+        writer.write(Clauses.closeCurlyBracket);
     }
-
+    
     private void writeReceive(Behaviour behaviour)
     {
-        Receive receive =  behaviour.getReceives().get(0);
-
+        Receive receive = behaviour.getReceives().get(0);
+        
         writer.println();
         writer.write("\t\t" + String.format(Clauses.receive, receive.getInderntifier(), receive.getFrom()));
         behaviour.getReceives().remove(0);
     }
-
+    
     private void writeSend(Behaviour behaviour)
     {
-         Send send = behaviour.getSends().get(0);
-         if ((null == send.getValue()) && (false == "any".equals(send.getInderntifier())))
-         {
-           writer.println();
-           writer.write("\t\t" + String.format(Clauses.send, send.getInderntifier(), send.getOn()));
-         }
-         else 
-         {
-           writer.println();
-           writer.write("\t\t" + String.format(Clauses.sendWithValue, send.getInderntifier(), send.getValue(), send.getOn()));
-         }
+        Send send = behaviour.getSends().get(0);
+        if ((null == send.getValue()) && (false == "any".equals(send.getInderntifier())))
+        {
+            writer.println();
+            writer.write("\t\t" + String.format(Clauses.send, send.getInderntifier(), send.getOn()));
+        }
+        else
+        {
+            writer.println();
+            writer.write("\t\t" + String.format(Clauses.sendWithValue, send.getInderntifier(), send.getValue(), send.getOn()));
+        }
         behaviour.getSends().remove(0);
     }
-
+    
     public void writeInstance(Instance instance)
     {
-         writer.println();
-         writer.write(String.format(Clauses.createInstance, instance.getType(), instance.getName(), instance.getType()));  
-         writer.write(Clauses.openBracket);
-         writer.write(Clauses.closeBracket);
+        writer.println();
+        writer.write(String.format(Clauses.createInstance, instance.getType(), instance.getName(), instance.getType()));
+        writer.write(Clauses.openBracket);
+        writer.write(Clauses.closeBracket);
     }
     
+    public void writeConnection(Connect connect)
+    {
+        writer.println();
+        
+        if ((null == connect.getFromName() && null == connect.getToName()) || ("".equals(connect.getToName()) && "".equals(connect.getFromName())))
+        {
+            writer.write(String.format(Clauses.connectShort, connect.getFromNameOn(), connect.getToNameOn()));
+        }
+        else if (null == connect.getFromName() || "".equals(connect.getFromName()))
+        {
+            writer.write(String.format(Clauses.connectExTo, connect.getFromNameOn(), connect.getToName(), connect.getToNameOn()));
+        }
+        else if (null == connect.getToName() || "".equals(connect.getToName()))
+        {
+            writer.write(String.format(Clauses.connectExFrom, connect.getFromName(), connect.getFromNameOn(), connect.getToNameOn()));
+        }
+        else
+        {
+            writer.write(String.format(Clauses.connectFull, connect.getFromName(), connect.getFromNameOn(), connect.getToName(), connect.getToNameOn()));
+        }
+    }
 }

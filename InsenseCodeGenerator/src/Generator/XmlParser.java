@@ -12,6 +12,7 @@ import org.xml.sax.SAXException;
 
 import Units.Behaviour;
 import Units.Component;
+import Units.Connect;
 import Units.Interface;
 import Units.BasicUnits.Channel;
 import Units.BasicUnits.Instance;
@@ -180,10 +181,59 @@ public class XmlParser
     {
         if (true == currentNode.hasChildNodes())
         {
+            parseConnection(currentNode.getChildNodes());
+        }
+    }
+//  <from name = "TempReader"             on = "tRequestChan"/>
+//  <to   name = "lightHumidTempSensor" on = "tempRequest"/>
+    private void parseConnection(NodeList childNodes)
+    {
+        Connect connect = new Connect();
+        boolean flagOpen = false; 
+        boolean flagClosed = false;
+        for (int count = 0; count < childNodes.getLength(); count++)
+        {
+            Node node = childNodes.item(count);
+            if ("from".equals(node.getNodeName().toLowerCase()))
+            {
+                    for (int i = 0; i < node.getAttributes().getLength(); i++)
+                    {
+                        if ("name".equals(node.getAttributes().item(i).getNodeName()))
+                        {
+                            connect.setFromName(node.getAttributes().item(i).getNodeValue());
+                        }
+                        if ("on".equals(node.getAttributes().item(i).getNodeName()))
+                        {
+                            connect.setFromNameOn(node.getAttributes().item(i).getNodeValue());
+                        }
+                    }
+                    flagOpen = true;
+            }
+            
+            if ("to".equals(node.getNodeName().toLowerCase()))
+            {
+                for (int i = 0; i < node.getAttributes().getLength(); i++)
+                {
+                    if ("name".equals(node.getAttributes().item(i).getNodeName()))
+                    {
+                        connect.setToName(node.getAttributes().item(i).getNodeValue());
+                    }
+                    if ("on".equals(node.getAttributes().item(i).getNodeName()))
+                    {
+                        connect.setToNameOn(node.getAttributes().item(i).getNodeValue());
+                    }
+                }
+                flagClosed = true;
+            }
+            if (flagOpen && flagClosed)
+            {
+                codeGenerator.writeConnection(connect);
+                flagClosed = flagOpen = false;
+            }
             
         }
     }
-    
+
     private void parseComponent(Node currentNode)
     {
         if (true == currentNode.hasChildNodes())
