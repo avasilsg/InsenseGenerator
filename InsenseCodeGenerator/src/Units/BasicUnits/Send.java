@@ -3,6 +3,7 @@ package Units.BasicUnits;
 public class Send
 {
     private String inderntifier;
+    private String value;
     private String on;
     
     public Send()
@@ -29,5 +30,15 @@ public class Send
     public void setOn(String on)
     {
         this.on = on;
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue(String value)
+    {
+        this.value = value;
     }
 }
