@@ -260,7 +260,7 @@ public class XmlParser
                 {
                     for (int i = 0; i < node.getAttributes().getLength(); i++)
                     {
-                        if ("name".equals(node.getAttributes().item(i).getNodeName()))
+                        if ("name".equals(node.getAttributes().item(i).getNodeName().toLowerCase()))
                         {
                             component.setName(node.getAttributes().item(i).getNodeValue());
                         }

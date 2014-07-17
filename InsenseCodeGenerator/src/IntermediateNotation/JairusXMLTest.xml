@@ -11,6 +11,7 @@
 		<constructor />
 		<behaviour>
 			<send identifier="true" on="tRequestChan" />
+					<!--  Error, please fix it! - the syntax for receive is receive source from source not on  -->
 			<receive identifier="temp" on="tValueChan" />
 					<!--  Error, please fix it! - now is like that "'\nTemp='" , please change it to '"\nTemp="'  -->
 			<send identifier="any" on="stdoutChan" value="'\nTemp='" />
