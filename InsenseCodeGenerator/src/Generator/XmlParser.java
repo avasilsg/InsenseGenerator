@@ -41,19 +41,19 @@ public class XmlParser
         {
             throw new NullPointerException();
         }
+        
         codeGenerator = new TextWriter();
+        
         try
         {
             codeGenerator.openAndCreateFile();
         }
         catch (FileNotFoundException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         catch (UnsupportedEncodingException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         setFileName(fXmlFile);
@@ -77,12 +77,10 @@ public class XmlParser
         }
         catch (SAXException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         catch (IOException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         doc.getDocumentElement().normalize();
@@ -188,8 +186,7 @@ public class XmlParser
         }
     }
     
-    // <from name = "TempReader" on = "tRequestChan"/>
-    // <to name = "lightHumidTempSensor" on = "tempRequest"/>
+
     private void parseConnection(NodeList childNodes)
     {
         Connect connect = new Connect();
@@ -200,33 +197,13 @@ public class XmlParser
             Node node = childNodes.item(count);
             if ("from".equals(node.getNodeName().toLowerCase()))
             {
-                for (int i = 0; i < node.getAttributes().getLength(); i++)
-                {
-                    if ("name".equals(node.getAttributes().item(i).getNodeName()))
-                    {
-                        connect.setFromName(node.getAttributes().item(i).getNodeValue());
-                    }
-                    if ("on".equals(node.getAttributes().item(i).getNodeName()))
-                    {
-                        connect.setFromNameOn(node.getAttributes().item(i).getNodeValue());
-                    }
-                }
+                extractFromAttributes(connect, node);
                 flagOpen = true;
             }
             
             if ("to".equals(node.getNodeName().toLowerCase()))
             {
-                for (int i = 0; i < node.getAttributes().getLength(); i++)
-                {
-                    if ("name".equals(node.getAttributes().item(i).getNodeName()))
-                    {
-                        connect.setToName(node.getAttributes().item(i).getNodeValue());
-                    }
-                    if ("on".equals(node.getAttributes().item(i).getNodeName()))
-                    {
-                        connect.setToNameOn(node.getAttributes().item(i).getNodeValue());
-                    }
-                }
+                extractToAttributes(connect, node);
                 flagClosed = true;
             }
             if (flagOpen && flagClosed)
@@ -235,6 +212,36 @@ public class XmlParser
                 flagClosed = flagOpen = false;
             }
             
+        }
+    }
+
+    private void extractToAttributes(Connect connect, Node node)
+    {
+        for (int i = 0; i < node.getAttributes().getLength(); i++)
+        {
+            if ("name".equals(node.getAttributes().item(i).getNodeName()))
+            {
+                connect.setToName(node.getAttributes().item(i).getNodeValue());
+            }
+            if ("on".equals(node.getAttributes().item(i).getNodeName()))
+            {
+                connect.setToNameOn(node.getAttributes().item(i).getNodeValue());
+            }
+        }
+    }
+
+    private void extractFromAttributes(Connect connect, Node node)
+    {
+        for (int i = 0; i < node.getAttributes().getLength(); i++)
+        {
+            if ("name".equals(node.getAttributes().item(i).getNodeName()))
+            {
+                connect.setFromName(node.getAttributes().item(i).getNodeValue());
+            }
+            if ("on".equals(node.getAttributes().item(i).getNodeName()))
+            {
+                connect.setFromNameOn(node.getAttributes().item(i).getNodeValue());
+            }
         }
     }
     
@@ -338,8 +345,6 @@ public class XmlParser
                 Print print = parsePrintAttributes(node.getAttributes());
                 behaviour.setPrint(print);
                 print = null;
-                // parsePrintAttributes(child.Attributes, child.Name,
-                // behaviour);
             }
             if ("variable".equals(node.getNodeName().toLowerCase()))
             {
