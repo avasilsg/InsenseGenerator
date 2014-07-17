@@ -77,4 +77,36 @@ public class Component
     {
         this.procedures = procedures;
     }
+
+    public void setPresent(String present)
+    {
+        if (null != present)
+        {
+            presents.add(present);
+        }
+    }
+    
+    public void setPresent(Field field)
+    {
+        if (null != field)
+        {
+            fields.add(field);
+        }
+    }
+    
+    public void setContructor(Constructor constructor)
+    {
+        if (null != constructor)
+        {
+            constructors.add(constructor);
+        }
+    }
+    
+    public void setProcedure(Procedure procedure)
+    {
+        if (null != procedure)
+        {
+            procedures.add(procedure);
+        }
+    }
 }
