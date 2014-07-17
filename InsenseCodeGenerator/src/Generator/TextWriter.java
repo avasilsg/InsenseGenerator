@@ -30,7 +30,7 @@ public class TextWriter
     
     public void openAndCreateFile() throws FileNotFoundException, UnsupportedEncodingException
     {
-        writer = new PrintWriter("/Temp/test3.txt", "UTF-8");
+        writer = new PrintWriter("/Temp/test4.txt", "UTF-8");
     }
     
     public void writeInterface(Interface interfs)
