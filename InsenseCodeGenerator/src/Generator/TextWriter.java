@@ -9,6 +9,7 @@ import GrammarAndClauses.Clauses;
 import Units.Behaviour;
 import Units.Component;
 import Units.Interface;
+import Units.BasicUnits.Instance;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
 
@@ -25,7 +26,7 @@ public class TextWriter
     
     public void openAndCreateFile() throws FileNotFoundException, UnsupportedEncodingException
     {
-        writer = new PrintWriter("/Temp/test.txt", "UTF-8");
+        writer = new PrintWriter("/Temp/test3.txt", "UTF-8");
     }
     
     public void writeInterface(Interface interfs)
@@ -148,6 +149,14 @@ public class TextWriter
            writer.write("\t\t" + String.format(Clauses.sendWithValue, send.getInderntifier(), send.getValue(), send.getOn()));
          }
         behaviour.getSends().remove(0);
+    }
+
+    public void writeInstance(Instance instance)
+    {
+         writer.println();
+         writer.write(String.format(Clauses.createInstance, instance.getType(), instance.getName(), instance.getType()));  
+         writer.write(Clauses.openBracket);
+         writer.write(Clauses.closeBracket);
     }
     
 }

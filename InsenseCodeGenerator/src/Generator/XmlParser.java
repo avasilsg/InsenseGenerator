@@ -14,6 +14,7 @@ import Units.Behaviour;
 import Units.Component;
 import Units.Interface;
 import Units.BasicUnits.Channel;
+import Units.BasicUnits.Instance;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
 
@@ -148,11 +149,30 @@ public class XmlParser
         }
         codeGenerator.closeFile();
     }
-    
+//    <instance component="TempReader" name="tr" />
     private void instanceParsing(Node currentNode)
     {
-        // TODO Auto-generated method stub
-        
+        Instance instance = new Instance();
+        for (int i = 0; i < currentNode.getAttributes().getLength(); i++)
+        {
+            if ("component".equals(currentNode.getAttributes().item(i).getNodeName()))
+            {
+                if (null != currentNode.getAttributes().item(i).getNodeValue())
+                {
+                    instance.setType(currentNode.getAttributes().item(i).getNodeValue());
+                }
+            }
+            if ("name".equals(currentNode.getAttributes().item(i).getNodeName()))
+            {
+                if (null != currentNode.getAttributes().item(i).getNodeValue())
+                {
+                    instance.setName(currentNode.getAttributes().item(i).getNodeValue());
+                }
+            }
+        }
+        //TODO: params
+        codeGenerator.writeInstance(instance);
+        instance = null;
     }
 
     private void connectionParsing(Node currentNode)
