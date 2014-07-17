@@ -12,6 +12,7 @@ import Units.Connect;
 import Units.Interface;
 import Units.BasicUnits.Field;
 import Units.BasicUnits.Instance;
+import Units.BasicUnits.Print;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
 
@@ -120,6 +121,11 @@ public class TextWriter
                     writeReceive(behaviour);
                     break;
                 }
+                case "print":
+                {
+                    writePrint(behaviour);
+                    break;
+                }
             }
         }
         
@@ -173,6 +179,60 @@ public class TextWriter
             writer.write("\t\t" + String.format(Clauses.sendWithValue, send.getInderntifier(), send.getValue(), send.getOn()));
         }
         behaviour.getSends().remove(0);
+    }
+    
+    // <print variable = "reading" type = "Real" attribute = "photo" titleString
+    // = "Photo"/>
+    private void writePrint(Behaviour behaviour)
+    {
+        Print print = behaviour.getPrints().get(0);
+        boolean flagAttribute = false;
+        writer.println();
+        if ((null != print.getTitle()) && !"".equals(print.getTitle()))
+        {
+            writer.write("\t\t" + String.format(Clauses.printString, Clauses.openBracket + "\"" + print.getTitle() + "\"" + Clauses.closeBracket));
+        }
+        else
+        {
+            if (null != print.getAttribute() && !"".equals(print.getAttribute()))
+            {
+                writer.write("\t\t" + String.format(Clauses.printString, Clauses.openBracket + "\"" + print.getAttribute() + "\"" + Clauses.closeBracket));
+                flagAttribute = true;
+            }
+            else
+            {
+                writer.write("\t\t" + String.format(Clauses.printString, Clauses.openBracket + "\"" + print.getVariable() + "\"" + Clauses.closeBracket));
+            }
+        }
+        writer.println();
+        String expression = null;
+        if (flagAttribute)
+        {
+            expression = Clauses.openBracket + print.getVariable() + "." + print.getAttribute() + Clauses.closeBracket;
+        }
+        else
+        {
+            expression = Clauses.openBracket + print.getVariable() + Clauses.closeBracket;
+        }
+        switch (print.getType())
+        {
+            case "Real":
+            {
+                writer.write("\t\t" + String.format(Clauses.printReal, expression));
+                break;
+            }
+            case "Int":
+            {
+                writer.write("\t\t" + String.format(Clauses.printInt, expression));
+                break;
+            }
+            case "UnsignedInt":
+            {
+                writer.write("\t\t" + String.format(Clauses.printUnsignedInt, expression));
+                break;
+            }
+        }
+        behaviour.getPrints().remove(0);
     }
     
     public void writeInstance(Instance instance)

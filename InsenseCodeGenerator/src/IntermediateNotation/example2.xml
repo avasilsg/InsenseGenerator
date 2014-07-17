@@ -65,8 +65,8 @@
 	<constructor> 
 	</constructor>
 	<behaviour>
-		<print variable = "cycle" 	titleString =""/>
-		<print variable = "reading" attribute = "photo" titleString = "Photo"/>
+		<print variable = "cycle" type = "Int"	titleString =""/>
+		<print variable = "reading" type = "Real" attribute = "photo" titleString = "Photo"/>
 		<print variable = "reading" attribute = "solar" titleString = "Solar"/>
 		<print variable = "reading" attribute = "temp" titleString  = "Temp"/>
 		<print variable = "reading" attribute = "humid" titleString = ""/>	

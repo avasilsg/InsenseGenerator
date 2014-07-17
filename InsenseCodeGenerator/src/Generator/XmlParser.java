@@ -17,6 +17,7 @@ import Units.Interface;
 import Units.BasicUnits.Channel;
 import Units.BasicUnits.Field;
 import Units.BasicUnits.Instance;
+import Units.BasicUnits.Print;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
 
@@ -185,30 +186,31 @@ public class XmlParser
             parseConnection(currentNode.getChildNodes());
         }
     }
-//  <from name = "TempReader"             on = "tRequestChan"/>
-//  <to   name = "lightHumidTempSensor" on = "tempRequest"/>
+    
+    // <from name = "TempReader" on = "tRequestChan"/>
+    // <to name = "lightHumidTempSensor" on = "tempRequest"/>
     private void parseConnection(NodeList childNodes)
     {
         Connect connect = new Connect();
-        boolean flagOpen = false; 
+        boolean flagOpen = false;
         boolean flagClosed = false;
         for (int count = 0; count < childNodes.getLength(); count++)
         {
             Node node = childNodes.item(count);
             if ("from".equals(node.getNodeName().toLowerCase()))
             {
-                    for (int i = 0; i < node.getAttributes().getLength(); i++)
+                for (int i = 0; i < node.getAttributes().getLength(); i++)
+                {
+                    if ("name".equals(node.getAttributes().item(i).getNodeName()))
                     {
-                        if ("name".equals(node.getAttributes().item(i).getNodeName()))
-                        {
-                            connect.setFromName(node.getAttributes().item(i).getNodeValue());
-                        }
-                        if ("on".equals(node.getAttributes().item(i).getNodeName()))
-                        {
-                            connect.setFromNameOn(node.getAttributes().item(i).getNodeValue());
-                        }
+                        connect.setFromName(node.getAttributes().item(i).getNodeValue());
                     }
-                    flagOpen = true;
+                    if ("on".equals(node.getAttributes().item(i).getNodeName()))
+                    {
+                        connect.setFromNameOn(node.getAttributes().item(i).getNodeValue());
+                    }
+                }
+                flagOpen = true;
             }
             
             if ("to".equals(node.getNodeName().toLowerCase()))
@@ -234,7 +236,7 @@ public class XmlParser
             
         }
     }
-
+    
     private void parseComponent(Node currentNode)
     {
         if (true == currentNode.hasChildNodes())
@@ -278,7 +280,7 @@ public class XmlParser
                     }
                 }
             }
-//            <field type = "" name = "avgTemp" value ="0.0"/>
+            // <field type = "" name = "avgTemp" value ="0.0"/>
             if ("field".equals(node.getNodeName().toLowerCase()))
             {
                 Field field = new Field();
@@ -343,6 +345,9 @@ public class XmlParser
             if ("print".equals(node.getNodeName().toLowerCase()))
             {
                 behaviour.setOperation(node.getNodeName().toLowerCase());
+                Print print = parsePrintAttributes(node.getAttributes());
+                behaviour.setPrint(print);
+                print = null;
                 // parsePrintAttributes(child.Attributes, child.Name,
                 // behaviour);
             }
@@ -354,6 +359,34 @@ public class XmlParser
             }
         }
         return behaviour;
+    }
+    
+    // <print variable = "cycle" type = "Int" titleString =""/>
+    // <print variable = "reading" type = "Real" attribute = "photo" titleString
+    // = "Photo"/>
+    private Print parsePrintAttributes(NamedNodeMap attributes)
+    {
+        Print print = new Print();
+        for (int i = 0; i < attributes.getLength(); i++)
+        {
+            if ("variable".equals(attributes.item(i).getNodeName().toLowerCase()))
+            {
+                print.setVariable(attributes.item(i).getNodeValue());
+            }
+            if ("type".equals(attributes.item(i).getNodeName().toLowerCase()))
+            {
+                print.setType(attributes.item(i).getNodeValue());
+            }
+            if ("attribute".equals(attributes.item(i).getNodeName().toLowerCase()))
+            {
+                print.setAttribute(attributes.item(i).getNodeValue());
+            }
+            if ("titleString".equals(attributes.item(i).getNodeName().toLowerCase()))
+            {
+                print.setTitle(attributes.item(i).getNodeValue());
+            }
+        }
+        return print;
     }
     
     private Receive parseAttributesReceive(NamedNodeMap attributes)
