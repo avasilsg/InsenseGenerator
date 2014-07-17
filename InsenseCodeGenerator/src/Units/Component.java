@@ -13,9 +13,14 @@ public class Component
     private LinkedList<Procedure> procedures;
     private Behaviour behaviour;
     
-    Component()
+    public Component()
     {
         this.setName(null);
+        this.behaviour = new Behaviour();
+        this.constructors = new LinkedList<>();
+        this.fields = new LinkedList<>();
+        this.presents = new LinkedList<>();
+        this.procedures = new LinkedList<>();
     }
 
     public String getName()
@@ -86,7 +91,7 @@ public class Component
         }
     }
     
-    public void setPresent(Field field)
+    public void setField(Field field)
     {
         if (null != field)
         {

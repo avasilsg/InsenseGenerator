@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 
 import GrammarAndClauses.Clauses;
+import Units.Component;
 import Units.Interface;
 
 public class TextWriter
@@ -52,6 +53,12 @@ public class TextWriter
     public void setComponentNames(LinkedList<String> componentNames)
     {
         this.componentNames = componentNames;
+    }
+
+    public void writeComponent(Component component)
+    {
+        // TODO Auto-generated method stub
+        
     }
     
 }

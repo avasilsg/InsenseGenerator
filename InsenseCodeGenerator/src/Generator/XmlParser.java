@@ -10,6 +10,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import Units.Behaviour;
+import Units.Component;
 import Units.Interface;
 import Units.BasicUnits.Channel;
 
@@ -137,7 +139,7 @@ public class XmlParser
                 }
             }
         }
-       codeGenerator.closeFile();
+        codeGenerator.closeFile();
     }
     
     private void connectionParsing(Node currentNode)
@@ -148,8 +150,103 @@ public class XmlParser
     
     private void parseComponent(Node currentNode)
     {
-        // TODO Auto-generated method stub
+        if (null == currentNode)
+        {
+            throw new NullPointerException();
+        }
         
+        if (true == currentNode.hasChildNodes())
+        {
+            Component component = parseComponentContent(currentNode.getChildNodes());
+            codeGenerator.writeComponent(component);
+            component = null;
+        }
+    }
+    
+    private Component parseComponentContent(NodeList childNodes)
+    {
+        Component component = new Component();
+        for (int count = 0; count < childNodes.getLength(); count++)
+        {
+            Node node = childNodes.item(count);
+            if ("attribute".equals(node.getNodeName().toLowerCase()))
+            {
+                if (null != node.getAttributes())
+                {
+                    for (int i = 0; i < node.getAttributes().getLength(); i++)
+                    {
+                        if ("name".equals(node.getAttributes().item(i).getNodeName()))
+                        {
+                            component.setName(node.getAttributes().item(i).getNodeValue());
+                        }
+                    }
+                }
+            }
+            
+            if ("presents".equals(node.getNodeName().toLowerCase()))
+            {
+                if (null != node.getAttributes())
+                {
+                    for (int i = 0; i < node.getAttributes().getLength(); i++)
+                    {
+                        if ("name".equals(node.getAttributes().item(i).getNodeName()))
+                        {
+                            component.setPresent(node.getAttributes().item(i).getNodeValue());
+                        }
+                    }
+                }
+            }
+            
+            if ("field".equals(node.getNodeName().toLowerCase()))
+            {
+                
+            }
+            
+            if ("constructor".equals(node.getNodeName().toLowerCase()))
+            {
+                
+            }
+            
+            if ("behaviour".equals(node.getNodeName().toLowerCase()))
+            {
+                Behaviour behaviour = parseBehaviour(node.getChildNodes());
+                component.setBehaviour(behaviour);
+                behaviour = null;
+            }
+        }
+        return component;
+    }
+    
+    private Behaviour parseBehaviour(NodeList childNodes)
+    {
+        for (int count = 0; count < childNodes.getLength(); count++)
+        {
+            Node node = childNodes.item(count);
+            if ("send".equals(node.getNodeName().toLowerCase()))
+            {
+                // parseAttributesSendReceive(child.Attributes, child.Name,
+                // behaviour);
+            }
+            if ("receive".equals(node.getNodeName().toLowerCase()))
+            
+            {
+                // parseAttributesSendReceive(child.Attributes, child.Name,
+                // behaviour);
+            }
+            if ("print".equals(node.getNodeName().toLowerCase()))
+            
+            {
+                // parsePrintAttributes(child.Attributes, child.Name,
+                // behaviour);
+            }
+            if ("variable".equals(node.getNodeName().toLowerCase()))
+            
+            {
+                // parseComponentLocalVariableAttributes(child.Attributes,
+                // component.variables);
+            }
+        }
+        return null;
     }
     
     private void parseStruct(Node currentNode)
