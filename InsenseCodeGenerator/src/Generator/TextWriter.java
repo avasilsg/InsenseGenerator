@@ -131,22 +131,23 @@ public class TextWriter
     
     private void writeFields(LinkedList<Field> fields)
     {
-        if (1 < fields.size())
+        if (1 <= fields.size())
         {
             for (int i = 0; i < fields.size(); i++)
             {
                 writer.println();
                 Field field = fields.get(i);
-                if (null == field.getType() || "".equals(field.getType()))
+                if ((null == field.getType() || "".equals(field.getType())) && (null != field.getName() && !"".equals(field.getName())))
                 {
-                    writer.write(String.format(Clauses.fieldTypeLess, field.getName(), field.getValue()));
+                    writer.write("\t" + String.format(Clauses.fieldTypeLess, field.getName(), field.getValue()));
                 }
-                else
+                else if (null != field.getName() && !"".equals(field.getName()))
                 {
-                    writer.write(String.format(Clauses.fieldFull, field.getType(), field.getName(), field.getValue()));
+                    writer.write("\t" + String.format(Clauses.fieldFull, field.getType(), field.getName(), field.getValue()));
                 }
             }
         }
+        writer.println();
     }
     
     private void writeReceive(Behaviour behaviour)
