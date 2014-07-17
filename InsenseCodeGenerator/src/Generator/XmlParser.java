@@ -251,35 +251,18 @@ public class XmlParser
     private Component parseComponentContent(NodeList childNodes)
     {
         Component component = new Component();
+        
         for (int count = 0; count < childNodes.getLength(); count++)
         {
             Node node = childNodes.item(count);
             if ("attribute".equals(node.getNodeName().toLowerCase()))
             {
-                if (null != node.getAttributes())
-                {
-                    for (int i = 0; i < node.getAttributes().getLength(); i++)
-                    {
-                        if ("name".equals(node.getAttributes().item(i).getNodeName().toLowerCase()))
-                        {
-                            component.setName(node.getAttributes().item(i).getNodeValue());
-                        }
-                    }
-                }
+                component.setName(parseNameAttribute(node));
             }
             
             if ("presents".equals(node.getNodeName().toLowerCase()))
             {
-                if (null != node.getAttributes())
-                {
-                    for (int i = 0; i < node.getAttributes().getLength(); i++)
-                    {
-                        if ("name".equals(node.getAttributes().item(i).getNodeName()))
-                        {
-                            component.setPresent(node.getAttributes().item(i).getNodeValue());
-                        }
-                    }
-                }
+                component.setPresent(parseNameAttribute(node));
             }
             // <field type = "" name = "avgTemp" value ="0.0"/>
             if ("field".equals(node.getNodeName().toLowerCase()))
@@ -368,9 +351,6 @@ public class XmlParser
         return behaviour;
     }
     
-    // <print variable = "cycle" type = "Int" titleString =""/>
-    // <print variable = "reading" type = "Real" attribute = "photo" titleString
-    // = "Photo"/>
     private Print parsePrintAttributes(NamedNodeMap attributes)
     {
         Print print = new Print();
@@ -387,10 +367,6 @@ public class XmlParser
             if ("attribute".equals(attributes.item(i).getNodeName().toLowerCase()))
             {
                 print.setAttribute(attributes.item(i).getNodeValue());
-            }
-            if ("titleString".equals(attributes.item(i).getNodeName().toLowerCase()))
-            {
-                print.setTitle(attributes.item(i).getNodeValue());
             }
         }
         return print;
@@ -456,16 +432,7 @@ public class XmlParser
             Node node = childNodes.item(count);
             if ("attribute".equals(node.getNodeName().toLowerCase()))
             {
-                if (null != node.getAttributes())
-                {
-                    for (int i = 0; i < node.getAttributes().getLength(); i++)
-                    {
-                        if ("name".equals(node.getAttributes().item(i).getNodeName()))
-                        {
-                            struct.setName(node.getAttributes().item(i).getNodeValue());
-                        }
-                    }
-                }
+                struct.setName(parseNameAttribute(node));
             }
             if ("field".equals(node.getNodeName().toLowerCase()))
             {
@@ -500,16 +467,7 @@ public class XmlParser
             Node node = childNodes.item(count);
             if ("attribute".equals(node.getNodeName().toLowerCase()))
             {
-                if (null != node.getAttributes())
-                {
-                    for (int i = 0; i < node.getAttributes().getLength(); i++)
-                    {
-                        if ("name".equals(node.getAttributes().item(i).getNodeName()))
-                        {
-                            interfaceObj.setName(node.getAttributes().item(i).getNodeValue());
-                        }
-                    }
-                }
+                interfaceObj.setName(parseNameAttribute(node));
             }
             if ("channel".equals(node.getNodeName().toLowerCase()))
             {
@@ -534,6 +492,23 @@ public class XmlParser
         }
         
         return interfaceObj;
+    }
+    
+    private String parseNameAttribute(Node node)
+    {
+        String result = null;
+        if (null != node.getAttributes())
+        {
+            for (int i = 0; i < node.getAttributes().getLength(); i++)
+            {
+                if ("name".equals(node.getAttributes().item(i).getNodeName().toLowerCase()))
+                {
+                    result = node.getAttributes().item(i).getNodeValue();
+                }
+            }
+        }
+        
+        return result;
     }
     
     // #endregion
