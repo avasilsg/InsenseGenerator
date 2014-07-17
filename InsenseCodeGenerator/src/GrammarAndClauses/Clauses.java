@@ -30,5 +30,11 @@ public class Clauses
    
    public static final String createInstance = "%s %s = new %s";
 
+   public static final String connectShort = "connect %s to %s";
+   public static final String connectExFrom = "connect %s.%s to %s";
+   public static final String connectExTo = "connect %s to %s.%s";
+   public static final String connectFull = "connect %s.%s to %s.%s";
+
+
 }
 

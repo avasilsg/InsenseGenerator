@@ -149,7 +149,8 @@ public class XmlParser
         }
         codeGenerator.closeFile();
     }
-//    <instance component="TempReader" name="tr" />
+    
+    // <instance component="TempReader" name="tr" />
     private void instanceParsing(Node currentNode)
     {
         Instance instance = new Instance();
@@ -170,24 +171,21 @@ public class XmlParser
                 }
             }
         }
-        //TODO: params
+        // TODO: params
         codeGenerator.writeInstance(instance);
         instance = null;
     }
-
+    
     private void connectionParsing(Node currentNode)
     {
-        // TODO Auto-generated method stub
-        
+        if (true == currentNode.hasChildNodes())
+        {
+            
+        }
     }
     
     private void parseComponent(Node currentNode)
     {
-        if (null == currentNode)
-        {
-            throw new NullPointerException();
-        }
-        
         if (true == currentNode.hasChildNodes())
         {
             Component component = parseComponentContent(currentNode.getChildNodes());
@@ -299,7 +297,7 @@ public class XmlParser
             }
             if ("value".equals(attributes.item(i).getNodeName().toLowerCase()))
             {
-//                receive.(attributes.item(i).getNodeValue());
+                // receive.(attributes.item(i).getNodeValue());
             }
             if ("from".equals(attributes.item(i).getNodeName().toLowerCase()))
             {
@@ -308,7 +306,7 @@ public class XmlParser
         }
         return receive;
     }
-
+    
     private Send parseAttributesSend(NamedNodeMap attributes)
     {
         Send send = new Send();
@@ -329,7 +327,7 @@ public class XmlParser
         }
         return send;
     }
-
+    
     private void parseStruct(Node currentNode)
     {
         // TODO Auto-generated method stub
