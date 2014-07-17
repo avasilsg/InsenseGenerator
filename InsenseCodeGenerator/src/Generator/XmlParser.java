@@ -238,6 +238,7 @@ public class XmlParser
             Node node = childNodes.item(count);
             if ("send".equals(node.getNodeName().toLowerCase()))
             {
+                behaviour.setOperation(node.getNodeName().toLowerCase());
                 Send send = parseAttributesSend(node.getAttributes());
                 behaviour.setSend(send);
                 send = null;
@@ -245,6 +246,7 @@ public class XmlParser
             
             if ("receive".equals(node.getNodeName().toLowerCase()))
             {
+                behaviour.setOperation(node.getNodeName().toLowerCase());
                 Receive receive = parseAttributesReceive(node.getAttributes());
                 behaviour.setReceive(receive);
                 receive = null;
@@ -252,11 +254,13 @@ public class XmlParser
             
             if ("print".equals(node.getNodeName().toLowerCase()))
             {
+                behaviour.setOperation(node.getNodeName().toLowerCase());
                 // parsePrintAttributes(child.Attributes, child.Name,
                 // behaviour);
             }
             if ("variable".equals(node.getNodeName().toLowerCase()))
             {
+                behaviour.setOperation(node.getNodeName().toLowerCase());
                 // parseComponentLocalVariableAttributes(child.Attributes,
                 // component.variables);
             }

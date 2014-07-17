@@ -102,34 +102,52 @@ public class TextWriter
             throw new NullPointerException();
         }
         
-        for(int i = 0; i < behaviour.getSends().size(); i++)
+        for(int i = 0; i < behaviour.getOrder().size(); i++)
         {
-            Send send = behaviour.getSends().get(i);
-           if ((null == send.getValue()) && (false == "any".equals(send.getInderntifier())))
-           {
-               writer.println();
-               writer.write("\t\t" + String.format(Clauses.send, send.getInderntifier(), send.getOn()));
-           }
-           else 
-           {
-               writer.println();
-               writer.write("\t\t" + String.format(Clauses.sendWithValue, send.getInderntifier(), send.getValue(), send.getOn()));
-           }
-           
-
+            switch(behaviour.getOrder().get(i))
+            {
+                case "send":
+                {
+                    writeSend(behaviour);
+                    break;
+                }
+                case "receive":
+                {
+                    writeReceive(behaviour);
+                    break;
+                }
+            }
         }
-        
-        for(int i = 0; i < behaviour.getReceives().size(); i++)
-        {
-            Receive receive =  behaviour.getReceives().get(i);
 
-            writer.println();
-            writer.write("\t\t" + String.format(Clauses.receive, receive.getInderntifier(), receive.getFrom()));
-        }
         writer.println();
         writer.write("\t"+Clauses.closeCurlyBracket);
         writer.println();
         writer.write(Clauses.closeCurlyBracket);      
+    }
+
+    private void writeReceive(Behaviour behaviour)
+    {
+        Receive receive =  behaviour.getReceives().get(0);
+
+        writer.println();
+        writer.write("\t\t" + String.format(Clauses.receive, receive.getInderntifier(), receive.getFrom()));
+        behaviour.getReceives().remove(0);
+    }
+
+    private void writeSend(Behaviour behaviour)
+    {
+         Send send = behaviour.getSends().get(0);
+         if ((null == send.getValue()) && (false == "any".equals(send.getInderntifier())))
+         {
+           writer.println();
+           writer.write("\t\t" + String.format(Clauses.send, send.getInderntifier(), send.getOn()));
+         }
+         else 
+         {
+           writer.println();
+           writer.write("\t\t" + String.format(Clauses.sendWithValue, send.getInderntifier(), send.getValue(), send.getOn()));
+         }
+        behaviour.getSends().remove(0);
     }
     
 }

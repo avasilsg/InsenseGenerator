@@ -13,6 +13,7 @@ public class Behaviour
     private LinkedList<Receive> receives;
     private LinkedList<Variable> variables;
     private LinkedList<Print> prints;
+    private LinkedList<String> order;
     
     public Behaviour()
     {
@@ -20,6 +21,7 @@ public class Behaviour
         this.setReceives(new LinkedList<Receive>());
         this.setVariables(new LinkedList<Variable>());
         this.setPrints(new LinkedList<Print>());
+        this.setOrder(new LinkedList<String>());
     }
 
     public LinkedList<Send> getSends()
@@ -84,5 +86,20 @@ public class Behaviour
     {
         if (null != print)
             this.prints.add(print);
+    }
+
+    public LinkedList<String> getOrder()
+    {
+        return order;
+    }
+
+    public void setOrder(LinkedList<String> order)
+    {
+        this.order = order;
+    }
+    
+    public void setOperation(String operation)
+    {
+        this.order.add(operation);
     }
 }
