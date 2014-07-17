@@ -14,6 +14,8 @@ import Units.Behaviour;
 import Units.Component;
 import Units.Interface;
 import Units.BasicUnits.Channel;
+import Units.BasicUnits.Receive;
+import Units.BasicUnits.Send;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -130,6 +132,11 @@ public class XmlParser
                             parseComponent(currentNode);
                             break;
                         }
+                        case "instance":
+                        {
+                            instanceParsing(currentNode);
+                            break;
+                        }
                         case "connect":
                         {
                             connectionParsing(currentNode);
@@ -142,6 +149,12 @@ public class XmlParser
         codeGenerator.closeFile();
     }
     
+    private void instanceParsing(Node currentNode)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
     private void connectionParsing(Node currentNode)
     {
         // TODO Auto-generated method stub
@@ -219,28 +232,30 @@ public class XmlParser
     
     private Behaviour parseBehaviour(NodeList childNodes)
     {
+        Behaviour behaviour = new Behaviour();
         for (int count = 0; count < childNodes.getLength(); count++)
         {
             Node node = childNodes.item(count);
             if ("send".equals(node.getNodeName().toLowerCase()))
             {
-                // parseAttributesSendReceive(child.Attributes, child.Name,
-                // behaviour);
+                Send send = parseAttributesSend(node.getAttributes());
+                behaviour.setSend(send);
+                send = null;
             }
+            
             if ("receive".equals(node.getNodeName().toLowerCase()))
-            
             {
-                // parseAttributesSendReceive(child.Attributes, child.Name,
-                // behaviour);
+                Receive receive = parseAttributesReceive(node.getAttributes());
+                behaviour.setReceive(receive);
+                receive = null;
             }
-            if ("print".equals(node.getNodeName().toLowerCase()))
             
+            if ("print".equals(node.getNodeName().toLowerCase()))
             {
                 // parsePrintAttributes(child.Attributes, child.Name,
                 // behaviour);
             }
             if ("variable".equals(node.getNodeName().toLowerCase()))
-            
             {
                 // parseComponentLocalVariableAttributes(child.Attributes,
                 // component.variables);
@@ -249,6 +264,48 @@ public class XmlParser
         return null;
     }
     
+    private Receive parseAttributesReceive(NamedNodeMap attributes)
+    {
+        Receive receive = new Receive();
+        for (int i = 0; i < attributes.getLength(); i++)
+        {
+            if ("identifier".equals(attributes.item(i).getNodeName().toLowerCase()))
+            {
+                receive.setInderntifier(attributes.item(i).getNodeValue());
+            }
+            if ("value".equals(attributes.item(i).getNodeName().toLowerCase()))
+            {
+//                receive.(attributes.item(i).getNodeValue());
+            }
+            if ("from".equals(attributes.item(i).getNodeName().toLowerCase()))
+            {
+                receive.setFrom(attributes.item(i).getNodeValue());
+            }
+        }
+        return receive;
+    }
+
+    private Send parseAttributesSend(NamedNodeMap attributes)
+    {
+        Send send = new Send();
+        for (int i = 0; i < attributes.getLength(); i++)
+        {
+            if ("identifier".equals(attributes.item(i).getNodeName().toLowerCase()))
+            {
+                send.setInderntifier(attributes.item(i).getNodeValue());
+            }
+            if ("value".equals(attributes.item(i).getNodeName().toLowerCase()))
+            {
+                send.setValue(attributes.item(i).getNodeValue());
+            }
+            if ("on".equals(attributes.item(i).getNodeName().toLowerCase()))
+            {
+                send.setOn(attributes.item(i).getNodeValue());
+            }
+        }
+        return send;
+    }
+
     private void parseStruct(Node currentNode)
     {
         // TODO Auto-generated method stub
