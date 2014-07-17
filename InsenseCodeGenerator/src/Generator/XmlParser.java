@@ -15,6 +15,7 @@ import Units.Component;
 import Units.Connect;
 import Units.Interface;
 import Units.BasicUnits.Channel;
+import Units.BasicUnits.Field;
 import Units.BasicUnits.Instance;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
@@ -277,10 +278,29 @@ public class XmlParser
                     }
                 }
             }
-            
+//            <field type = "" name = "avgTemp" value ="0.0"/>
             if ("field".equals(node.getNodeName().toLowerCase()))
             {
-                
+                Field field = new Field();
+                if (null != node.getAttributes())
+                {
+                    for (int i = 0; i < node.getAttributes().getLength(); i++)
+                    {
+                        if ("type".equals(node.getAttributes().item(i).getNodeName()))
+                        {
+                            field.setType(node.getAttributes().item(i).getNodeValue());
+                        }
+                        if ("name".equals(node.getAttributes().item(i).getNodeName()))
+                        {
+                            field.setName(node.getAttributes().item(i).getNodeValue());
+                        }
+                        if ("value".equals(node.getAttributes().item(i).getNodeName()))
+                        {
+                            field.setValue(node.getAttributes().item(i).getNodeValue());
+                        }
+                    }
+                }
+                component.setField(field);
             }
             
             if ("constructor".equals(node.getNodeName().toLowerCase()))

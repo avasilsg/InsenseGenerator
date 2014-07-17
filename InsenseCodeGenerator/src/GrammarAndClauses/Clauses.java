@@ -18,8 +18,7 @@ public class Clauses
    public static final String interfaceGrammar = "type %s is interface";
    // direction type name
    public static final String channel = "%s %s %s;";
-   
-   
+     
    public static final String component =   "component %s presents ";
    public static final String constructor = "constructor";
    public static final String behaviour =   "behaviour";
@@ -35,6 +34,8 @@ public class Clauses
    public static final String connectExTo = "connect %s to %s.%s";
    public static final String connectFull = "connect %s.%s to %s.%s";
 
-
+   public static final String fieldFull = "%s %s = %s";
+   public static final String fieldTypeLess = "%s = %s";
+   public static final String fieldShort = "%s";   
 }
 

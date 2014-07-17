@@ -10,6 +10,7 @@ import Units.Behaviour;
 import Units.Component;
 import Units.Connect;
 import Units.Interface;
+import Units.BasicUnits.Field;
 import Units.BasicUnits.Instance;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
@@ -87,8 +88,7 @@ public class TextWriter
         writer.println();
         writer.write(Clauses.openCurlyBracket);
         writer.println();
-        // TODO: fields
-        writer.println();
+        writeFields(component.getFields());
         writer.write("\t" + Clauses.constructor);
         writer.write(Clauses.openBracket);
         // TODO: contructors body
@@ -127,6 +127,26 @@ public class TextWriter
         writer.write("\t" + Clauses.closeCurlyBracket);
         writer.println();
         writer.write(Clauses.closeCurlyBracket);
+    }
+    
+    private void writeFields(LinkedList<Field> fields)
+    {
+        if (1 < fields.size())
+        {
+            for (int i = 0; i < fields.size(); i++)
+            {
+                writer.println();
+                Field field = fields.get(i);
+                if (null == field.getType() || "".equals(field.getType()))
+                {
+                    writer.write(String.format(Clauses.fieldTypeLess, field.getName(), field.getValue()));
+                }
+                else
+                {
+                    writer.write(String.format(Clauses.fieldFull, field.getType(), field.getName(), field.getValue()));
+                }
+            }
+        }
     }
     
     private void writeReceive(Behaviour behaviour)
