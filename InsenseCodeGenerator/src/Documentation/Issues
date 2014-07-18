@@ -1,0 +1,28 @@
+Intermediate notation
+Arrays?
+
+type ISender is interface( out integer[] output )
+type IReceiver is interface ( in integer[] input )
+
+If and For
+
+if ints.length > 0 then {
+			printInt(ints[0])
+		}
+		for i = 1 .. ints.length-1 do {
+			printString(", ")
+			printInt(ints[i])
+		}
+
+Procedures
+proc tempIntToCelsiusReal(integer reading) : real {
+		// this conversion was given in the contiki source
+		// convert integer reading to Celsius by: -39.60 + 0.01 * reading 
+		// but values appear to high, have calibrated to 
+				return -45.3 + 0.01 * reading
+	}
+		
+	// convert humidity integer as produced by sensor hardware to relative humidity
+	proc humidIntToRelHumidityReal(integer reading) : real {
+		return -4.60 + 0.0405 * reading  +  2.8e-6 * (reading * reading)
+	}
