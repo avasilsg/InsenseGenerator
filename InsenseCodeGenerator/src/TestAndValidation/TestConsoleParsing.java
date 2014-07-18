@@ -7,7 +7,7 @@ public class TestConsoleParsing
     
     public static void main(String[] args)
     {
-        XmlParser parser = new XmlParser("/Temp/example3.xml");
+        XmlParser parser = new XmlParser("/Temp/example2.xml");
         parser.parseXML();
     }
     

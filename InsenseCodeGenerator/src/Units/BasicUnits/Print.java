@@ -6,24 +6,12 @@ public class Print
     private String variable;
     private String type;
     private String attribute;
-    private String title;
     
     public Print()
     {
         this.setAttribute(null);
-        this.setTitle(null);
         this.setType(null);
         this.setVariable(null);
-    }
-
-    public String getTitle()
-    {
-        return title;
-    }
-
-    public void setTitle(String title)
-    {
-        this.title = title;
     }
 
     public String getAttribute()

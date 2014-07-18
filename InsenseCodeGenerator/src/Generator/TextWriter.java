@@ -196,22 +196,12 @@ public class TextWriter
         Print print = behaviour.getPrints().get(0);
         boolean flagAttribute = false;
         writer.println();
-        if ((null != print.getTitle()) && !"".equals(print.getTitle()))
+
+        if (null != print.getAttribute() && !"".equals(print.getAttribute()))
         {
-            writer.write("\t\t" + String.format(Clauses.printString, Clauses.openBracket + "\"" + print.getTitle() + "\"" + Clauses.closeBracket));
+            flagAttribute = true;
         }
-        else
-        {
-            if (null != print.getAttribute() && !"".equals(print.getAttribute()))
-            {
-                writer.write("\t\t" + String.format(Clauses.printString, Clauses.openBracket + "\"" + print.getAttribute() + "\"" + Clauses.closeBracket));
-                flagAttribute = true;
-            }
-            else
-            {
-                writer.write("\t\t" + String.format(Clauses.printString, Clauses.openBracket + "\"" + print.getVariable() + "\"" + Clauses.closeBracket));
-            }
-        }
+
         writer.println();
         String expression = null;
         if (flagAttribute)
@@ -224,6 +214,11 @@ public class TextWriter
         }
         switch (print.getType())
         {
+            case "String":
+            {
+                writer.write("\t\t" + String.format(Clauses.printString, expression));
+                break;
+            }
             case "Real":
             {
                 writer.write("\t\t" + String.format(Clauses.printReal, expression));
