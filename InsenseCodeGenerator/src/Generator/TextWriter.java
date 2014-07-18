@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 import GrammarAndClauses.Clauses;
 import Units.Behaviour;
@@ -30,7 +31,11 @@ public class TextWriter
     
     public void openAndCreateFile() throws FileNotFoundException, UnsupportedEncodingException
     {
-        writer = new PrintWriter("/Temp/test5.txt", "UTF-8");
+        Scanner in = new Scanner(System.in);
+        System.out.print("Enter file name:");
+        String fileName = in.nextLine();
+        writer = new PrintWriter("/Temp/" + fileName + ".txt", "UTF-8");
+        in.close();
     }
     
     public void writeInterface(Interface interfs)
