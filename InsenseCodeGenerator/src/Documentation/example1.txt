@@ -1,0 +1,24 @@
+
+type ITempReader is interface
+(
+	out bool tRequestChan;
+	in Real tValueChan;
+	out any stdoutChan;
+)
+component TempReader presents ITempReader
+{
+
+	constructor()
+	{
+	}
+	behaviour{
+		send true on tRequestChan
+		receive temp from tValueChan
+		send any("\nTemp=") on stdoutChan
+		send any(temp) on stdoutChan
+	}
+}
+TempReader tr = new TempReader()
+connect tr.tRequestChan to lightHumidTempSensor.tRequestChan
+connect tr.tValueChan to lightHumidTempSensor.tempOutput
+connect tr.tempOutput to standardOut

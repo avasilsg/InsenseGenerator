@@ -4,7 +4,6 @@ import javax.management.openmbean.OpenDataException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
@@ -152,7 +151,6 @@ public class XmlParser
         codeGenerator.closeFile();
     }
     
-    // <instance component="TempReader" name="tr" />
     private void instanceParsing(Node currentNode)
     {
         Instance instance = new Instance();
@@ -211,7 +209,6 @@ public class XmlParser
                 codeGenerator.writeConnection(connect);
                 flagClosed = flagOpen = false;
             }
-            
         }
     }
 
@@ -271,7 +268,7 @@ public class XmlParser
             {
                 component.setPresent(parseNameAttribute(node));
             }
-            // <field type = "" name = "avgTemp" value ="0.0"/>
+
             if ("field".equals(node.getNodeName().toLowerCase()))
             {
                 Field field = parseField(node);
@@ -349,8 +346,6 @@ public class XmlParser
             if ("variable".equals(node.getNodeName().toLowerCase()))
             {
                 behaviour.setOperation(node.getNodeName().toLowerCase());
-                // parseComponentLocalVariableAttributes(child.Attributes,
-                // component.variables);
             }
         }
         return behaviour;
@@ -448,7 +443,6 @@ public class XmlParser
         return struct;
     }
     
-    // region Interface
     private void parseInterface(Node currentNode)
     {
         if (null == currentNode)
