@@ -18,14 +18,14 @@ public class MainWindow extends JFrame
      * 
      */
     private static final long serialVersionUID = 1L;
-    private final int window_Len = 1024;
-    private final int window_vLen = 768;
+    private final int         window_Len = 1024;
+    private final int         window_vLen = 768;
     private JPanel            contentPane;
     private JLabel            lblCompilerLogoJLabel;
-    private JButton btnOpenFile;
-    private JButton btnValidateXml;
-    private JButton btnGenerate;
-    private JButton btnCompile;
+    private JButton           btnOpenFile;
+    private JButton           btnValidateXml;
+    private JButton           btnGenerate;
+    private JButton           btnCompile;
     /**
      * Create main window.
      */
