@@ -527,16 +527,18 @@ public class XmlParser
 
     private String parseNameAttribute(Node node)
     {
+        String valueString = null;
         if (null != node.getAttributes())
         {
             for (int i = 0; i < node.getAttributes().getLength(); i++)
             {
                 if ("name".equals(node.getAttributes().item(i).getNodeName().toLowerCase()))
                 {
-                    return node.getAttributes().item(i).getNodeValue();
+                    valueString =  node.getAttributes().item(i).getNodeValue(); 
+                    return valueString;
                 }
             }
         }
-        return null;
+        return valueString;
     }
 }
