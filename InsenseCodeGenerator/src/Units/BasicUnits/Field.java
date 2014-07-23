@@ -5,12 +5,14 @@ public class Field
     private String type;
     private String name;
     private String value;
+    private Boolean isArray;
     
     public Field()
     {
         this.name = null;
         this.type = null;
         this.value = null;
+        this.setIsArray(false);
     }
     
     public String getType()
@@ -36,6 +38,16 @@ public class Field
     public void setValue(String value)
     {
         this.value = value;
+    }
+
+    public Boolean getIsArray()
+    {
+        return isArray;
+    }
+
+    public void setIsArray(Boolean isArray)
+    {
+        this.isArray = isArray;
     }
 }
 
