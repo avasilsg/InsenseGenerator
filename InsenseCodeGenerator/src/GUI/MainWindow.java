@@ -11,6 +11,10 @@ import javax.swing.border.EmptyBorder;
 
 public class MainWindow extends JFrame
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private final int window_Len = 1024;
     private final int window_vLen = 768;
     private JPanel            contentPane;
@@ -32,7 +36,7 @@ public class MainWindow extends JFrame
     {
         setAlwaysOnTop(true);
         setResizable(false);
-        setTitle("Project Proposal Management System");
+        setTitle("Insense Code Generator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 447, 283);
         contentPane = new JPanel();
