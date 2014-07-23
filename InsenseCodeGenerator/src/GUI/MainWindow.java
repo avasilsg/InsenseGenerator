@@ -8,6 +8,9 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainWindow extends JFrame
 {
@@ -19,6 +22,10 @@ public class MainWindow extends JFrame
     private final int window_vLen = 768;
     private JPanel            contentPane;
     private JLabel            lblCompilerLogoJLabel;
+    private JButton btnOpenFile;
+    private JButton btnValidateXml;
+    private JButton btnGenerate;
+    private JButton btnCompile;
     /**
      * Create main window.
      */
@@ -29,6 +36,26 @@ public class MainWindow extends JFrame
         
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
+        
+        btnOpenFile = new JButton("Open file");
+        btnOpenFile.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0)
+            {
+            }
+        });
+        menuBar.add(btnOpenFile);
+        
+        btnValidateXml = new JButton("Validate XML");
+        btnValidateXml.setEnabled(false);
+        menuBar.add(btnValidateXml);
+        
+        btnGenerate = new JButton("Generate");
+        btnGenerate.setEnabled(false);
+        menuBar.add(btnGenerate);
+        
+        btnCompile = new JButton("Compile");
+        btnCompile.setEnabled(false);
+        menuBar.add(btnCompile);
 
     }
     
@@ -38,7 +65,7 @@ public class MainWindow extends JFrame
         setResizable(false);
         setTitle("Insense Code Generator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 447, 283);
+        setSize(window_Len, window_vLen);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(new BorderLayout(0, 0));
