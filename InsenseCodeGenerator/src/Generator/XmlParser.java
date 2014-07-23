@@ -310,6 +310,10 @@ public class XmlParser
                     field.setValue(node.getAttributes().item(i).getNodeValue());
                 }
             }
+            if (true == node.hasChildNodes())
+            {
+                field.setIsArray(parseChannelChilds(node.getChildNodes()));
+            }
         }
         return field;
     }
@@ -488,7 +492,7 @@ public class XmlParser
                 }
                 if (node.hasChildNodes())
                 {
-                    chan.setArray(parseAttributesChannel(node.getChildNodes()));
+                    chan.setArray(parseChannelChilds(node.getChildNodes()));
                 }
                 interfaceObj.setChannel(chan);
             }
@@ -497,19 +501,25 @@ public class XmlParser
         return interfaceObj;
     }
     
-    private boolean parseAttributesChannel(NodeList nodeList)
+    private boolean parseChannelChilds(NodeList nodeList)
     {
         for (int i = 0; i < nodeList.getLength(); i++)
         {
             if ("attribute".equals(nodeList.item(i).getNodeName()))
             {
-                for (int j = 0; j < nodeList.item(i).getAttributes().getLength(); j++)
-                {
-                    if ("collection".equals(nodeList.item(i).getAttributes().item(j).getNodeName().toLowerCase()))
-                    {
-                        return true;
-                    }
-                }
+                parseChannelChildAttributes(nodeList, i);
+            }
+        }
+        return false;
+    }
+
+    private boolean parseChannelChildAttributes(NodeList nodeList, int i)
+    {
+        for (int j = 0; j < nodeList.item(i).getAttributes().getLength(); j++)
+        {
+            if ("collection".equals(nodeList.item(i).getAttributes().item(j).getNodeName().toLowerCase()))
+            {
+                return true;
             }
         }
         return false;
