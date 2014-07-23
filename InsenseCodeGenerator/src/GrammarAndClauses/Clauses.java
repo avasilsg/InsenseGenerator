@@ -18,6 +18,8 @@ public class Clauses
    public static final String interfaceGrammar = "type %s is interface";
    // direction type name
    public static final String channel = "%s %s %s;";
+   public static final String arrayChannel = "%s %s[] %s;";
+
      
    public static final String component =   "component %s presents ";
    public static final String constructor = "constructor";
@@ -44,7 +46,8 @@ public class Clauses
    public static final String printReal  =  "printReal%s";
    public static final String printInt   =  "printInt%s";
    public static final String printUnsignedInt = "printUnsignedInt%s";
-   
+//   ints = new integer[5] of 0
+   public static final String arraySyntx = "%s = new %s[%d] of %d";
    public static final String structSyntax = "type %s is struct";
 
 }
