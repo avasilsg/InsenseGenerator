@@ -161,17 +161,27 @@ public class TextWriter
                 boolean flagValue = (null == field.getValue() || "".equals(field.getValue()));
                 boolean flagName = (null == field.getName() || "".equals(field.getName()));
                 
-                if (flagType && !flagName && !flagValue)
+                if (true == field.getIsArray())
                 {
-                    writer.write("\t" + String.format(Clauses.fieldTypeLess, field.getName(), field.getValue()));
+                    if (flagType && !flagName)
+                    {
+                        writer.write("\t" + String.format(Clauses.fieldTypeLess, field.getName()));
+                    }
                 }
-                else if (flagValue &&  !flagType && !flagName)
+                else
                 {
-                    writer.write("\t" + String.format(Clauses.fieldEmpty, field.getType(), field.getName()));
-                }
-                else if (!flagValue &&  !flagType && !flagName)
-                {
-                    writer.write("\t" + String.format(Clauses.fieldFull, field.getType(), field.getName(), field.getValue()));
+                    if (flagType && !flagName && !flagValue)
+                    {
+                        writer.write("\t" + String.format(Clauses.fieldTypeLess, field.getName(), field.getValue()));
+                    }
+                    else if (flagValue &&  !flagType && !flagName)
+                    {
+                        writer.write("\t" + String.format(Clauses.fieldEmpty, field.getType(), field.getName()));
+                    }
+                    else if (!flagValue &&  !flagType && !flagName)
+                    {
+                        writer.write("\t" + String.format(Clauses.fieldFull, field.getType(), field.getName(), field.getValue()));
+                    }
                 }
             }
         }
