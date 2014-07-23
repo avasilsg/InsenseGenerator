@@ -8,9 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JMenuItem;
+import javax.swing.JMenu;
 
 public class MainWindow extends JFrame
 {
@@ -22,41 +21,66 @@ public class MainWindow extends JFrame
     private final int         window_vLen = 768;
     private JPanel            contentPane;
     private JLabel            lblCompilerLogoJLabel;
-    private JButton           btnOpenFile;
-    private JButton           btnValidateXml;
-    private JButton           btnGenerate;
-    private JButton           btnCompile;
+    private JMenu mnOpen;
+    private JMenuItem mntmOpenXml;
+    private JMenuItem mntmOpenInsenseFile;
+    private JMenuItem mntmSaveXmlFile;
+    private JMenuItem mntmSaveInsenseFile;
+    private JMenu mnValidateFile;
+    private JMenuItem mntmValidateXmlFile;
+    private JMenuItem mntmShowReport;
+    private JMenu mnGenerateAndCompile;
+    private JMenuItem mntmGenerateInsenseCode;
+    private JMenuItem mntmCompile;
+    private JMenuItem mntmExit;
     /**
      * Create main window.
      */
     public MainWindow()
     {
-        
         init();
-        
+    }
+
+    private void initMenus()
+    {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
         
-        btnOpenFile = new JButton("Open file");
-        btnOpenFile.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0)
-            {
-            }
-        });
-        menuBar.add(btnOpenFile);
+        mnOpen = new JMenu("File menu");
+        menuBar.add(mnOpen);
         
-        btnValidateXml = new JButton("Validate XML");
-        btnValidateXml.setEnabled(false);
-        menuBar.add(btnValidateXml);
+        mntmOpenXml = new JMenuItem("Open XML");
+        mnOpen.add(mntmOpenXml);
         
-        btnGenerate = new JButton("Generate");
-        btnGenerate.setEnabled(false);
-        menuBar.add(btnGenerate);
+        mntmOpenInsenseFile = new JMenuItem("Open Insense File");
+        mnOpen.add(mntmOpenInsenseFile);
         
-        btnCompile = new JButton("Compile");
-        btnCompile.setEnabled(false);
-        menuBar.add(btnCompile);
-
+        mntmSaveXmlFile = new JMenuItem("Save XML file");
+        mnOpen.add(mntmSaveXmlFile);
+        
+        mntmSaveInsenseFile = new JMenuItem("Save Insense File");
+        mnOpen.add(mntmSaveInsenseFile);
+        
+        mntmExit = new JMenuItem("Exit");
+        mnOpen.add(mntmExit);
+        
+        mnValidateFile = new JMenu("Validate file");
+        menuBar.add(mnValidateFile);
+        
+        mntmValidateXmlFile = new JMenuItem("Validate XML file");
+        mnValidateFile.add(mntmValidateXmlFile);
+        
+        mntmShowReport = new JMenuItem("Show validation report");
+        mnValidateFile.add(mntmShowReport);
+        
+        mnGenerateAndCompile = new JMenu("Generate and compile");
+        menuBar.add(mnGenerateAndCompile);
+        
+        mntmGenerateInsenseCode = new JMenuItem("Generate Insense Code");
+        mnGenerateAndCompile.add(mntmGenerateInsenseCode);
+        
+        mntmCompile = new JMenuItem("Compile");
+        mnGenerateAndCompile.add(mntmCompile);
     }
     
     private void init()
@@ -73,6 +97,7 @@ public class MainWindow extends JFrame
         lblCompilerLogoJLabel = new JLabel("Insense Code Generator");
         lblCompilerLogoJLabel.setFont(new Font("Stencil", Font.PLAIN, 12));
         contentPane.add(lblCompilerLogoJLabel, BorderLayout.SOUTH);
+        initMenus();
     }
     
     
