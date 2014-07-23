@@ -47,9 +47,16 @@ public class TextWriter
         writer.println();
         for (int i = 0; i < interfs.getChannels().size(); i++)
         {
-            writer.write("\t"
+            if (false == interfs.getChannels().get(i).isArray())
+                writer.write("\t"
                     + String.format(Clauses.channel, interfs.getChannels().get(i).getDirection(), interfs.getChannels().get(i).getType(), interfs.getChannels()
                             .get(i).getName()));
+            else
+            {
+                writer.write("\t" + 
+                String.format(Clauses.arrayChannel, interfs.getChannels().get(i).getDirection(), interfs.getChannels().get(i).getType(), interfs.getChannels()
+                        .get(i).getName()));
+            }
             writer.println();
         }
         writer.write(Clauses.closeBracket);

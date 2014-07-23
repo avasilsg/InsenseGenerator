@@ -10,12 +10,13 @@ public class Channel
     private String type;
     private String name;
     private String direction;
-    
+    private boolean isArray;
     public Channel()
     {
         type = null;
         name = null;
         direction = null;
+        setArray(false);
     }
     
     public String getDirection()
@@ -49,6 +50,16 @@ public class Channel
     public void setType(String type)
     {
         this.type = type;
+    }
+
+    public boolean isArray()
+    {
+        return isArray;
+    }
+
+    public void setArray(boolean isArray)
+    {
+        this.isArray = isArray;
     }
     
     

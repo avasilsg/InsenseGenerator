@@ -47,7 +47,7 @@ public class Clauses
    public static final String printInt   =  "printInt%s";
    public static final String printUnsignedInt = "printUnsignedInt%s";
 //   ints = new integer[5] of 0
-   public static final String arraySyntx = "%s = new %s[%d] of %d";
+   public static final String arraySyntax = "%s = new %s[%d] of %d";
    public static final String structSyntax = "type %s is struct";
 
 }
