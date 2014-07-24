@@ -26,3 +26,5 @@ proc tempIntToCelsiusReal(integer reading) : real {
 	proc humidIntToRelHumidityReal(integer reading) : real {
 		return -4.60 + 0.0405 * reading  +  2.8e-6 * (reading * reading)
 	}
+
+Nested loops and ifs - queue. How they are gonna be represented ? 
