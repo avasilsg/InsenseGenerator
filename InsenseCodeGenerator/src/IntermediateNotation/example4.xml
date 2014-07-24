@@ -9,7 +9,7 @@ proc tempIntToCelsiusReal(integer reading) : real {
 	
  -->
 <procedure type="real">
-	<attribute  name = "TempReader" />
+	<attribute  name = "tempIntToCelsiusReal" />
 	<attribute  name = "parameters">
 		<field  type = "integer" name = "reading"/>
 	</attribute>
