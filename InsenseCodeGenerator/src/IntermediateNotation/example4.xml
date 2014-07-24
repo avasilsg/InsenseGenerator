@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+proc tempIntToCelsiusReal(integer reading) : real {
+		// this conversion was given in the contiki source
+		// convert integer reading to Celsius by: -39.60 + 0.01 * reading 
+		// but values appear to high, have calibrated to 
+				return -45.3 + 0.01 * reading
+	}
+	
+ -->
+<procedure type="real">
+	<attribute  name = "TempReader" />
+	<attribute  name = "parameters">
+		<field  type = "integer" name = "reading"/>
+	</attribute>
+	<body>
+	</body>
+	<return>
+		<expression value ="-45.3 + 0.01 * reading"/>
+	</return>
+</procedure>	
