@@ -38,17 +38,18 @@ component Sender presents ISender {
     <attribute  name = "Sender" />
 	<presents name = "ISender"/>
 	<field type = "" name = "last" value ="0.0"/>
-	<field type = "integer" name = "ints" allocation = "dynamic" value ="0">
-		<attribute  collection = "array" />
+	<field type = "array" name = "ints" allocation = "dynamic" value ="0">
+		<attribute  elementType = "array" />
+		<attribute  size = "array" />		
 	</field>
 	<constructor> 
 	</constructor >
 	<behaviour>
    		<for counterName ="i" value ="0" iterateThrough="ints">
-   			<expression leftOperand ="ints" index ="i" rightOperand="last" operation="assign" /> 
-   			<expression leftOperand ="last" rightOperand="last" operation="increment" />
-   			<send identifier ="ints"  value = ""  on   = "output"/>
+   			<expression leftOperand ="ints" index ="i" rightOperand="ints.length - 1" operation="assign" /> 
+   			<expression leftOperand ="last" rightOperand="last + 1" operation="assign" />
    		</for>
+		<send identifier ="ints"  value = ""  on   = "output"/>
     </behaviour>
 </component>
 <!--
