@@ -310,10 +310,6 @@ public class XmlParser
                     field.setValue(node.getAttributes().item(i).getNodeValue());
                 }
             }
-            if (true == node.hasChildNodes())
-            {
-                field.setIsArray(parseChannelChilds(node.getChildNodes()));
-            }
         }
         return field;
     }
@@ -490,39 +486,11 @@ public class XmlParser
                         chan.setDirection(node.getAttributes().item(i).getNodeValue());
                     }
                 }
-                if (node.hasChildNodes())
-                {
-                    chan.setArray(parseChannelChilds(node.getChildNodes()));
-                }
                 interfaceObj.setChannel(chan);
             }
         }
         
         return interfaceObj;
-    }
-    
-    private boolean parseChannelChilds(NodeList nodeList)
-    {
-        for (int i = 0; i < nodeList.getLength(); i++)
-        {
-            if ("attribute".equals(nodeList.item(i).getNodeName()))
-            {
-                parseChannelChildAttributes(nodeList, i);
-            }
-        }
-        return false;
-    }
-
-    private boolean parseChannelChildAttributes(NodeList nodeList, int i)
-    {
-        for (int j = 0; j < nodeList.item(i).getAttributes().getLength(); j++)
-        {
-            if ("collection".equals(nodeList.item(i).getAttributes().item(j).getNodeName().toLowerCase()))
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     private String parseNameAttribute(Node node)
