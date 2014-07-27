@@ -91,6 +91,17 @@ component Receiver presents IReceiver {
    		</for>
 			<print variable = "received" type = "String"/>
     </behaviour>
+    <procedure type="real">
+		<attribute  name = "tempIntToCelsiusReal" />
+		<attribute  name = "parameters">
+			<field  type = "integer" name = "reading"/>
+		</attribute>
+	<body>
+	</body>
+	<return>
+		<expression value ="-45.3 + 0.01 * reading"/>
+	</return>
+</procedure>	
 </component>
 
 <!--

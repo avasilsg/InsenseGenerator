@@ -32,6 +32,7 @@
 
 			reading = new sensorReading(photoValue, solarValue, tempValue, humidityValue)	
 		-->
+		<variable type = "PrintOutput"   allocation = "dynamic"/>
 		<variable type = "" name = "photoValue" allocation = "static" bindingTo = "photoReading()"/>
 		<variable type = "" name = "solarValue" allocation = "static" bindingTo = "solarReading()"/>
 		<variable type = "" name = "tempValue " allocation = "static" bindingTo = "tempCelsiusReading()"/>
@@ -61,15 +62,12 @@
 <component name = "PrintOutput">
     <attribute name = "PrintOutput"/>
 	<presents name = "IPrintOutput"/>
-	<field type = "" name = "cycle"/>
+	<field type = "" name = "cycle" value ="$0"/>
 	<constructor> 
 	</constructor>
 	<behaviour>
-		<print variable = "cycle" type = "Int"	titleString =""/>
+		<print variable = "cycle"   type = "Int"	titleString =""/>
 		<print variable = "reading" type = "Real" attribute = "photo" titleString = "Photo"/>
-		<print variable = "reading" attribute = "solar" titleString = "Solar"/>
-		<print variable = "reading" attribute = "temp" titleString  = "Temp"/>
-		<print variable = "reading" attribute = "humid" titleString = ""/>	
 	</behaviour>
 </component>
 <interface>

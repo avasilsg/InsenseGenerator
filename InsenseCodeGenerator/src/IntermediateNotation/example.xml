@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-<interface>
+<xsd:interface>
     <attribute  name = "ITempReader" />
     <channel type = "bool" name = "tRequestChan" direction = "out"/>
 	<channel type = "real" name = "tValueChan" direction = "in"/>
 	<channel type = "any" name = "stdoutChan" direction = "out"/>
-</interface>
-<component>
+</xsd:interface>
+<xsd:component>
     <attribute  name = "TempReader" />
 	<presents name = "ITempReader"/>
 	<field></field>
@@ -18,13 +18,13 @@
 		<send identifier =  "any"  value = '"\nTemp:"'  on   = "stdoutChan"/>
 		<send identifier =  "any"  value = ""  on   = "stdoutChan"/>
 	 </behaviour>
-</component>
-<connect >
+</xsd:component>
+<xsd:connect >
 	<from name = "TempReader" 		 	on = "tRequestChan"/>
 	<to   name = "lightHumidTempSensor" on = "tempRequest"/>
 	<from name = "TempReader"		 	on = "tValueChan" />
 	<to   name = "lightHumidTempSensor" on = "tempOutput"/>
 	<from name = "TempReader" 		 	on = "stdoutChan" />
 	<to   name = "standardOut" 			on = ""/> 
-</connect> 
+</xsd:connect> 
 </xsd:schema>
