@@ -277,7 +277,14 @@ public class XmlParser
             
             if ("constructor".equals(node.getNodeName().toLowerCase()))
             {
-                
+                if (true == node.hasChildNodes())
+                    parseProcedure(node.getChildNodes());
+            }
+            
+            if ("procedure".equals(node.getNodeName().toLowerCase()))
+            {
+                if (true == node.hasChildNodes())
+                    parseProcedure(node.getChildNodes());
             }
             
             if ("behaviour".equals(node.getNodeName().toLowerCase()))
@@ -290,6 +297,11 @@ public class XmlParser
         return component;
     }
     
+    private void parseProcedure(NodeList childNodes)
+    {
+        
+    }
+
     private Field parseField(Node node)
     {
         Field field = new Field();
