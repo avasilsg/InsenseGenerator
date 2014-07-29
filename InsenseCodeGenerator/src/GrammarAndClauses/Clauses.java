@@ -29,7 +29,7 @@ public class Clauses
    public static final String sendWithValue = "send %s(%s) on %s";
    public static final String receive = "receive %s from %s";
    
-   public static final String createInstance = "%s %s = new %s";
+   public static final String createInstance = "%s = new %s";
 
    public static final String connectShort = "connect %s to %s";
    public static final String connectExFrom = "connect %s.%s to %s";

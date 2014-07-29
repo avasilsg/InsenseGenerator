@@ -263,7 +263,7 @@ public class TextWriter
     public void writeInstance(Instance instance)
     {
         writer.println();
-        writer.write(String.format(Clauses.createInstance, instance.getType(), instance.getName(), instance.getType()));
+        writer.write(String.format(Clauses.createInstance, instance.getName(), instance.getType()));
         writer.write(Clauses.openBracket);
         writer.write(Clauses.closeBracket);
     }
