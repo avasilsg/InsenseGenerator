@@ -50,7 +50,8 @@ public class Clauses
    public static final String arraySyntax = "%s = new %s[%d] of %d";
    public static final String structSyntax = "type %s is struct";
 //   proc tempIntToCelsiusReal(integer reading) : real {
-   public static final String procedureSyntax = "proc %s(%s) : %s";
+   public static final String procedureSyntax = "proc %s( ";
+   public static final String closeProcedureDeclaration =  ") : %s";
 
 }
 

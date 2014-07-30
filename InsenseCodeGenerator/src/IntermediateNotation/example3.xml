@@ -44,6 +44,17 @@ component Sender presents ISender {
 	</field>
 	<constructor> 
 	</constructor >
+	<procedure type="real">
+	<attribute  name = "tempIntToCelsiusReal" />
+	<attribute  name = "parameters">
+		<field  type = "integer" name = "reading"/>
+	</attribute>
+	<body>
+	</body>
+	<return>
+		<expression value ="-45.3 + 0.01 * reading"/>
+	</return>
+</procedure>	
 	<behaviour>
    		<for counterName ="i" value ="0" iterateThrough="ints">
    			<expression leftOperand ="ints" index ="i" rightOperand="ints.length - 1" operation="assign" /> 

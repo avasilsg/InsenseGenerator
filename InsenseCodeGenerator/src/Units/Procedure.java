@@ -11,13 +11,14 @@ public class Procedure
     private String type;
     private LinkedList<Field> parameters;
     private LinkedList<Expression> expressions;
-    
+    private String returnStatement;
     public Procedure()
     {
         name = null;
         type = null;
         parameters = new LinkedList<>();
         expressions = new LinkedList<>();
+        setReturnStatement(null);
     }
     
     public String getName()
@@ -51,6 +52,16 @@ public class Procedure
     public void setExpressions(LinkedList<Expression> expressions)
     {
         this.expressions = expressions;
+    }
+
+    public String getReturnStatement()
+    {
+        return returnStatement;
+    }
+
+    public void setReturnStatement(String returnStatement)
+    {
+        this.returnStatement = returnStatement;
     }
      
 }

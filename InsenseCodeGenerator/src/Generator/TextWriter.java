@@ -11,6 +11,7 @@ import Units.Behaviour;
 import Units.Component;
 import Units.Connect;
 import Units.Interface;
+import Units.Procedure;
 import Units.Struct;
 import Units.BasicUnits.Field;
 import Units.BasicUnits.Instance;
@@ -112,6 +113,11 @@ public class TextWriter
         writer.println();
         writer.write("\t" + Clauses.closeCurlyBracket);
         writer.println();
+        if (0 != component.getProcedures().size())
+        {
+            writeProcedures(component.getProcedures());
+        }
+        writer.println();
         writer.write("\t" + Clauses.behaviour);
         writer.write(Clauses.openCurlyBracket);
         Behaviour behaviour = component.getBehaviour();
@@ -147,7 +153,28 @@ public class TextWriter
         writer.println();
         writer.write(Clauses.closeCurlyBracket);
     }
-    
+//    public static final String procedureSyntax = "proc %s(%s) : %s";
+
+    private void writeProcedures(LinkedList<Procedure> procedures)
+    {
+        for(int i = 0; i < procedures.size(); i++)
+        {
+            writer.println();
+            Procedure procedure = procedures.get(i);
+            writer.write("\t" + String.format(Clauses.procedureSyntax, procedure.getName()));  
+            writeFields(procedure.getParameters());
+            writer.write(String.format(Clauses.closeProcedureDeclaration,procedure.getType()));
+            writer.println();
+            writer.write("\t" + Clauses.openBracket);           
+            if (!"".equals(procedure.getReturnStatement()))
+            {
+                writer.write("\t\t"+ procedure.getReturnStatement());
+            }
+            writer.write("\t" + Clauses.closeCurlyBracket);
+        }
+        
+    }
+
     private void writeFields(LinkedList<Field> fields)
     {
         if (1 <= fields.size())

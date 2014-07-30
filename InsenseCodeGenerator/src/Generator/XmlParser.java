@@ -14,6 +14,7 @@ import Units.Behaviour;
 import Units.Component;
 import Units.Connect;
 import Units.Interface;
+import Units.Procedure;
 import Units.Struct;
 import Units.BasicUnits.Channel;
 import Units.BasicUnits.Field;
@@ -26,6 +27,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
 
 public class XmlParser
 {
@@ -184,7 +186,6 @@ public class XmlParser
         }
     }
     
-
     private void parseConnection(NodeList childNodes)
     {
         Connect connect = new Connect();
@@ -211,7 +212,7 @@ public class XmlParser
             }
         }
     }
-
+    
     private void extractToAttributes(Connect connect, Node node)
     {
         for (int i = 0; i < node.getAttributes().getLength(); i++)
@@ -226,7 +227,7 @@ public class XmlParser
             }
         }
     }
-
+    
     private void extractFromAttributes(Connect connect, Node node)
     {
         for (int i = 0; i < node.getAttributes().getLength(); i++)
@@ -268,7 +269,7 @@ public class XmlParser
             {
                 component.setPresent(parseNameAttribute(node));
             }
-
+            
             if ("field".equals(node.getNodeName().toLowerCase()))
             {
                 Field field = parseField(node);
@@ -283,8 +284,13 @@ public class XmlParser
             
             if ("procedure".equals(node.getNodeName().toLowerCase()))
             {
+                Procedure procedure = new Procedure();
+                
                 if (true == node.hasChildNodes())
-                    parseProcedure(node.getChildNodes());
+                    procedure = parseProcedure(node.getChildNodes());
+                
+                procedure.setType(parseProcedureAttributes(node));
+                component.setProcedure(procedure);
             }
             
             if ("behaviour".equals(node.getNodeName().toLowerCase()))
@@ -297,11 +303,92 @@ public class XmlParser
         return component;
     }
     
-    private void parseProcedure(NodeList childNodes)
+    private String parseProcedureAttributes(Node node)
     {
-        
+        String type = null;
+        if (null != node.getAttributes())
+        {
+            for (int i = 0; i < node.getAttributes().getLength(); i++)
+            {
+                if ("type".equals(node.getAttributes().item(i).getNodeName()))
+                {
+                    type = node.getAttributes().item(i).getNodeValue();
+                }
+            }
+        }
+        return type;
     }
 
+    private Procedure parseProcedure(NodeList childNodes)
+    {
+        Procedure procedure = new Procedure();
+        for (int count = 0; count < childNodes.getLength(); count++)
+        {
+            Node node = childNodes.item(count);
+            if ("attribute".equals(node.getNodeName().toLowerCase()))
+            {
+                if (null == procedure.getName())
+                {
+                    procedure.setName(parseNameAttribute(node));
+                }
+                else
+                {
+                    procedure.setParameters(parseParameters(node));
+                }
+            }
+            if ("body".equals(node.getNodeName().toLowerCase()))
+            {
+                
+            }
+            if ("return".equals(node.getNodeName().toLowerCase()))
+            {
+                procedure.setReturnStatement(parseReturn(node.getChildNodes()));
+            }
+        }
+        return procedure;
+    }
+
+    private String parseReturn(NodeList childNodes)
+    {
+            String value = null;
+            for (int i = 0; i < childNodes.getLength(); i++)
+            {
+                if ("expression".equals(childNodes.item(i).getNodeName()))
+                {
+                    value = childNodes.item(i).getNodeValue();
+                }
+            }
+            return value;
+    }
+
+    private LinkedList<Field> parseParameters(Node node)
+    {
+        LinkedList<Field> fields = new LinkedList<Field>();
+        if (null != node.getAttributes())
+        {
+            if ("name".equals(node.getAttributes().item(0).getNodeName().toLowerCase()))
+            {
+                String valueString = node.getAttributes().item(0).getNodeValue();
+                if ("parameters".equals(valueString))
+                {
+                    parseProcedureParams(node, fields);
+                }
+            }
+        }
+        return fields;
+    }
+
+    private void parseProcedureParams(Node node, LinkedList<Field> fields)
+    {
+        for (int i = 0; i < node.getChildNodes().getLength(); i++)
+        {
+            if ("field".equals(node.getChildNodes().item(i).getNodeName()))
+            {
+                fields.add(parseField(node.getChildNodes().item(i)));
+            }
+        }
+    }
+    
     private Field parseField(Node node)
     {
         Field field = new Field();
@@ -504,7 +591,7 @@ public class XmlParser
         
         return interfaceObj;
     }
-
+    
     private String parseNameAttribute(Node node)
     {
         String valueString = null;
@@ -514,7 +601,7 @@ public class XmlParser
             {
                 if ("name".equals(node.getAttributes().item(i).getNodeName().toLowerCase()))
                 {
-                    valueString =  node.getAttributes().item(i).getNodeValue(); 
+                    valueString = node.getAttributes().item(i).getNodeValue();
                     return valueString;
                 }
             }
