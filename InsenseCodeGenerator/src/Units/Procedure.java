@@ -1,6 +1,5 @@
 package Units;
 
-import java.beans.Expression;
 import java.util.LinkedList;
 
 import Units.BasicUnits.Field;
@@ -9,15 +8,14 @@ public class Procedure
 {
     private String name;
     private String type;
+    private Body body;
     private LinkedList<Field> parameters;
-    private LinkedList<Expression> expressions;
     private String returnStatement;
     public Procedure()
     {
         name = null;
         type = null;
         parameters = new LinkedList<>();
-        expressions = new LinkedList<>();
         setReturnStatement(null);
     }
     
@@ -45,14 +43,6 @@ public class Procedure
     {
         this.type = type;
     }
-    public LinkedList<Expression> getExpressions()
-    {
-        return expressions;
-    }
-    public void setExpressions(LinkedList<Expression> expressions)
-    {
-        this.expressions = expressions;
-    }
 
     public String getReturnStatement()
     {
@@ -62,6 +52,16 @@ public class Procedure
     public void setReturnStatement(String returnStatement)
     {
         this.returnStatement = returnStatement;
+    }
+
+    public Body getBody()
+    {
+        return body;
+    }
+
+    public void setBody(Body body)
+    {
+        this.body = body;
     }
      
 }
