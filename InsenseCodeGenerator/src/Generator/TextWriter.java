@@ -165,7 +165,7 @@ public class TextWriter
             Procedure procedure = procedures.get(i);
             
             writer.write("\t" + String.format(Clauses.procedureSyntax, procedure.getName()));
-            writeFields(procedure.getParameters());
+            extractParameters(i, procedure);
             writer.write(String.format(Clauses.closeProcedureDeclaration, procedure.getType()));
             
             writer.println();
@@ -180,6 +180,14 @@ public class TextWriter
         }
         
     }
+
+    private void extractParameters(int i, Procedure procedure)
+    {
+        for(int j = 0; j < procedure.getParameters().size(); j++)
+        {
+            writeField(procedure.getParameters().get(i));
+        }
+    }
     
     private void writeFields(LinkedList<Field> fields)
     {
@@ -190,35 +198,39 @@ public class TextWriter
                 writer.println();
                 Field field = fields.get(i);
                 
-                boolean flagType = (null == field.getType() || "".equals(field.getType()));
-                boolean flagValue = (null == field.getValue() || "".equals(field.getValue()));
-                boolean flagName = (null == field.getName() || "".equals(field.getName()));
-                
-                if (true == field.getIsArray())
-                {
-                    if (flagType && !flagName)
-                    {
-                        writer.write("\t" + String.format(Clauses.fieldTypeLess, field.getName()));
-                    }
-                }
-                else
-                {
-                    if (flagType && !flagName && !flagValue)
-                    {
-                        writer.write("\t" + String.format(Clauses.fieldTypeLess, field.getName(), field.getValue()));
-                    }
-                    else if (flagValue && !flagType && !flagName)
-                    {
-                        writer.write("\t" + String.format(Clauses.fieldEmpty, field.getType(), field.getName()));
-                    }
-                    else if (!flagValue && !flagType && !flagName)
-                    {
-                        writer.write("\t" + String.format(Clauses.fieldFull, field.getType(), field.getName(), field.getValue()));
-                    }
-                }
+                writeField(field);
             }
         }
-        writer.println();
+    }
+
+    private void writeField(Field field)
+    {
+        boolean flagType = (null == field.getType() || "".equals(field.getType()));
+        boolean flagValue = (null == field.getValue() || "".equals(field.getValue()));
+        boolean flagName = (null == field.getName() || "".equals(field.getName()));
+        
+        if (true == field.getIsArray())
+        {
+            if (flagType && !flagName)
+            {
+                writer.write("\t" + String.format(Clauses.fieldTypeLess, field.getName()));
+            }
+        }
+        else
+        {
+            if (flagType && !flagName && !flagValue)
+            {
+                writer.write("\t" + String.format(Clauses.fieldTypeLess, field.getName(), field.getValue()));
+            }
+            else if (flagValue && !flagType && !flagName)
+            {
+                writer.write("\t" + String.format(Clauses.fieldEmpty, field.getType(), field.getName()));
+            }
+            else if (!flagValue && !flagType && !flagName)
+            {
+                writer.write("\t" + String.format(Clauses.fieldFull, field.getType(), field.getName(), field.getValue()));
+            }
+        }
     }
     
     private void writeReceive(Behaviour behaviour)
