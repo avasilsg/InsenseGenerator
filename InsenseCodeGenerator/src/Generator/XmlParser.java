@@ -263,23 +263,27 @@ public class XmlParser
             if ("attribute".equals(node.getNodeName().toLowerCase()))
             {
                 component.setName(parseNameAttribute(node));
+                continue;
             }
             
             if ("presents".equals(node.getNodeName().toLowerCase()))
             {
                 component.setPresent(parseNameAttribute(node));
+                continue;
             }
             
             if ("field".equals(node.getNodeName().toLowerCase()))
             {
                 Field field = parseField(node);
                 component.setField(field);
+                continue;
             }
             
             if ("constructor".equals(node.getNodeName().toLowerCase()))
             {
                 if (true == node.hasChildNodes())
                     parseProcedure(node.getChildNodes());
+                continue;
             }
             
             if ("procedure".equals(node.getNodeName().toLowerCase()))
@@ -291,6 +295,7 @@ public class XmlParser
                 
                 procedure.setType(parseProcedureAttributes(node));
                 component.setProcedure(procedure);
+                continue;
             }
             
             if ("behaviour".equals(node.getNodeName().toLowerCase()))
@@ -298,6 +303,7 @@ public class XmlParser
                 Behaviour behaviour = parseBehaviour(node.getChildNodes());
                 component.setBehaviour(behaviour);
                 behaviour = null;
+                continue;
             }
         }
         return component;
