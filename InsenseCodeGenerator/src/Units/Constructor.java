@@ -28,5 +28,4 @@ public class Constructor
     {
         this.parameters = parameters;
     }
-
 }
