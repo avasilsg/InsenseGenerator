@@ -50,13 +50,13 @@ public class TextWriter
         {
             if (false == interfs.getChannels().get(i).isArray())
                 writer.write("\t"
-                    + String.format(Clauses.channel, interfs.getChannels().get(i).getDirection(), interfs.getChannels().get(i).getType(), interfs.getChannels()
-                            .get(i).getName()));
+                        + String.format(Clauses.channel, interfs.getChannels().get(i).getDirection(), interfs.getChannels().get(i).getType(), interfs
+                                .getChannels().get(i).getName()));
             else
             {
-                writer.write("\t" + 
-                String.format(Clauses.arrayChannel, interfs.getChannels().get(i).getDirection(), interfs.getChannels().get(i).getType(), interfs.getChannels()
-                        .get(i).getName()));
+                writer.write("\t"
+                        + String.format(Clauses.arrayChannel, interfs.getChannels().get(i).getDirection(), interfs.getChannels().get(i).getType(), interfs
+                                .getChannels().get(i).getName()));
             }
             writer.println();
         }
@@ -153,28 +153,34 @@ public class TextWriter
         writer.println();
         writer.write(Clauses.closeCurlyBracket);
     }
-//    public static final String procedureSyntax = "proc %s(%s) : %s";
-
+    
+    // public static final String procedureSyntax = "proc %s(%s) : %s";
+    
     private void writeProcedures(LinkedList<Procedure> procedures)
     {
-        for(int i = 0; i < procedures.size(); i++)
+        for (int i = 0; i < procedures.size(); i++)
         {
             writer.println();
+            
             Procedure procedure = procedures.get(i);
-            writer.write("\t" + String.format(Clauses.procedureSyntax, procedure.getName()));  
+            
+            writer.write("\t" + String.format(Clauses.procedureSyntax, procedure.getName()));
             writeFields(procedure.getParameters());
-            writer.write(String.format(Clauses.closeProcedureDeclaration,procedure.getType()));
+            writer.write(String.format(Clauses.closeProcedureDeclaration, procedure.getType()));
+            
             writer.println();
-            writer.write("\t" + Clauses.openBracket);           
+            writer.write("\t" + Clauses.openCurlyBracket);
+            writer.println();
             if (!"".equals(procedure.getReturnStatement()))
             {
-                writer.write("\t\t"+ procedure.getReturnStatement());
+                writer.write("\t\t" + "return " + procedure.getReturnStatement());
             }
+            writer.println();
             writer.write("\t" + Clauses.closeCurlyBracket);
         }
         
     }
-
+    
     private void writeFields(LinkedList<Field> fields)
     {
         if (1 <= fields.size())
@@ -201,11 +207,11 @@ public class TextWriter
                     {
                         writer.write("\t" + String.format(Clauses.fieldTypeLess, field.getName(), field.getValue()));
                     }
-                    else if (flagValue &&  !flagType && !flagName)
+                    else if (flagValue && !flagType && !flagName)
                     {
                         writer.write("\t" + String.format(Clauses.fieldEmpty, field.getType(), field.getName()));
                     }
-                    else if (!flagValue &&  !flagType && !flagName)
+                    else if (!flagValue && !flagType && !flagName)
                     {
                         writer.write("\t" + String.format(Clauses.fieldFull, field.getType(), field.getName(), field.getValue()));
                     }
@@ -245,12 +251,12 @@ public class TextWriter
         Print print = behaviour.getPrints().get(0);
         boolean flagAttribute = false;
         writer.println();
-
+        
         if (null != print.getAttribute() && !"".equals(print.getAttribute()))
         {
             flagAttribute = true;
         }
-
+        
         writer.println();
         String expression = null;
         if (flagAttribute)

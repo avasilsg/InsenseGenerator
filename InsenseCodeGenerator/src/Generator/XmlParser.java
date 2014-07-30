@@ -361,7 +361,7 @@ public class XmlParser
             {
                 if ("expression".equals(childNodes.item(i).getNodeName()))
                 {
-                    value = childNodes.item(i).getNodeValue();
+                    value = childNodes.item(i).getAttributes().item(0).getNodeValue();
                 }
             }
             return value;
