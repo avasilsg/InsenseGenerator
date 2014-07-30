@@ -6,15 +6,15 @@ import Units.BasicUnits.Field;
 
 public class Constructor
 {
-    private Body body;
+    private Behaviour body;
     private LinkedList<Field> parameters;
 
-    public Body getBody()
+    public Behaviour getBody()
     {
         return body;
     }
 
-    public void setBody(Body body)
+    public void setBody(Behaviour body)
     {
         this.body = body;
     }

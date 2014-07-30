@@ -8,7 +8,7 @@ public class Procedure
 {
     private String name;
     private String type;
-    private Body body;
+    private Behaviour body;
     private LinkedList<Field> parameters;
     private String returnStatement;
     public Procedure()
@@ -54,12 +54,12 @@ public class Procedure
         this.returnStatement = returnStatement;
     }
 
-    public Body getBody()
+    public Behaviour getBody()
     {
         return body;
     }
 
-    public void setBody(Body body)
+    public void setBody(Behaviour body)
     {
         this.body = body;
     }
