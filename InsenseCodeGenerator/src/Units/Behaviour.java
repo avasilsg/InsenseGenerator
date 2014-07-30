@@ -14,7 +14,7 @@ public class Behaviour
     private LinkedList<Variable> variables;
     private LinkedList<Print> prints;
     private LinkedList<String> order;
-    
+
     public Behaviour()
     {
         this.setSends(new LinkedList<Send>());

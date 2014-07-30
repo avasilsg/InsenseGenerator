@@ -118,39 +118,44 @@ public class XmlParser
                 if (nodeList.item(count).getNodeType() == Node.ELEMENT_NODE)
                 {
                     Node currentNode = nodeList.item(count);
-                    String currentTag = currentNode.getNodeName();
-                    switch (currentTag)
-                    {
-                        case "interface":
-                        {
-                            parseInterface(currentNode);
-                            break;
-                        }
-                        case "struct":
-                        {
-                            parseStruct(currentNode);
-                            break;
-                        }
-                        case "component":
-                        {
-                            parseComponent(currentNode);
-                            break;
-                        }
-                        case "instance":
-                        {
-                            instanceParsing(currentNode);
-                            break;
-                        }
-                        case "connect":
-                        {
-                            connectionParsing(currentNode);
-                            break;
-                        }
-                    }
+                    parseComputationalUnit(currentNode);
                 }
             }
         }
         codeGenerator.closeFile();
+    }
+
+    private void parseComputationalUnit(Node currentNode)
+    {
+        String currentTag = currentNode.getNodeName();
+        switch (currentTag)
+        {
+            case "interface":
+            {
+                parseInterface(currentNode);
+                break;
+            }
+            case "struct":
+            {
+                parseStruct(currentNode);
+                break;
+            }
+            case "component":
+            {
+                parseComponent(currentNode);
+                break;
+            }
+            case "instance":
+            {
+                instanceParsing(currentNode);
+                break;
+            }
+            case "connect":
+            {
+                connectionParsing(currentNode);
+                break;
+            }
+        }
     }
     
     private void instanceParsing(Node currentNode)
@@ -198,17 +203,21 @@ public class XmlParser
             {
                 extractFromAttributes(connect, node);
                 flagOpen = true;
+                continue;
             }
             
             if ("to".equals(node.getNodeName().toLowerCase()))
             {
                 extractToAttributes(connect, node);
                 flagClosed = true;
+                continue;
             }
+            
             if (flagOpen && flagClosed)
             {
                 codeGenerator.writeConnection(connect);
                 flagClosed = flagOpen = false;
+                continue;
             }
         }
     }
@@ -557,21 +566,21 @@ public class XmlParser
         
         if (true == currentNode.hasChildNodes())
         {
-            Interface interfaceObj = parseInterfaceContent(currentNode.getChildNodes());
-            codeGenerator.writeInterface(interfaceObj);
-            interfaceObj = null;
+            Interface interFace = parseInterfaceContent(currentNode.getChildNodes());
+            codeGenerator.writeInterface(interFace);
+            interFace = null;
         }
     }
     
     private Interface parseInterfaceContent(NodeList childNodes)
     {
-        Interface interfaceObj = new Interface();
+        Interface interFace = new Interface();
         for (int count = 0; count < childNodes.getLength(); count++)
         {
             Node node = childNodes.item(count);
             if ("attribute".equals(node.getNodeName().toLowerCase()))
             {
-                interfaceObj.setName(parseNameAttribute(node));
+                interFace.setName(parseNameAttribute(node));
             }
             if ("channel".equals(node.getNodeName().toLowerCase()))
             {
@@ -591,11 +600,11 @@ public class XmlParser
                         chan.setDirection(node.getAttributes().item(i).getNodeValue());
                     }
                 }
-                interfaceObj.setChannel(chan);
+                interFace.setChannel(chan);
             }
         }
         
-        return interfaceObj;
+        return interFace;
     }
     
     private String parseNameAttribute(Node node)
