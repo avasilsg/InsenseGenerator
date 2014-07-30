@@ -1,30 +1,30 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-<xsd:interface>
-    <attribute  name = "ITempReader" />
-    <channel type = "bool" name = "tRequestChan" direction = "out"/>
-	<channel type = "real" name = "tValueChan" direction = "in"/>
-	<channel type = "any" name = "stdoutChan" direction = "out"/>
-</xsd:interface>
-<xsd:component>
-    <attribute  name = "TempReader" />
-	<presents name = "ITempReader"/>
-	<field></field>
-	<constructor> 
-	</constructor >
-	<behaviour>
-		<send identifier = "true"   on   = "tRequestChan"/>
-		<receive  identifier = "temp" from = "tValueChan"/>
-		<send identifier =  "any"  value = '"\nTemp:"'  on   = "stdoutChan"/>
-		<send identifier =  "any"  value = ""  on   = "stdoutChan"/>
-	 </behaviour>
-</xsd:component>
-<xsd:connect >
-	<from name = "TempReader" 		 	on = "tRequestChan"/>
-	<to   name = "lightHumidTempSensor" on = "tempRequest"/>
-	<from name = "TempReader"		 	on = "tValueChan" />
-	<to   name = "lightHumidTempSensor" on = "tempOutput"/>
-	<from name = "TempReader" 		 	on = "stdoutChan" />
-	<to   name = "standardOut" 			on = ""/> 
-</xsd:connect> 
+	<xsd:interface>
+		<attribute name="ITempReader" />
+		<channel type="bool" name="tRequestChan" direction="out" />
+		<channel type="real" name="tValueChan" direction="in" />
+		<channel type="any" name="stdoutChan" direction="out" />
+	</xsd:interface>
+	<xsd:component>
+		<attribute name="TempReader" />
+		<presents name="ITempReader" />
+		<field></field>
+		<constructor>
+		</constructor>
+		<behaviour>
+			<send identifier="true" on="tRequestChan" />
+			<receive identifier="temp" from="tValueChan" />
+			<send identifier="any" value='"\nTemp:"' on="stdoutChan" />
+			<send identifier="any" value="" on="stdoutChan" />
+		</behaviour>
+	</xsd:component>
+	<xsd:connect>
+		<from name="TempReader" on="tRequestChan" />
+		<to name="lightHumidTempSensor" on="tempRequest" />
+		<from name="TempReader" on="tValueChan" />
+		<to name="lightHumidTempSensor" on="tempOutput" />
+		<from name="TempReader" on="stdoutChan" />
+		<to name="standardOut" on="" />
+	</xsd:connect>
 </xsd:schema>

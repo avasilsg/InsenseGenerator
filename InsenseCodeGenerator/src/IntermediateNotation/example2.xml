@@ -1,27 +1,28 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-<struct>
-    <attribute name = "sensorRading" />
-	<field  type = "integer" name = "solar"/>
-	<field  type = "integer" name = "photo"/>
-	<field  type = "real" name = "temp"/>
-	<field  type = "real" name = "humid"/>
-</struct>
-<interface>
-    <attribute name = "ISensorReading" />
-    <channel type = "bool" name = "ticks" direction = "in"/>
-	<channel type = "sensorReading" name = "printerChan " direction = "out"/>
-	<channel type = "sensorReading" name = "ledsChan" direction = "out"/>
-</interface>
-<component name = "SensorReader ">
-    <attribute name = "SensorReader"/>
-	<presents name = "ISensorReader"/>
-	<field></field>
-	<constructor> 
-	</constructor>
-	<behaviour>
-		<receive  identifier = "tick" from = "ticks"/>
-		<!--
+	<struct>
+		<attribute name = "sensorRading" />
+		<field  type = "integer" name = "solar"/>
+		<field  type = "integer" name = "photo"/>
+		<field  type = "real" name = "temp"/>
+		<field  type = "real" name = "humid"/>
+	</struct>
+	<interface>
+		<attribute name = "ISensorReading" />
+		<channel type = "bool" name = "ticks" direction = "in"/>
+		<channel type = "sensorReading" name = "printerChan " direction = "out"/>
+		<channel type = "sensorReading" name = "ledsChan" direction = "out"/>
+	</interface>
+	<component name = "SensorReader ">
+		<attribute name = "SensorReader"/>
+		<presents name = "ISensorReader"/>
+		<field>
+		</field>
+		<constructor>
+		</constructor>
+		<behaviour>
+			<receive  identifier = "tick" from = "ticks"/>
+			<!--
 		@Stefan
 			There are two types of allocation (static and dynamic).
 			In order to be distinguish between both for example (solarValue and reading)
@@ -32,78 +33,70 @@
 
 			reading = new sensorReading(photoValue, solarValue, tempValue, humidityValue)	
 		-->
-		<variable type = "PrintOutput"   allocation = "dynamic"/>
-		<variable type = "" name = "photoValue" allocation = "static" bindingTo = "photoReading()"/>
-		<variable type = "" name = "solarValue" allocation = "static" bindingTo = "solarReading()"/>
-		<variable type = "" name = "tempValue " allocation = "static" bindingTo = "tempCelsiusReading()"/>
-		<variable type = "" name = "humidityValue" allocation = "static" bindingTo = "relHumidReading()"/>
-		<variable>
-		    <attribute name = "reading" />
-    	    <attribute allocation = "dynamic" />
-			<parameter name ="photoValue"/>		
-			<parameter name ="solarValue"/>			
-			<parameter name ="tempValue"/>			
-			<parameter name ="humidityValue"/>			
-		</variable>
-		<!--
+			<variable type = "PrintOutput"   allocation = "dynamic"/>
+			<variable type = "" name = "photoValue" allocation = "static" bindingTo = "photoReading()"/>
+			<variable type = "" name = "solarValue" allocation = "static" bindingTo = "solarReading()"/>
+			<variable type = "" name = "tempValue " allocation = "static" bindingTo = "tempCelsiusReading()"/>
+			<variable type = "" name = "humidityValue" allocation = "static" bindingTo = "relHumidReading()"/>
+			<variable>
+				<attribute name = "reading" />
+				<attribute allocation = "dynamic" />
+				<parameter name ="photoValue"/>
+				<parameter name ="solarValue"/>
+				<parameter name ="tempValue"/>
+				<parameter name ="humidityValue"/>
+			</variable>
+			<!--
 		@Stefan
 			The identifier attribute does not seem quite right but I personally cannot find 
 			more appropriate name. If you all three come with some better ideas I am very welcome
 			to accept them. 
 		-->
-		<send identifier = "reading" on = "ledsChan"/>
-		<send identifier = "reading" on = "printerChan"/>
-	 </behaviour>
-</component>
-<interface>
-    <attribute name = "IPrintOutput"/>
-    <channel type = "sensorReading" name = "input" direction = "in"/>
-</interface>
-<component name = "PrintOutput">
-    <attribute name = "PrintOutput"/>
-	<presents name = "IPrintOutput"/>
-	<field type = "" name = "cycle" value ="$0"/>
-	<constructor> 
-	</constructor>
-	<behaviour>
-		<print variable = "cycle"   type = "Int"	titleString =""/>
-		<print variable = "reading" type = "Real" attribute = "photo" titleString = "Photo"/>
-	</behaviour>
-</component>
-<interface>
-    <attribute name = "ILedOutput"/>
-    <channel type = "sensorReading" name = "input" direction = "in"/>
-</interface>
-<component name = "LedOutput">
-    <attribute name = "LedOutput"/>
-	<presents name = "ILedOutput"/>
-	<field type = "" name = "avgTemp" value ="0.0"/>
-	<field type = "" name = "avgSolar" value ="0.0"/>
-	<field type = "" name = "avgSolar" value ="0.0"/>
-	<constructor> 
-	</constructor>
-	<behaviour>
-		<receive identifier = "reading" from = "input"/>
-		<!--
+			<send identifier = "reading" on = "ledsChan"/>
+			<send identifier = "reading" on = "printerChan"/>
+		</behaviour>
+	</component>
+	<interface>
+		<attribute name = "IPrintOutput"/>
+		<channel type = "sensorReading" name = "input" direction = "in"/>
+	</interface>
+	<component name = "PrintOutput">
+		<attribute name = "PrintOutput"/>
+		<presents name = "IPrintOutput"/>
+		<field type = "" name = "cycle" value ="$0"/>
+		<constructor>
+		</constructor>
+		<behaviour>
+			<print variable = "cycle"   type = "Int"	titleString =""/>
+			<print variable = "reading" type = "Real" attribute = "photo" titleString = "Photo"/>
+		</behaviour>
+	</component>
+	<interface>
+		<attribute name = "ILedOutput"/>
+		<channel type = "sensorReading" name = "input" direction = "in"/>
+	</interface>
+	<component name = "LedOutput">
+		<attribute name = "LedOutput"/>
+		<presents name = "ILedOutput"/>
+		<field type = "" name = "avgTemp" value ="0.0"/>
+		<field type = "" name = "avgSolar" value ="0.0"/>
+		<field type = "" name = "avgSolar" value ="0.0"/>
+		<constructor>
+		</constructor>
+		<behaviour>
+			<receive identifier = "reading" from = "input"/>
+			<!--
 		@Stefan
 			the rest of the source code is upon a discussion. I will really need a more experince help
 			first to know how is gonna be present in a UML and second represent as an XML.
 		-->
-	</behaviour>
-</component>
-<!--
-@Stefan
-	that part does not need to be specified that clear. It is obvious that all components must
-	have instances. 
-	Instances / Objects are after all variables so I am gonna keep variable tag until (if) you 
-	do not think that object / instance is lets say more appropriate.
-	Convention for generating objects will be (Type (SensorReader) + name (sensorReader) + i (if it is more than one)
--->
-<variable type = "LedOutput" 	 allocation = "dynamic"/>
-<variable type = "PrintOutput"   allocation = "dynamic"/>
-<variable type = "SensorReader"  allocation = "dynamic"/>
-<connect >
-	<from name = "sensorReader" on = "printerChan"/>
-	<to   name = "printOutput" on  = "input"/>
-</connect> 
+		</behaviour>
+	</component>
+	<variable type = "LedOutput" 	 allocation = "dynamic"/>
+	<variable type = "PrintOutput"   allocation = "dynamic"/>
+	<variable type = "SensorReader"  allocation = "dynamic"/>
+	<connect >
+		<from name = "sensorReader" on = "printerChan"/>
+		<to   name = "printOutput" on  = "input"/>
+	</connect>
 </xsd:schema>
