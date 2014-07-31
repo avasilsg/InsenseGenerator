@@ -279,24 +279,24 @@ public class TextWriter
         {
             expression = Clauses.openBracket + print.getVariable() + Clauses.closeBracket;
         }
-        switch (print.getType())
+        switch (print.getType().toLowerCase())
         {
-            case "String":
+            case "string":
             {
                 writer.write("\t\t" + String.format(Clauses.printString, expression));
                 break;
             }
-            case "Real":
+            case "real":
             {
                 writer.write("\t\t" + String.format(Clauses.printReal, expression));
                 break;
             }
-            case "Int":
+            case "int":
             {
                 writer.write("\t\t" + String.format(Clauses.printInt, expression));
                 break;
             }
-            case "UnsignedInt":
+            case "unsignedint":
             {
                 writer.write("\t\t" + String.format(Clauses.printUnsignedInt, expression));
                 break;
