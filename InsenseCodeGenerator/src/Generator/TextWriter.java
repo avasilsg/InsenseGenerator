@@ -49,9 +49,11 @@ public class TextWriter
         for (int i = 0; i < interfs.getChannels().size(); i++)
         {
             if (false == interfs.getChannels().get(i).isArray())
+            {
                 writer.write("\t"
                         + String.format(Clauses.channel, interfs.getChannels().get(i).getDirection(), interfs.getChannels().get(i).getType(), interfs
                                 .getChannels().get(i).getName()));
+            }
             else
             {
                 writer.write("\t"

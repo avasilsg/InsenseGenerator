@@ -22,6 +22,7 @@ import Units.BasicUnits.Instance;
 import Units.BasicUnits.Print;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
+import Units.BasicUnits.Variable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -440,6 +441,7 @@ public class XmlParser
                 Send send = parseAttributesSend(node.getAttributes());
                 behaviour.setSend(send);
                 send = null;
+                continue;
             }
             
             if ("receive".equals(node.getNodeName().toLowerCase()))
@@ -448,6 +450,7 @@ public class XmlParser
                 Receive receive = parseAttributesReceive(node.getAttributes());
                 behaviour.setReceive(receive);
                 receive = null;
+                continue;
             }
             
             if ("print".equals(node.getNodeName().toLowerCase()))
@@ -456,15 +459,50 @@ public class XmlParser
                 Print print = parsePrintAttributes(node.getAttributes());
                 behaviour.setPrint(print);
                 print = null;
+                continue;
             }
             if ("variable".equals(node.getNodeName().toLowerCase()))
             {
                 behaviour.setOperation(node.getNodeName().toLowerCase());
+                Variable variable = parseVariableAttributes(node.getAttributes());
+                behaviour.setVariable(variable);
+                variable = null;
+                continue;
             }
         }
         return behaviour;
     }
     
+    private Variable parseVariableAttributes(NamedNodeMap attributes)
+    {
+        Variable variable = new Variable();
+        for (int i = 0; i < attributes.getLength(); i++)
+        {
+            if ("name".equals(attributes.item(i).getNodeName()))
+            {
+                variable.setName(attributes.item(i).getNodeValue());
+                continue;
+            }
+            if ("type".equals(attributes.item(i).getNodeName()))
+            {
+                variable.setType(attributes.item(i).getNodeValue());
+                continue;
+            }
+            if ("bindingTo".equals(attributes.item(i).getNodeName()))
+            {
+                variable.setBindingTo(attributes.item(i).getNodeValue());
+                continue;
+            }
+            if ("new".equals(attributes.item(i).getNodeName()))
+            {
+                boolean value = "true".equals(attributes.item(i).getNodeValue().toLowerCase());
+                variable.setNewOp(value);
+                continue;
+            }
+        }
+        return variable;
+    }
+
     private Print parsePrintAttributes(NamedNodeMap attributes)
     {
         Print print = new Print();
