@@ -58,30 +58,32 @@ public class MainWindow extends JFrame implements ActionListener
         mntmOpenXml = new JMenuItem ( "Open XML" );
         mntmOpenXml.addActionListener ( this );
         mnOpen.add ( mntmOpenXml );
-
+        
         mntmOpenInsenseFile = new JMenuItem ( "Open Insense File" );
         mntmOpenInsenseFile.addActionListener ( this );
         mnOpen.add ( mntmOpenInsenseFile );
-
+        
         mntmSaveXmlFile = new JMenuItem ( "Save XML file" );
+        mntmSaveXmlFile.addActionListener ( this );
         mnOpen.add ( mntmSaveXmlFile );
-
+        
         mntmSaveInsenseFile = new JMenuItem ( "Save Insense File" );
+        mntmSaveInsenseFile.addActionListener ( this );
         mnOpen.add ( mntmSaveInsenseFile );
-
+        
         mntmExit = new JMenuItem ( "Exit" );
         mntmExit.addActionListener ( this );
         mnOpen.add ( mntmExit );
-
+        
         mnValidateFile = new JMenu ( "Validate file" );
         menuBar.add ( mnValidateFile );
-
+        
         mntmValidateXmlFile = new JMenuItem ( "Validate XML file" );
         mnValidateFile.add ( mntmValidateXmlFile );
-
+        
         mntmShowReport = new JMenuItem ( "Show validation report" );
         mnValidateFile.add ( mntmShowReport );
-
+        
         mnGenerateAndCompile = new JMenu ( "Generate and compile" );
         menuBar.add ( mnGenerateAndCompile );
         
@@ -108,39 +110,76 @@ public class MainWindow extends JFrame implements ActionListener
         contentPane.add ( lblCompilerLogoJLabel, BorderLayout.SOUTH );
         initMenus ( );
     }
-       
-    public void actionPerformed(ActionEvent e) {
-
+    
+    public void actionPerformed ( ActionEvent e )
+    {
+        
         JMenuItem myMenu = (JMenuItem) e.getSource ( );
         fileChooser = new JFileChooser ( );
-        switch(myMenu.getText ( ))
+        switch ( myMenu.getText ( ))
         {
             case "Open XML":
             {
-                FileNameExtensionFilter xmlFilter     = new FileNameExtensionFilter("xml files (*.xml)", "xml");
-                fileChooser.addChoosableFileFilter(xmlFilter);
+                FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter (
+                        "xml files (*.xml)", "xml" );
+                fileChooser.addChoosableFileFilter ( xmlFilter );
                 fileChooser.setFileFilter ( xmlFilter );
+                openDialog ("Open XML");
                 break;
             }
             case "Open Insense File":
             {
-                FileNameExtensionFilter insenseFilter     = new FileNameExtensionFilter("insense files (*.isf)", "isf");
-                fileChooser.addChoosableFileFilter(insenseFilter);
+                FileNameExtensionFilter insenseFilter = new FileNameExtensionFilter (
+                        "insense files (*.isf)", "isf" );
+                fileChooser.addChoosableFileFilter ( insenseFilter );
                 fileChooser.setFileFilter ( insenseFilter );
+                openDialog ("Open Insense File");
+                break;
+            }
+            case "Save XML file":
+            {
+                FileNameExtensionFilter insenseFilter = new FileNameExtensionFilter (
+                        "insense files (*.isf)", "isf" );
+                fileChooser.addChoosableFileFilter ( insenseFilter );
+                fileChooser.setFileFilter ( insenseFilter );
+                
+                break;
+            }
+            case "Save Insense File":
+            {
                 break;
             }
             case "Exit":
             {
-                this.dispose ( );
+                // this.dispose ( );
+                System.exit ( EXIT_ON_CLOSE );
             }
         }
-        int returnVal = fileChooser.showOpenDialog ( MainWindow.this );              
-        if ( returnVal == JFileChooser.APPROVE_OPTION )
-        {
-            File file = fileChooser.getSelectedFile ( );
-            System.out.print ( file.getName ( ) );
-        }
         System.out.println ( "Menu Selected: " + myMenu.getText ( ) );
+    }
+
+    private void openDialog (String title)
+    {
+        if (title == "Open XML" || title == "Open Insense File")
+        {
+            int returnVal = fileChooser.showOpenDialog ( MainWindow.this );
+            if ( returnVal == JFileChooser.APPROVE_OPTION )
+            {
+                File file = fileChooser.getSelectedFile ( );
+                System.out.print ( file.getName ( ) );
+            }
+        }
+        
+        if (title == "Save XML file" || title == "Save Insense File")
+        {
+            int returnVal = fileChooser.showSaveDialog ( MainWindow.this );
+            if ( returnVal == JFileChooser.APPROVE_OPTION )
+            {
+                File file = fileChooser.getSelectedFile ( );
+                System.out.print ( file.getName ( ) );
+            }
+        }
+        
     }
     
 }

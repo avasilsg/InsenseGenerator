@@ -1,7 +1,6 @@
 package TestAndValidation;
 
 import GUI.MainWindow;
-import Generator.XmlParser;
 
 public class TestConsoleParsing
 {
