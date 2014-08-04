@@ -27,6 +27,8 @@ public class MainWindow extends JFrame implements ActionListener
     private JPanel            contentPane;
     private JLabel            lblCompilerLogoJLabel;
     private JMenu             mnOpen;
+    private JMenuItem         mntmNewXml;
+    private JMenuItem         mntmNewInsenseFile;
     private JMenuItem         mntmOpenXml;
     private JMenuItem         mntmOpenInsenseFile;
     private JMenuItem         mntmSaveXmlFile;
@@ -55,6 +57,15 @@ public class MainWindow extends JFrame implements ActionListener
         
         mnOpen = new JMenu ( "File menu" );
         menuBar.add ( mnOpen );
+        
+        mntmNewXml = new JMenuItem ( "New XML file" );
+        mntmNewXml.addActionListener ( this );
+        mnOpen.add ( mntmNewXml );
+        
+        mntmNewInsenseFile = new JMenuItem ( "New Insense file" );
+        mntmNewInsenseFile.addActionListener ( this );
+        mnOpen.add ( mntmNewInsenseFile );
+        
         mntmOpenXml = new JMenuItem ( "Open XML" );
         mntmOpenXml.addActionListener ( this );
         mnOpen.add ( mntmOpenXml );
