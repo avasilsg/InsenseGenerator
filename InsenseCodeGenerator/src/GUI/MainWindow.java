@@ -118,35 +118,24 @@ public class MainWindow extends JFrame implements ActionListener
         fileChooser = new JFileChooser ( );
         switch ( myMenu.getText ( ))
         {
+            case "Save XML file":
             case "Open XML":
             {
                 FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter (
                         "xml files (*.xml)", "xml" );
                 fileChooser.addChoosableFileFilter ( xmlFilter );
                 fileChooser.setFileFilter ( xmlFilter );
-                openDialog ("Open XML");
+                openDialog ( myMenu.getText ( ));
                 break;
             }
             case "Open Insense File":
-            {
-                FileNameExtensionFilter insenseFilter = new FileNameExtensionFilter (
-                        "insense files (*.isf)", "isf" );
-                fileChooser.addChoosableFileFilter ( insenseFilter );
-                fileChooser.setFileFilter ( insenseFilter );
-                openDialog ("Open Insense File");
-                break;
-            }
-            case "Save XML file":
-            {
-                FileNameExtensionFilter insenseFilter = new FileNameExtensionFilter (
-                        "insense files (*.isf)", "isf" );
-                fileChooser.addChoosableFileFilter ( insenseFilter );
-                fileChooser.setFileFilter ( insenseFilter );
-                
-                break;
-            }
             case "Save Insense File":
             {
+                FileNameExtensionFilter insenseFilter = new FileNameExtensionFilter (
+                        "insense files (*.isf)", "isf" );
+                fileChooser.addChoosableFileFilter ( insenseFilter );
+                fileChooser.setFileFilter ( insenseFilter );
+                openDialog (myMenu.getText ( ));
                 break;
             }
             case "Exit":
