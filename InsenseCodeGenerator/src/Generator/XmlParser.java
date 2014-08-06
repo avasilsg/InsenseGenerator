@@ -124,6 +124,7 @@ public class XmlParser
             }
         }
         codeGenerator.closeFile();
+        
     }
 
     private void parseComputationalUnit(Node currentNode)
