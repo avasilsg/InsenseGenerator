@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
+<head>
+<link rel="icon" href="/InsenseCompilerUnix/static/hgicon.png" type="image/png" />
+<meta name="robots" content="index, nofollow" />
+<link rel="stylesheet" href="/InsenseCompilerUnix/static/style-paper.css" type="text/css" />
+<script type="text/javascript" src="/InsenseCompilerUnix/static/mercurial.js"></script>
+
+<link rel="stylesheet" href="/InsenseCompilerUnix/highlightcss" type="text/css" />
+<title>InsenseCompilerUnix: a3ac0f3bc169 insense_progs/uml2insense/test1.isf</title>
+</head>
+<body>
+
+<div class="container">
+<div class="menu">
+<div class="logo">
+<a href="/">
+<img src="/InsenseCompilerUnix/static/hglogo.png" alt="mercurial" /></a>
+</div>
+<ul>
+<li><a href="/InsenseCompilerUnix/shortlog/a3ac0f3bc169">log</a></li>
+<li><a href="/InsenseCompilerUnix/graph/a3ac0f3bc169">graph</a></li>
+<li><a href="/InsenseCompilerUnix/tags">tags</a></li>
+<li><a href="/InsenseCompilerUnix/bookmarks">bookmarks</a></li>
+<li><a href="/InsenseCompilerUnix/branches">branches</a></li>
+</ul>
+<ul>
+<li><a href="/InsenseCompilerUnix/rev/a3ac0f3bc169">changeset</a></li>
+<li><a href="/InsenseCompilerUnix/file/a3ac0f3bc169/insense_progs/uml2insense/">browse</a></li>
+</ul>
+<ul>
+<li class="active">file</li>
+<li><a href="/InsenseCompilerUnix/file/tip/insense_progs/uml2insense/test1.isf">latest</a></li>
+<li><a href="/InsenseCompilerUnix/diff/a3ac0f3bc169/insense_progs/uml2insense/test1.isf">diff</a></li>
+<li><a href="/InsenseCompilerUnix/comparison/a3ac0f3bc169/insense_progs/uml2insense/test1.isf">comparison</a></li>
+<li><a href="/InsenseCompilerUnix/annotate/a3ac0f3bc169/insense_progs/uml2insense/test1.isf">annotate</a></li>
+<li><a href="/InsenseCompilerUnix/log/a3ac0f3bc169/insense_progs/uml2insense/test1.isf">file log</a></li>
+<li><a href="/InsenseCompilerUnix/raw-file/a3ac0f3bc169/insense_progs/uml2insense/test1.isf">raw</a></li>
+</ul>
+<ul>
+<li><a href="/InsenseCompilerUnix/help">help</a></li>
+</ul>
+</div>
+
+<div class="main">
+<h2 class="breadcrumb"><a href="/">Mercurial</a> &gt; <a href="/InsenseCompilerUnix">InsenseCompilerUnix</a> </h2>
+<h3>view insense_progs/uml2insense/test1.isf @ 16:a3ac0f3bc169</h3>
+
+<form class="search" action="/InsenseCompilerUnix/log">
+
+<p><input name="rev" id="search1" type="text" size="30" /></p>
+<div id="hint">Find changesets by keywords (author, files, the commit message), revision
+number or hash, or <a href="/InsenseCompilerUnix/help/revsets">revset expression</a>.</div>
+</form>
+
+<div class="description">Added test program for Stefan and Jairus</div>
+
+<table id="changesetEntry">
+<tr>
+ <th class="author">author</th>
+ <td class="author">&#106;&#111;&#110;&#108;</td>
+</tr>
+<tr>
+ <th class="date">date</th>
+ <td class="date age">Thu, 24 Jul 2014 17:14:26 +0100</td>
+</tr>
+<tr>
+ <th class="author">parents</th>
+ <td class="author"></td>
+</tr>
+<tr>
+ <th class="author">children</th>
+ <td class="author"></td>
+</tr>
+</table>
+
+<div class="overflow">
+<div class="sourcefirst linewraptoggle">line wrap: <a class="linewraplink" href="javascript:toggleLinewrap()">on</a></div>
+<div class="sourcefirst"> line source</div>
+<pre class="sourcelines stripes4 wrap">
+<span id="l1"><span class="n">type</span> <span class="n">ITimedTempReader</span> <span class="n">is</span> <span class="n">interface</span></span><a href="#l1"></a>
+<span id="l2"><span class="p">(</span></span><a href="#l2"></a>
+<span id="l3">	<span class="n">out</span> <span class="n">integer</span> <span class="n">output</span> <span class="p">;</span></span><a href="#l3"></a>
+<span id="l4"><span class="p">)</span></span><a href="#l4"></a>
+<span id="l5"><span class="n">component</span> <span class="n">TimedTempReader</span> <span class="n">presents</span> <span class="n">ITimedTempReader</span></span><a href="#l5"></a>
+<span id="l6"><span class="p">{</span></span><a href="#l6"></a>
+<span id="l7"></span><a href="#l7"></a>
+<span id="l8">	<span class="n">constructor</span><span class="p">()</span></span><a href="#l8"></a>
+<span id="l9">	<span class="p">{</span></span><a href="#l9"></a>
+<span id="l10">	<span class="p">}</span></span><a href="#l10"></a>
+<span id="l11">	<span class="n">behaviour</span><span class="p">{</span></span><a href="#l11"></a>
+<span id="l12">		<span class="n">temp</span> <span class="o">=</span> <span class="n">tempReading</span><span class="p">()</span></span><a href="#l12"></a>
+<span id="l13">		<span class="n">send</span> <span class="n">temp</span> <span class="n">on</span> <span class="n">output</span></span><a href="#l13"></a>
+<span id="l14">	<span class="p">}</span></span><a href="#l14"></a>
+<span id="l15"><span class="p">}</span></span><a href="#l15"></a>
+<span id="l16"></span><a href="#l16"></a>
+<span id="l17"></span><a href="#l17"></a>
+<span id="l18"><span class="n">type</span> <span class="n">IPrinter</span> <span class="n">is</span> <span class="n">interface</span></span><a href="#l18"></a>
+<span id="l19"><span class="p">(</span></span><a href="#l19"></a>
+<span id="l20">	<span class="n">in</span> <span class="n">integer</span> <span class="n">input</span> <span class="p">;</span></span><a href="#l20"></a>
+<span id="l21"><span class="p">)</span></span><a href="#l21"></a>
+<span id="l22"></span><a href="#l22"></a>
+<span id="l23"><span class="n">component</span> <span class="n">Printer</span> <span class="n">presents</span> <span class="n">IPrinter</span> <span class="p">{</span></span><a href="#l23"></a>
+<span id="l24">	</span><a href="#l24"></a>
+<span id="l25">	<span class="n">constructor</span><span class="p">(){</span></span><a href="#l25"></a>
+<span id="l26">	<span class="p">}</span></span><a href="#l26"></a>
+<span id="l27"></span><a href="#l27"></a>
+<span id="l28">	<span class="n">behaviour</span> <span class="p">{</span></span><a href="#l28"></a>
+<span id="l29">		<span class="n">receive</span> <span class="n">temp</span> <span class="n">from</span> <span class="n">input</span></span><a href="#l29"></a>
+<span id="l30">		<span class="n">printInt</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span></span><a href="#l30"></a>
+<span id="l31">		<span class="n">printString</span><span class="p">(</span><span class="s">&quot; is the current temp</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span></span><a href="#l31"></a>
+<span id="l32">	<span class="p">}</span></span><a href="#l32"></a>
+<span id="l33">	</span><a href="#l33"></a>
+<span id="l34"><span class="p">}</span></span><a href="#l34"></a>
+<span id="l35"></span><a href="#l35"></a>
+<span id="l36"><span class="n">tr</span> <span class="o">=</span> <span class="n">new</span> <span class="n">TimedTempReader</span><span class="p">()</span></span><a href="#l36"></a>
+<span id="l37"><span class="n">pr</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Printer</span><span class="p">()</span></span><a href="#l37"></a>
+<span id="l38"><span class="n">connect</span> <span class="n">tr</span><span class="p">.</span><span class="n">output</span> <span class="n">to</span> <span class="n">pr</span><span class="p">.</span><span class="n">input</span></span><a href="#l38"></a></pre>
+<div class="sourcelast"></div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">process_dates()</script>
+
+
+</body>
+</html>
+

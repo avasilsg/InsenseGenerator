@@ -1,0 +1,38 @@
+type ITimedTempReader is interface
+(
+	out integer output ;
+)
+component TimedTempReader presents ITimedTempReader
+{
+
+	constructor()
+	{
+	}
+	behaviour{
+		temp = tempReading()
+		send temp on output
+	}
+}
+
+
+type IPrinter is interface
+(
+	in integer input ;
+)
+
+component Printer presents IPrinter {
+	
+	constructor(){
+	}
+
+	behaviour {
+		receive temp from input
+		printInt(temp)
+		printString(" is the current temp\n")
+	}
+	
+}
+
+tr = new TimedTempReader()
+pr = new Printer()
+connect tr.output to pr.input
