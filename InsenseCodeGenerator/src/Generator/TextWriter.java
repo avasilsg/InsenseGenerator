@@ -4,8 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
-//import java.util.Scanner;
 
+//import java.util.Scanner;
 import GrammarAndClauses.Clauses;
 import Units.Behaviour;
 import Units.Component;
@@ -18,6 +18,7 @@ import Units.BasicUnits.Instance;
 import Units.BasicUnits.Print;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
+import Units.BasicUnits.Variable;
 
 public class TextWriter
 {
@@ -32,12 +33,12 @@ public class TextWriter
     
     public void openAndCreateFile() throws FileNotFoundException, UnsupportedEncodingException
     {
-//        Scanner in = new Scanner(System.in);
-//        System.out.print("Enter file name:");
-//        String fileName = in.nextLine();
+        // Scanner in = new Scanner(System.in);
+        // System.out.print("Enter file name:");
+        // String fileName = in.nextLine();
         
         writer = new PrintWriter("/Temp/" + "temp" + ".txt", "UTF-8");
-//        in.close();
+        // in.close();
     }
     
     public void writeInterface(Interface interfs)
@@ -107,6 +108,7 @@ public class TextWriter
         writer.write(Clauses.openCurlyBracket);
         writer.println();
         writeFields(component.getFields());
+        writer.println();
         writer.write("\t" + Clauses.constructor);
         writer.write(Clauses.openBracket);
         // TODO: contructors body
@@ -148,6 +150,11 @@ public class TextWriter
                     writePrint(behaviour);
                     break;
                 }
+                case "variable":
+                {
+                    writeVariable(behaviour);
+                    break;
+                }
             }
         }
         
@@ -158,6 +165,25 @@ public class TextWriter
     }
     
     // public static final String procedureSyntax = "proc %s(%s) : %s";
+    
+    private void writeVariable(Behaviour behaviour)
+    {
+        Variable variable = behaviour.getVariables().get(0);
+        if (null != variable.getName())
+        {
+            writer.println();
+            if (true == variable.isNewOp())
+            {
+                writer.write("\t\t" + String.format(Clauses.variableNew, variable.getName(), variable.getBindingTo(), ""));
+            }
+            else
+            {
+                writer.write("\t\t" + String.format(Clauses.variableNotNew, variable.getName(), variable.getBindingTo(), ""));
+            }
+            writer.println();
+            behaviour.getVariables().remove(0);
+        }
+    }
     
     private void writeProcedures(LinkedList<Procedure> procedures)
     {
@@ -183,10 +209,10 @@ public class TextWriter
         }
         
     }
-
+    
     private void extractParameters(int i, Procedure procedure)
     {
-        for(int j = 0; j < procedure.getParameters().size(); j++)
+        for (int j = 0; j < procedure.getParameters().size(); j++)
         {
             writeField(procedure.getParameters().get(i));
         }
@@ -205,7 +231,7 @@ public class TextWriter
             }
         }
     }
-
+    
     private void writeField(Field field)
     {
         boolean flagType = (null == field.getType() || "".equals(field.getType()));

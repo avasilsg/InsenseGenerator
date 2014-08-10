@@ -27,9 +27,11 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import Generator.XmlParser;
 
 import javax.swing.JButton;
-import javax.swing.JTextArea;
 import javax.swing.JLabel;
-import java.awt.SystemColor;
+
+import java.awt.TextArea;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
 
 public class MainWindow extends JFrame implements ActionListener
 {
@@ -53,16 +55,18 @@ public class MainWindow extends JFrame implements ActionListener
     private JMenu             mnGenerateAndCompile;
     private JMenuItem         mntmGenerateInsenseCode;
     private JMenuItem         mntmCompile;
+    private JMenuItem         mntmCompiles;
     private JMenuItem         mntmExit;
     private JFileChooser      fileChooser;
     private JPanel            panel;
-    private JTextArea         textVisualizerArea;
     private boolean           isTheCycleCompleted;
     private JButton           btnViewInsense;
     private JButton           btnViewXml;
     private String            fileNameString;
-    private JLabel lblInsenseCodeGenerator;
-    /** 
+    private JLabel            lblInsenseCodeGenerator;
+    private TextArea          textVisualizerArea;
+    
+    /**
      * Create main window.
      */
     public MainWindow ()
@@ -123,9 +127,12 @@ public class MainWindow extends JFrame implements ActionListener
         mntmGenerateInsenseCode.addActionListener ( this );
         mnGenerateAndCompile.add ( mntmGenerateInsenseCode );
         
-        mntmCompile = new JMenuItem ( "Compile" );
+        mntmCompile = new JMenuItem ( "Compile Unix" );
         mnGenerateAndCompile.add ( mntmCompile );
-
+        
+        mntmCompiles = new JMenuItem ( "Compile Unix" );
+        mnGenerateAndCompile.add ( mntmCompiles );
+        // add(scrollV);
     }
     
     private void init ( )
@@ -140,79 +147,117 @@ public class MainWindow extends JFrame implements ActionListener
         contentPane.setLayout ( new BorderLayout ( 0, 0 ) );
         setContentPane ( contentPane );
         
-        panel = new JPanel();
-        panel.setBorder(null);
-        contentPane.add(panel, BorderLayout.CENTER);
+        panel = new JPanel ( );
+        panel.setBorder ( null );
+        contentPane.add ( panel, BorderLayout.CENTER );
         
-        btnViewXml = new JButton("View XML");
-        btnViewXml.addActionListener(new ActionListener() 
+        btnViewXml = new JButton ( "View XML" );
+        btnViewXml.addActionListener ( new ActionListener ( )
         {
-            public void actionPerformed(ActionEvent event) 
+            public void actionPerformed ( ActionEvent event )
             {
                 try
                 {
-                    showFileOnTheScreen(fileNameString);
+                    showFileOnTheScreen ( fileNameString );
                 }
                 catch (IOException e)
                 {
-                    e.printStackTrace();
+                    e.printStackTrace ( );
                 }
             }
-        });
-        btnViewXml.setEnabled(false);
+        } );
+        btnViewXml.setEnabled ( false );
         
-        btnViewInsense = new JButton("View Insense");
-        btnViewInsense.addActionListener(new ActionListener() 
+        btnViewInsense = new JButton ( "View Insense" );
+        btnViewInsense.addActionListener ( new ActionListener ( )
         {
-            public void actionPerformed(ActionEvent event) 
+            public void actionPerformed ( ActionEvent event )
             {
                 String filePathString = "C:\\Temp\\temp.txt";
                 try
                 {
-                    showFileOnTheScreen(filePathString);
+                    showFileOnTheScreen ( filePathString );
                 }
                 catch (IOException e)
                 {
-                    e.printStackTrace();
+                    e.printStackTrace ( );
                 }
                 
             }
-        });
-        btnViewInsense.setEnabled(false);
+        } );
+        btnViewInsense.setEnabled ( false );
         
-        textVisualizerArea = new JTextArea();
-        textVisualizerArea.setBackground(SystemColor.control);
-        textVisualizerArea.setEnabled(false);
-        textVisualizerArea.setEditable(false);
+        JPanel innerPanel = new JPanel ( );
+        innerPanel.setAlignmentY ( Component.BOTTOM_ALIGNMENT );
+        innerPanel
+                .setComponentOrientation ( ComponentOrientation.LEFT_TO_RIGHT );
+        innerPanel.setAlignmentX ( Component.RIGHT_ALIGNMENT );
+        GroupLayout gl_panel = new GroupLayout ( panel );
+        gl_panel.setHorizontalGroup ( gl_panel
+                .createParallelGroup ( Alignment.LEADING )
+                .addGroup (
+                        gl_panel.createSequentialGroup ( )
+                                .addGroup (
+                                        gl_panel.createParallelGroup (
+                                                Alignment.LEADING )
+                                                .addGroup (
+                                                        gl_panel.createSequentialGroup ( )
+                                                                .addComponent (
+                                                                        btnViewXml )
+                                                                .addPreferredGap (
+                                                                        ComponentPlacement.RELATED )
+                                                                .addComponent (
+                                                                        btnViewInsense ) )
+                                                .addComponent (
+                                                        innerPanel,
+                                                        GroupLayout.PREFERRED_SIZE,
+                                                        1010,
+                                                        GroupLayout.PREFERRED_SIZE ) )
+                                .addContainerGap ( GroupLayout.DEFAULT_SIZE,
+                                        Short.MAX_VALUE ) ) );
+        gl_panel.setVerticalGroup ( gl_panel.createParallelGroup (
+                Alignment.LEADING ).addGroup (
+                gl_panel.createSequentialGroup ( )
+                        .addGroup (
+                                gl_panel.createParallelGroup (
+                                        Alignment.BASELINE )
+                                        .addComponent ( btnViewXml )
+                                        .addComponent ( btnViewInsense ) )
+                        .addPreferredGap ( ComponentPlacement.RELATED )
+                        .addComponent ( innerPanel, GroupLayout.DEFAULT_SIZE,
+                                649, Short.MAX_VALUE ).addContainerGap ( ) ) );
         
-        lblInsenseCodeGenerator = new JLabel("Insense Code Generator");
-        lblInsenseCodeGenerator.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 17));
-        GroupLayout gl_panel = new GroupLayout(panel);
-        gl_panel.setHorizontalGroup(
-            gl_panel.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_panel.createSequentialGroup()
-                    .addComponent(btnViewXml)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(btnViewInsense)
-                    .addContainerGap(830, Short.MAX_VALUE))
-                .addComponent(textVisualizerArea, GroupLayout.DEFAULT_SIZE, 1008, Short.MAX_VALUE)
-                .addGroup(gl_panel.createSequentialGroup()
-                    .addGap(18)
-                    .addComponent(lblInsenseCodeGenerator, GroupLayout.PREFERRED_SIZE, 305, GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(685, Short.MAX_VALUE))
-        );
-        gl_panel.setVerticalGroup(
-            gl_panel.createParallelGroup(Alignment.TRAILING)
-                .addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
-                    .addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-                        .addComponent(btnViewXml)
-                        .addComponent(btnViewInsense))
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(textVisualizerArea, GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE)
-                    .addGap(16)
-                    .addComponent(lblInsenseCodeGenerator))
-        );
-        panel.setLayout(gl_panel);
+        textVisualizerArea = new TextArea ( );
+        textVisualizerArea.setSize ( innerPanel.getSize ( ) );
+        textVisualizerArea.setEnabled ( false );
+        textVisualizerArea.setEditable ( false );
+        textVisualizerArea
+                .setComponentOrientation ( ComponentOrientation.LEFT_TO_RIGHT );
+        GroupLayout gl_innerPanel = new GroupLayout ( innerPanel );
+        gl_innerPanel
+                .setHorizontalGroup ( gl_innerPanel.createParallelGroup (
+                        Alignment.LEADING ).addGroup (
+                        Alignment.TRAILING,
+                        gl_innerPanel
+                                .createSequentialGroup ( )
+                                .addComponent ( textVisualizerArea,
+                                        GroupLayout.DEFAULT_SIZE, 1010,
+                                        Short.MAX_VALUE ).addContainerGap ( ) ) );
+        gl_innerPanel.setVerticalGroup ( gl_innerPanel.createParallelGroup (
+                Alignment.LEADING )
+                .addGroup (
+                        gl_innerPanel
+                                .createSequentialGroup ( )
+                                .addGap ( 3 )
+                                .addComponent ( textVisualizerArea,
+                                        GroupLayout.DEFAULT_SIZE, 646,
+                                        Short.MAX_VALUE ) ) );
+        innerPanel.setLayout ( gl_innerPanel );
+        panel.setLayout ( gl_panel );
+        lblInsenseCodeGenerator = new JLabel ( "Insense Code Generator" );
+        contentPane.add ( lblInsenseCodeGenerator, BorderLayout.SOUTH );
+        lblInsenseCodeGenerator.setFont ( new Font ( "Copperplate Gothic Bold",
+                Font.PLAIN, 17 ) );
         initMenus ( );
     }
     
@@ -230,7 +275,7 @@ public class MainWindow extends JFrame implements ActionListener
                         "xml files (*.xml)", "xml" );
                 fileChooser.addChoosableFileFilter ( xmlFilter );
                 fileChooser.setFileFilter ( xmlFilter );
-                openDialog ( myMenu.getText ( ));
+                openDialog ( myMenu.getText ( ) );
                 break;
             }
             case "Open Insense File":
@@ -240,74 +285,93 @@ public class MainWindow extends JFrame implements ActionListener
                         "insense files (*.isf)", "isf" );
                 fileChooser.addChoosableFileFilter ( insenseFilter );
                 fileChooser.setFileFilter ( insenseFilter );
-                openDialog (myMenu.getText ( ));
+                openDialog ( myMenu.getText ( ) );
                 break;
             }
             case "Generate Insense Code":
             {
-                openDialog(myMenu.getText ( ));
+                openDialog ( myMenu.getText ( ) );
                 break;
             }
             case "New XML file":
             {
-                activateTextArea();
-                this.textVisualizerArea.setText("");
-                this.btnViewXml.setEnabled(false);
+                activateTextArea ( );
+                this.textVisualizerArea.setText ( "" );
+                this.btnViewXml.setEnabled ( false );
                 break;
             }
             case "New Insense file":
             {
-                activateTextArea();
-                this.textVisualizerArea.setText("");
-                this.btnViewInsense.setEnabled(false);
+                activateTextArea ( );
+                this.textVisualizerArea.setText ( "" );
+                this.btnViewInsense.setEnabled ( false );
                 break;
+            }
+            case "Compile":
+            {
+                try
+                {
+                    String Insensefile = "/home/stephan/git/InsenseGenerator/InsenseCodeGenerator/src/IntermediateNotation/test1.isf";
+                    String executable = "/home/stephan/git/InsenseGenerator/InsenseCodeGenerator/src/IntermediateNotation/test";
+                    Runtime.getRuntime ( )
+                            .exec ( String
+                                    .format (
+                                            "java -jar /home/stephan/git/InsenseGenerator/InsenseCodeGenerator/src/GUI/InsenseCompilerUnix.jar %s %s",
+                                            Insensefile, executable ) );
+                }
+                catch (IOException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace ( );
+                }
             }
             case "Exit":
             {
-                // this.dispose ( );
                 System.exit ( EXIT_ON_CLOSE );
             }
         }
         System.out.println ( "Menu Selected: " + myMenu.getText ( ) );
     }
-    private void parseXML(String filePath)
+    
+    private void parseXML ( String filePath )
     {
-        XmlParser parser = new XmlParser(filePath);
-        parser.parseXML();
+        XmlParser parser = new XmlParser ( filePath );
+        parser.parseXML ( );
     }
-    private void openDialog (String title)
+    
+    private void openDialog ( String title )
     {
-        if (title == "Open XML" || title == "Open Insense File")
+        if ( title == "Open XML" || title == "Open Insense File" )
         {
             int returnVal = fileChooser.showOpenDialog ( MainWindow.this );
             if ( returnVal == JFileChooser.APPROVE_OPTION )
             {
                 try
                 {
-                    fileNameString =  fileChooser.getSelectedFile ( ).getAbsolutePath();
+                    fileNameString = fileChooser.getSelectedFile ( )
+                            .getAbsolutePath ( );
                     isTheCycleCompleted = true;
-                    validateFileFormat();
+                    validateFileFormat ( );
                 }
                 catch (IOException e)
                 {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    e.printStackTrace ( );
                 }
             }
         }
-        if (title == "Generate Insense Code")
+        if ( title == "Generate Insense Code" )
         {
-            if (this.isTheCycleCompleted)
+            if ( this.isTheCycleCompleted )
             {
-                parseXML(fileNameString);
-                this.btnViewInsense.setEnabled(true);
+                parseXML ( fileNameString );
+                this.btnViewInsense.setEnabled ( true );
             }
             else
             {
-                JOptionPane.showMessageDialog(null, "Choose an xml file!");
+                JOptionPane.showMessageDialog ( null, "Choose an xml file!" );
             }
         }
-        if (title == "Save XML file" || title == "Save Insense File")
+        if ( title == "Save XML file" || title == "Save Insense File" )
         {
             int returnVal = fileChooser.showSaveDialog ( MainWindow.this );
             if ( returnVal == JFileChooser.APPROVE_OPTION )
@@ -318,50 +382,55 @@ public class MainWindow extends JFrame implements ActionListener
         }
         
     }
-
-    private void validateFileFormat() throws IOException
+    
+    private void validateFileFormat ( ) throws IOException
     {
         File file = fileChooser.getSelectedFile ( );
-        String fileName = file.getName ( ).substring(file.getName ( ).lastIndexOf(".") + 1, file.getName ( ).length()).toLowerCase();
-        if (true == fileName.equals("xml"))
+        String fileName = file
+                .getName ( )
+                .substring ( file.getName ( ).lastIndexOf ( "." ) + 1,
+                        file.getName ( ).length ( ) ).toLowerCase ( );
+        if ( true == fileName.equals ( "xml" ) )
         {
-            activateTextArea();
-            this.btnViewXml.setEnabled(true);   
-            showFileOnTheScreen(file.getAbsolutePath());
+            activateTextArea ( );
+            this.btnViewXml.setEnabled ( true );
+            showFileOnTheScreen ( file.getAbsolutePath ( ) );
         }
         else
         {
-            JOptionPane.showMessageDialog(null, "Choose an xml file!");
+            JOptionPane.showMessageDialog ( null, "Choose an xml file!" );
         }
         System.out.print ( file.getName ( ) );
     }
-
-    private void activateTextArea()
+    
+    private void activateTextArea ( )
     {
-        textVisualizerArea.setFont(new Font("Monospaced", Font.BOLD, 12));
-        textVisualizerArea.setForeground(Color.BLUE);
-        textVisualizerArea.setEditable(true);
-        textVisualizerArea.setEnabled(true);
+        textVisualizerArea.setFont ( new Font ( "Monospaced", Font.BOLD, 12 ) );
+        textVisualizerArea.setForeground ( Color.BLUE );
+        textVisualizerArea.setEditable ( true );
+        textVisualizerArea.setEnabled ( true );
     }
-
-    private void showFileOnTheScreen(String path) throws FileNotFoundException, IOException
+    
+    private void showFileOnTheScreen ( String path )
+            throws FileNotFoundException, IOException
     {
-        textVisualizerArea.setText("");
-        FileReader fileReader = new FileReader(path);  
-        @SuppressWarnings("resource")
-        BufferedReader bufferedReader = new BufferedReader(fileReader);  
-        boolean eof = false;  
-           
+        textVisualizerArea.setText ( "" );
+        FileReader fileReader = new FileReader ( path );
+        @SuppressWarnings ("resource")
+        BufferedReader bufferedReader = new BufferedReader ( fileReader );
+        boolean eof = false;
+        
         while (!eof)
         {
-            String lineIn = bufferedReader.readLine();
-            if (lineIn == null)
+            String lineIn = bufferedReader.readLine ( );
+            if ( lineIn == null )
             {
                 eof = true;
             }
             else
             {
-                textVisualizerArea.append(lineIn + System.getProperty("line.separator"));
+                textVisualizerArea.append ( lineIn
+                        + System.getProperty ( "line.separator" ) );
             }
         }
     }

@@ -40,8 +40,9 @@ public class Clauses
    public static final String fieldTypeLess = "%s = %s";
    public static final String fieldShort = "%s"; 
    public static final String fieldEmpty = "%s %s;";   
+   public static final String variableNew = "%s = new %s";
+   public static final String variableNotNew = "%s = %s";
 
-   
    public static final String printString = "printString%s";
    public static final String printReal  =  "printReal%s";
    public static final String printInt   =  "printInt%s";
