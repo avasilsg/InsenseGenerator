@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -339,7 +340,7 @@ public class MainWindow extends JFrame implements ActionListener
         parser.parseXML ( );
     }
     
-    private void openDialog ( String title )
+    private void openDialog ( String title ) 
     {
         if ( title == "Open XML" || title == "Open Insense File" )
         {
@@ -376,12 +377,33 @@ public class MainWindow extends JFrame implements ActionListener
             int returnVal = fileChooser.showSaveDialog ( MainWindow.this );
             if ( returnVal == JFileChooser.APPROVE_OPTION )
             {
-                File file = fileChooser.getSelectedFile ( );
-                System.out.print ( file.getName ( ) );
+                String file = fileChooser.getSelectedFile ( ).getAbsolutePath ( ) + fileChooser.getFileFilter ( );
+                saveToFile(file);
+                System.out.print ( file );
             }
         }
         
     }
+    void saveToFile(String fileName) 
+    {
+        FileOutputStream out;
+        try
+        {
+            out = new FileOutputStream(fileName, true);
+            out.write(this.textVisualizerArea.getText().getBytes());
+            out.close ( );
+        }
+        catch (FileNotFoundException e1)
+        {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+     } 
     
     private void validateFileFormat ( ) throws IOException
     {
