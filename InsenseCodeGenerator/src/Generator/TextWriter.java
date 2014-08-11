@@ -1,9 +1,11 @@
 package Generator;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
+
 
 //import java.util.Scanner;
 import GrammarAndClauses.Clauses;
@@ -36,11 +38,13 @@ public class TextWriter
         // Scanner in = new Scanner(System.in);
         // System.out.print("Enter file name:");
         // String fileName = in.nextLine();
-        
-        writer = new PrintWriter("/Temp/" + "temp" + ".txt", "UTF-8");
+        String path = new File("").getAbsolutePath ( );
+        File dir = new File(path + "/" + "temp");
+        dir.mkdir ( );
+        writer = new PrintWriter(dir.getAbsoluteFile ( ) + "/" + "temp" + ".txt", "UTF-8");
         // in.close();
     }
-    
+
     public void writeInterface(Interface interfs)
     {
         writer.println();

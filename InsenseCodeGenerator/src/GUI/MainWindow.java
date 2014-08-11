@@ -173,7 +173,7 @@ public class MainWindow extends JFrame implements ActionListener
         {
             public void actionPerformed ( ActionEvent event )
             {
-                String filePathString = "C:\\Temp\\temp.txt";
+                String filePathString =     new File("").getAbsolutePath ( ) + "/" + "temp" + "/" + "temp" + ".txt";
                 try
                 {
                     showFileOnTheScreen ( filePathString );
