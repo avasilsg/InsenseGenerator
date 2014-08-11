@@ -174,7 +174,8 @@ public class MainWindow extends JFrame implements ActionListener
         {
             public void actionPerformed ( ActionEvent event )
             {
-                String filePathString =     new File("").getAbsolutePath ( ) + "/" + "temp" + "/" + "temp" + ".txt";
+                String filePathString = new File ( "" ).getAbsolutePath ( )
+                        + "/" + "temp" + "/" + "temp" + ".txt";
                 try
                 {
                     showFileOnTheScreen ( filePathString );
@@ -340,7 +341,7 @@ public class MainWindow extends JFrame implements ActionListener
         parser.parseXML ( );
     }
     
-    private void openDialog ( String title ) 
+    private void openDialog ( String title )
     {
         if ( title == "Open XML" || title == "Open Insense File" )
         {
@@ -377,33 +378,57 @@ public class MainWindow extends JFrame implements ActionListener
             int returnVal = fileChooser.showSaveDialog ( MainWindow.this );
             if ( returnVal == JFileChooser.APPROVE_OPTION )
             {
-                String file = fileChooser.getSelectedFile ( ).getAbsolutePath ( ) + fileChooser.getFileFilter ( );
-                saveToFile(file);
-                System.out.print ( file );
+                String ext = ((FileNameExtensionFilter)fileChooser.getFileFilter()).getExtensions()[0];
+                switch(ext)
+                {
+                    case"xml":
+                    {
+                        System.out.println ("xml" );
+                        String file = fileChooser.getSelectedFile ( )
+                                .getAbsolutePath ( )  + ".xml";
+                        saveToFile ( file );
+                        break;
+                    }
+                    case "isf":
+                    {
+                        System.out.println ("isf" );
+                        String file = fileChooser.getSelectedFile ( )
+                                .getAbsolutePath ( ) + ".isf";
+                        saveToFile ( file );
+                        break;
+                    }
+                    default:
+                    {
+                        System.out.println ("default ext" + " " + ext );
+                    }
+                }
+             
+//                System.out.print ( file );
             }
         }
         
     }
-    void saveToFile(String fileName) 
+    
+    void saveToFile ( String fileName )
     {
         FileOutputStream out;
         try
         {
-            out = new FileOutputStream(fileName, true);
-            out.write(this.textVisualizerArea.getText().getBytes());
+            out = new FileOutputStream ( fileName, true );
+            out.write ( this.textVisualizerArea.getText ( ).getBytes ( ) );
             out.close ( );
         }
         catch (FileNotFoundException e1)
         {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            e1.printStackTrace ( );
         }
         catch (IOException e)
         {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            e.printStackTrace ( );
         }
-     } 
+    }
     
     private void validateFileFormat ( ) throws IOException
     {
