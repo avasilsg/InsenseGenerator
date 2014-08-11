@@ -49,7 +49,6 @@ public class MainWindow extends JFrame implements ActionListener
     private JMenuItem         mntmOpenXml;
     private JMenuItem         mntmOpenInsenseFile;
     private JMenuItem         mntmSaveXmlFile;
-    private JMenuItem         mntmSaveInsenseFile;
     private JMenu             mnValidateFile;
     private JMenuItem         mntmValidateXmlFile;
     private JMenuItem         mntmShowReport;
@@ -100,14 +99,10 @@ public class MainWindow extends JFrame implements ActionListener
         mntmOpenInsenseFile.addActionListener ( this );
         mnOpen.add ( mntmOpenInsenseFile );
         
-        mntmSaveXmlFile = new JMenuItem ( "Save XML file" );
+        mntmSaveXmlFile = new JMenuItem ( "Save file" );
         mntmSaveXmlFile.addActionListener ( this );
         mnOpen.add ( mntmSaveXmlFile );
-        
-        mntmSaveInsenseFile = new JMenuItem ( "Save Insense File" );
-        mntmSaveInsenseFile.addActionListener ( this );
-        mnOpen.add ( mntmSaveInsenseFile );
-        
+              
         mntmExit = new JMenuItem ( "Exit" );
         mntmExit.addActionListener ( this );
         mnOpen.add ( mntmExit );
@@ -270,26 +265,22 @@ public class MainWindow extends JFrame implements ActionListener
         fileChooser = new JFileChooser ( );
         switch ( myMenu.getText ( ))
         {
-            case "Save XML file":
             case "Open XML":
+            case "Open Insense File":
+            case "Save file":
             {
                 FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter (
                         "xml files (*.xml)", "xml" );
+                FileNameExtensionFilter insenseFilter = new FileNameExtensionFilter (
+                        "insense files (*.isf)", "isf" );
+                fileChooser.setAcceptAllFileFilterUsed(false);
                 fileChooser.addChoosableFileFilter ( xmlFilter );
+                fileChooser.setFileFilter ( insenseFilter );
                 fileChooser.setFileFilter ( xmlFilter );
                 openDialog ( myMenu.getText ( ) );
                 break;
             }
-            case "Open Insense File":
-            case "Save Insense File":
-            {
-                FileNameExtensionFilter insenseFilter = new FileNameExtensionFilter (
-                        "insense files (*.isf)", "isf" );
-                fileChooser.addChoosableFileFilter ( insenseFilter );
-                fileChooser.setFileFilter ( insenseFilter );
-                openDialog ( myMenu.getText ( ) );
-                break;
-            }
+
             case "Generate Insense Code":
             {
                 openDialog ( myMenu.getText ( ) );
@@ -373,7 +364,7 @@ public class MainWindow extends JFrame implements ActionListener
                 JOptionPane.showMessageDialog ( null, "Choose an xml file!" );
             }
         }
-        if ( title == "Save XML file" || title == "Save Insense File" )
+        if ( title == "Save file" )
         {
             int returnVal = fileChooser.showSaveDialog ( MainWindow.this );
             if ( returnVal == JFileChooser.APPROVE_OPTION )
@@ -401,9 +392,7 @@ public class MainWindow extends JFrame implements ActionListener
                     {
                         System.out.println ("default ext" + " " + ext );
                     }
-                }
-             
-//                System.out.print ( file );
+                }             
             }
         }
         
