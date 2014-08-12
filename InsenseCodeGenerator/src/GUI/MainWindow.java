@@ -140,7 +140,6 @@ public class MainWindow extends JFrame implements ActionListener
     
     private void setUpStyleDocument()
     {
-       Grammar grammer = new Grammar(); 
     }
     
     private void init ( )
