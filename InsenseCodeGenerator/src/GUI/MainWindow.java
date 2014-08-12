@@ -21,11 +21,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import Generator.XmlParser;
+import GrammarAndClauses.Grammar;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -65,7 +71,8 @@ public class MainWindow extends JFrame implements ActionListener
     private String            fileNameString;
     private JLabel            lblInsenseCodeGenerator;
     private TextArea          textVisualizerArea;
-    
+    private JMenuBar          menuBar;
+
     /**
      * Create main window.
      */
@@ -77,8 +84,7 @@ public class MainWindow extends JFrame implements ActionListener
     
     private void initMenus ( )
     {
-        JMenuBar menuBar = new JMenuBar ( );
-        setJMenuBar ( menuBar );
+        menuBar = new JMenuBar ( );
         
         mnOpen = new JMenu ( "File menu" );
         menuBar.add ( mnOpen );
@@ -102,7 +108,7 @@ public class MainWindow extends JFrame implements ActionListener
         mntmSaveXmlFile = new JMenuItem ( "Save file" );
         mntmSaveXmlFile.addActionListener ( this );
         mnOpen.add ( mntmSaveXmlFile );
-              
+        
         mntmExit = new JMenuItem ( "Exit" );
         mntmExit.addActionListener ( this );
         mnOpen.add ( mntmExit );
@@ -128,7 +134,13 @@ public class MainWindow extends JFrame implements ActionListener
         
         mntmCompiles = new JMenuItem ( "Compile Unix" );
         mnGenerateAndCompile.add ( mntmCompiles );
+        setJMenuBar ( menuBar );
         // add(scrollV);
+    }
+    
+    private void setUpStyleDocument()
+    {
+       Grammar grammer = new Grammar(); 
     }
     
     private void init ( )
@@ -138,9 +150,10 @@ public class MainWindow extends JFrame implements ActionListener
         setTitle ( "Insense Code Generator" );
         setDefaultCloseOperation ( JFrame.EXIT_ON_CLOSE );
         setSize ( window_Len, window_vLen );
+        initMenus ( );
         contentPane = new JPanel ( );
         contentPane.setBorder ( new EmptyBorder ( 5, 5, 5, 5 ) );
-        contentPane.setLayout ( new BorderLayout ( 0, 0 ) );
+        contentPane.setLayout ( new BorderLayout ( 5, 5 ) );
         setContentPane ( contentPane );
         
         panel = new JPanel ( );
@@ -202,7 +215,7 @@ public class MainWindow extends JFrame implements ActionListener
                                                                 .addComponent (
                                                                         btnViewXml )
                                                                 .addPreferredGap (
-                                                                        ComponentPlacement.RELATED )
+                                                                        ComponentPlacement.UNRELATED )
                                                                 .addComponent (
                                                                         btnViewInsense ) )
                                                 .addComponent (
@@ -233,7 +246,7 @@ public class MainWindow extends JFrame implements ActionListener
         GroupLayout gl_innerPanel = new GroupLayout ( innerPanel );
         gl_innerPanel
                 .setHorizontalGroup ( gl_innerPanel.createParallelGroup (
-                        Alignment.LEADING ).addGroup (
+                        Alignment.TRAILING ).addGroup (
                         Alignment.TRAILING,
                         gl_innerPanel
                                 .createSequentialGroup ( )
@@ -241,7 +254,7 @@ public class MainWindow extends JFrame implements ActionListener
                                         GroupLayout.DEFAULT_SIZE, 1010,
                                         Short.MAX_VALUE ).addContainerGap ( ) ) );
         gl_innerPanel.setVerticalGroup ( gl_innerPanel.createParallelGroup (
-                Alignment.LEADING )
+                Alignment.TRAILING )
                 .addGroup (
                         gl_innerPanel
                                 .createSequentialGroup ( )
@@ -255,7 +268,6 @@ public class MainWindow extends JFrame implements ActionListener
         contentPane.add ( lblInsenseCodeGenerator, BorderLayout.SOUTH );
         lblInsenseCodeGenerator.setFont ( new Font ( "Copperplate Gothic Bold",
                 Font.PLAIN, 17 ) );
-        initMenus ( );
     }
     
     public void actionPerformed ( ActionEvent event )
@@ -273,14 +285,14 @@ public class MainWindow extends JFrame implements ActionListener
                         "xml files (*.xml)", "xml" );
                 FileNameExtensionFilter insenseFilter = new FileNameExtensionFilter (
                         "insense files (*.isf)", "isf" );
-                fileChooser.setAcceptAllFileFilterUsed(false);
+                fileChooser.setAcceptAllFileFilterUsed ( false );
                 fileChooser.addChoosableFileFilter ( xmlFilter );
                 fileChooser.setFileFilter ( insenseFilter );
                 fileChooser.setFileFilter ( xmlFilter );
                 openDialog ( myMenu.getText ( ) );
                 break;
             }
-
+            
             case "Generate Insense Code":
             {
                 openDialog ( myMenu.getText ( ) );
@@ -304,13 +316,13 @@ public class MainWindow extends JFrame implements ActionListener
             {
                 try
                 {
-                    String Insensefile = "/home/stephan/git/InsenseGenerator/InsenseCodeGenerator/src/IntermediateNotation/test1.isf";
+                    String insenseFile = "/home/stephan/git/InsenseGenerator/InsenseCodeGenerator/src/IntermediateNotation/test1.isf";
                     String executable = "/home/stephan/git/InsenseGenerator/InsenseCodeGenerator/src/IntermediateNotation/test";
                     Runtime.getRuntime ( )
                             .exec ( String
                                     .format (
                                             "java -jar /home/stephan/git/InsenseGenerator/InsenseCodeGenerator/src/GUI/InsenseCompilerUnix.jar %s %s",
-                                            Insensefile, executable ) );
+                                            insenseFile, executable ) );
                 }
                 catch (IOException e)
                 {
@@ -369,20 +381,21 @@ public class MainWindow extends JFrame implements ActionListener
             int returnVal = fileChooser.showSaveDialog ( MainWindow.this );
             if ( returnVal == JFileChooser.APPROVE_OPTION )
             {
-                String ext = ((FileNameExtensionFilter)fileChooser.getFileFilter()).getExtensions()[0];
-                switch(ext)
+                String ext = ((FileNameExtensionFilter) fileChooser
+                        .getFileFilter ( )).getExtensions ( )[0];
+                switch ( ext)
                 {
-                    case"xml":
+                    case "xml":
                     {
-                        System.out.println ("xml" );
+                        System.out.println ( "xml" );
                         String file = fileChooser.getSelectedFile ( )
-                                .getAbsolutePath ( )  + ".xml";
+                                .getAbsolutePath ( ) + ".xml";
                         saveToFile ( file );
                         break;
                     }
                     case "isf":
                     {
-                        System.out.println ("isf" );
+                        System.out.println ( "isf" );
                         String file = fileChooser.getSelectedFile ( )
                                 .getAbsolutePath ( ) + ".isf";
                         saveToFile ( file );
@@ -390,9 +403,9 @@ public class MainWindow extends JFrame implements ActionListener
                     }
                     default:
                     {
-                        System.out.println ("default ext" + " " + ext );
+                        System.out.println ( "default ext" + " " + ext );
                     }
-                }             
+                }
             }
         }
         
@@ -441,8 +454,6 @@ public class MainWindow extends JFrame implements ActionListener
     
     private void activateTextArea ( )
     {
-        textVisualizerArea.setFont ( new Font ( "Monospaced", Font.BOLD, 12 ) );
-        textVisualizerArea.setForeground ( Color.BLUE );
         textVisualizerArea.setEditable ( true );
         textVisualizerArea.setEnabled ( true );
     }
@@ -469,5 +480,6 @@ public class MainWindow extends JFrame implements ActionListener
                         + System.getProperty ( "line.separator" ) );
             }
         }
+        setUpStyleDocument();
     }
 }
