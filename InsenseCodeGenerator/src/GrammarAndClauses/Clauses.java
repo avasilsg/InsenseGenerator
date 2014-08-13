@@ -22,11 +22,11 @@ public class Clauses
 
      
    public static final String component =   "component %s presents ";
-   public static final String constructor = "constructor";
-   public static final String behaviour =   "behaviour";
+   public static final String constructor = "constructor ";
+   public static final String behaviour =   "behaviour ";
 
    public static final String send = "send %s on %s";
-   public static final String sendWithValue = "send %s(%s) on %s";
+   public static final String sendWithValue = "send %s ( %s ) on %s";
    public static final String receive = "receive %s from %s";
    
    public static final String createInstance = "%s = new %s";
@@ -49,10 +49,10 @@ public class Clauses
    public static final String printUnsignedInt = "printUnsignedInt%s";
 //   ints = new integer[5] of 0
    public static final String arraySyntax = "%s = new %s[%d] of %d";
-   public static final String structSyntax = "type %s is struct";
+   public static final String structSyntax = "type %s is struct ";
 //   proc tempIntToCelsiusReal(integer reading) : real {
-   public static final String procedureSyntax = "proc %s( ";
-   public static final String closeProcedureDeclaration =  ") : %s";
+   public static final String procedureSyntax = "proc %s ( ";
+   public static final String closeProcedureDeclaration =  " ) : %s";
 
 }
 

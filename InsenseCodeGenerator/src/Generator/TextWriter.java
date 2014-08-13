@@ -128,7 +128,8 @@ public class TextWriter
         }
         writer.println();
         writer.write("\t" + Clauses.behaviour);
-        writer.write(Clauses.openCurlyBracket);
+        writer.println();
+        writer.write("\t" + Clauses.openCurlyBracket);
         Behaviour behaviour = component.getBehaviour();
         if (behaviour == null)
         {

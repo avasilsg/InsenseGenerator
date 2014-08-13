@@ -1,25 +1,102 @@
 
-type ITempReader is interface
+type sensorReading is struct (
+	integer photo;
+	integer solar;
+	real temp;
+	real humid;)
+
+type ISensorReader is interface
 (
-	out bool tRequestChan;
-	in Real tValueChan;
-	out any stdoutChan;
+	in bool ticks;
+	out sensorReading printChan;
+	out sensorReading ledsChan;
 )
-component TempReader presents ITempReader
+type IPrintOutput is interface
+(
+	in sensorReading input;
+)
+type ILedOutput is interface
+(
+	in sensorReading input;
+)
+component SensorReader presents ISensorReader
 {
 
-	constructor()
+	constructor ()
 	{
 	}
 
-	behaviour{
-		send true on tRequestChan
-		receive temp from null
-		send any('\nTemp=') on stdoutChan
-		send any(temp) on stoutchan
+	behaviour 
+	{
+		receive tick from ticks
+		photoValue = photoReading()
+
+		solarValue = solarReading()
+
+		tempValue = tempCelsiusReading()
+
+		humdityValue = relHumidReading()
+
+		reading = new  SensorReading( photoValue, solarValue, tempValue, humidityValuereading)
+
+		send reading on ledsChan
+		send reading on printChan
 	}
 }
-tr = new TempReader()
-connect tr.tRequestChan to lightHumidTempSensor.tRequestChan
-connect tr.tValueChan to lightHumidTempSensor.tempOutput
-connect tr.tempOutput to standardOut
+component PrintOutput presents IPrintOutput
+{
+
+	cycle = 0
+	constructor ()
+	{
+	}
+
+	behaviour 
+	{
+		receive reading from input
+
+		printString('Cycle ')
+
+		printInt(cycle)
+
+		printString(':\tphoto = ')
+
+		printInt(reading)
+
+		printString('\tsolar = ')
+
+		printInt(reading)
+
+		printString('\ttemp = ')
+
+		printInt(reading)
+
+		printString('\thumid = ')
+
+		printInt(reading)
+
+
+		cycle = cycle+1
+
+	}
+}
+component LedOutput presents ILedOutput
+{
+
+	avgTemp = 0.0
+	avgSolar = 0
+	avgHumid = 0.0
+	constructor ()
+	{
+	}
+
+	behaviour 
+	{
+		receive reading from input
+	}
+}
+sr = new SensorReader()
+lo = new LedOutput()
+po = new PrintOutput()
+connect sr.printChan to po.input
+connect sr.ledsChan to lo.input
