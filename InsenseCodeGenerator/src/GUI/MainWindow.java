@@ -84,14 +84,10 @@ public class MainWindow extends JFrame implements ActionListener
         menuItem.addActionListener(this);
         mnOpen.add(menuItem);
         
-        menuItem = new JMenuItem("Open XML");
+        menuItem = new JMenuItem("Open file");
         menuItem.addActionListener(this);
         mnOpen.add(menuItem);
-        
-        menuItem = new JMenuItem("Open Insense File");
-        menuItem.addActionListener(this);
-        mnOpen.add(menuItem);
-        
+               
         menuItem = new JMenuItem("Save file");
         menuItem.addActionListener(this);
         mnOpen.add(menuItem);
@@ -105,7 +101,10 @@ public class MainWindow extends JFrame implements ActionListener
         mnOpen.setHorizontalAlignment(SwingConstants.CENTER);
         menuBar.add(mnOpen);
         
-        menuItem = new JMenuItem("Validate XML ");
+        menuItem = new JMenuItem("Generate XML");
+        mnOpen.add(menuItem);
+        
+        menuItem = new JMenuItem("Validate XML");
         mnOpen.add(menuItem);
         
         menuItem = new JMenuItem("View XML");
@@ -129,10 +128,9 @@ public class MainWindow extends JFrame implements ActionListener
         
         menuItem = new JMenuItem("Compile Unix");
         mnOpen.add(menuItem);
-        lblInsenseCodeGenerator = new JLabel(
-                "                                                                                                                                  Insense Code Generator");
+        lblInsenseCodeGenerator = new JLabel("                                                                                     Insense Code Generator");
         menuBar.add(lblInsenseCodeGenerator);
-        lblInsenseCodeGenerator.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 17));
+        lblInsenseCodeGenerator.setFont(new Font("URW Bookman L", Font.PLAIN, 17));
         // add(scrollV);
     }
     
@@ -172,8 +170,7 @@ public class MainWindow extends JFrame implements ActionListener
         fileChooser = new JFileChooser();
         switch (myMenu.getText())
         {
-            case "Open XML":
-            case "Open Insense File":
+            case "Open file":
             case "Save file":
             {
                 FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("xml files (*.xml)", "xml");
@@ -265,7 +262,7 @@ public class MainWindow extends JFrame implements ActionListener
     
     private void openDialog(String title)
     {
-        if (title == "Open XML" || title == "Open Insense File")
+        if (title == "Open file")
         {
             int returnVal = fileChooser.showOpenDialog(MainWindow.this);
             if (returnVal == JFileChooser.APPROVE_OPTION)

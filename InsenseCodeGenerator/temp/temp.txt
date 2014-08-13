@@ -1,26 +1,19 @@
 
-type sensorReading is struct (
-	integer photo;
+type sensorRading is struct (
 	integer solar;
+	integer photo;
 	real temp;
 	real humid;)
 
-type ISensorReader is interface
+type ISensorReading is interface
 (
 	in bool ticks;
-	out sensorReading printChan;
+	out sensorReading printerChan ;
 	out sensorReading ledsChan;
-)
-type IPrintOutput is interface
-(
-	in sensorReading input;
-)
-type ILedOutput is interface
-(
-	in sensorReading input;
 )
 component SensorReader presents ISensorReader
 {
+
 
 	constructor ()
 	{
@@ -29,63 +22,40 @@ component SensorReader presents ISensorReader
 	behaviour 
 	{
 		receive tick from ticks
-		photoValue = photoReading()
-
-		solarValue = solarReading()
-
-		tempValue = tempCelsiusReading()
-
-		humdityValue = relHumidReading()
-
-		reading = new  SensorReading( photoValue, solarValue, tempValue, humidityValuereading)
-
 		send reading on ledsChan
-		send reading on printChan
+		send reading on printerChan
 	}
 }
+type IPrintOutput is interface
+(
+	in sensorReading input;
+)
 component PrintOutput presents IPrintOutput
 {
 
-	cycle = 0
+	cycle = $0
 	constructor ()
 	{
 	}
 
 	behaviour 
 	{
-		receive reading from input
-
-		printString('Cycle ')
 
 		printInt(cycle)
 
-		printString(':\tphoto = ')
-
-		printInt(reading)
-
-		printString('\tsolar = ')
-
-		printInt(reading)
-
-		printString('\ttemp = ')
-
-		printInt(reading)
-
-		printString('\thumid = ')
-
-		printInt(reading)
-
-
-		cycle = cycle+1
-
+		printReal(reading.photo)
 	}
 }
+type ILedOutput is interface
+(
+	in sensorReading input;
+)
 component LedOutput presents ILedOutput
 {
 
 	avgTemp = 0.0
-	avgSolar = 0
-	avgHumid = 0.0
+	avgSolar = 0.0
+	avgSolar = 0.0
 	constructor ()
 	{
 	}
@@ -95,8 +65,4 @@ component LedOutput presents ILedOutput
 		receive reading from input
 	}
 }
-sr = new SensorReader()
-lo = new LedOutput()
-po = new PrintOutput()
-connect sr.printChan to po.input
-connect sr.ledsChan to lo.input
+connect sensorReader.printerChan to printOutput.input
