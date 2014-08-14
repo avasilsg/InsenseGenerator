@@ -35,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 import javax.swing.SwingConstants;
 
+import Generator.CompilerCaller;
 import Generator.XmlParser;
 import GrammarAndClauses.Grammar;
 
@@ -54,13 +55,13 @@ public class MainWindow extends JFrame implements ActionListener
     private boolean           isTheCycleCompleted;
     private boolean           isGeneratedInsens;
     private String            fileNameString;
-    private String            filePathString;
+    private CompilerCaller    compileCaller;
     private JLabel            lblInsenseCodeGenerator;
     private JMenuBar          menuBar;
     private JTextPane         textVisualizerArea;
     //TODO: move them to grammar
-    private         int count = 0;
-    private         String tabs = "";
+    private int               count = 0;
+    private String            tabs = "";
     
     /**
      * Create main window.
@@ -69,6 +70,7 @@ public class MainWindow extends JFrame implements ActionListener
     {
         isTheCycleCompleted = false;
         isGeneratedInsens = false;
+        compileCaller = new CompilerCaller();
         init();
     }
     
@@ -197,18 +199,8 @@ public class MainWindow extends JFrame implements ActionListener
             }
             case "Compile":
             {
-                try
-                {
-                    String insenseFile = "/home/stephan/git/InsenseGenerator/InsenseCodeGenerator/src/IntermediateNotation/test1.isf";
-                    String executable = "/home/stephan/git/InsenseGenerator/InsenseCodeGenerator/src/IntermediateNotation/test";
-                    Runtime.getRuntime().exec(
-                            String.format("java -jar /home/stephan/git/InsenseGenerator/InsenseCodeGenerator/src/GUI/InsenseCompilerUnix.jar %s %s",
-                                    insenseFile, executable));
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
+                this.compileCaller.compileByUnixCompiler ( );
+                break;
             }
             case "View XML":
             case "View Insense":
@@ -232,7 +224,7 @@ public class MainWindow extends JFrame implements ActionListener
             {
                 if (this.isGeneratedInsens)
                 {
-                    showFileOnTheScreen(filePathString, ".isf");
+                    showFileOnTheScreen(this.compileCaller.getInsenseFilePath ( ), ".isf");
                 }
                 else
                 {
@@ -285,7 +277,8 @@ public class MainWindow extends JFrame implements ActionListener
             {
                 parseXML(fileNameString);
                 isGeneratedInsens = true;
-                filePathString = new File("").getAbsolutePath() + "/" + "temp" + "/" + "temp" + ".txt";
+                this.compileCaller.setInsenseFilePath (  new File("").getAbsolutePath() + "/" + "temp" + "/" + "temp" + ".txt");
+                this.compileCaller.setInsenseFileName ( "temp" );
             }
             else
             {
@@ -311,6 +304,8 @@ public class MainWindow extends JFrame implements ActionListener
                     {
                         System.out.println("isf");
                         String file = fileChooser.getSelectedFile().getAbsolutePath() + ".isf";
+                        this.compileCaller.setInsenseFilePath ( file );
+                        this.compileCaller.setInsenseFileName ( fileChooser.getSelectedFile().getName ( ) );
                         saveToFile(file);
                         break;
                     }

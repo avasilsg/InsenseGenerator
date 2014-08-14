@@ -26,11 +26,13 @@ public class TextWriter
 {
     private PrintWriter        writer;
     private LinkedList<String> componentNames;
+    private File               dir; 
     
     public TextWriter()
     {
         writer = null;
         componentNames = new LinkedList<String>();
+        dir = null;
     }
     
     public void openAndCreateFile() throws FileNotFoundException, UnsupportedEncodingException
@@ -39,12 +41,12 @@ public class TextWriter
         // System.out.print("Enter file name:");
         // String fileName = in.nextLine();
         String path = new File("").getAbsolutePath ( );
-        File dir = new File(path + "/" + "temp");
+        dir = new File(path + "/" + "temp");
         dir.mkdir ( );
         writer = new PrintWriter(dir.getAbsoluteFile ( ) + "/" + "temp" + ".txt", "UTF-8");
         // in.close();
     }
-
+    
     public void writeInterface(Interface interfs)
     {
         writer.println();
@@ -377,5 +379,11 @@ public class TextWriter
         writeFields(struct.getFields());
         writer.write(Clauses.closeBracket);
         writer.println();
+    }
+    
+    public void deleteDefaultFolder()
+    {
+        File tempFile = new File(dir.getAbsolutePath ( ));
+        tempFile.delete();
     }
 }
