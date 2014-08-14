@@ -38,6 +38,7 @@ import javax.swing.SwingConstants;
 import Generator.CompilerCaller;
 import Generator.XmlParser;
 import GrammarAndClauses.Grammar;
+import ReverseEngineeringGenerator.XMLFileContainer;
 
 public class MainWindow extends JFrame implements ActionListener
 {
@@ -54,7 +55,7 @@ public class MainWindow extends JFrame implements ActionListener
     private JPanel            panel;
     private boolean           isTheCycleCompleted;
     private boolean           isGeneratedInsens;
-    private String            fileNameString;
+    private XMLFileContainer  xmlFile;
     private CompilerCaller    compileCaller;
     private JLabel            lblInsenseCodeGenerator;
     private JMenuBar          menuBar;
@@ -70,6 +71,7 @@ public class MainWindow extends JFrame implements ActionListener
     {
         isTheCycleCompleted = false;
         isGeneratedInsens = false;
+        xmlFile       = new XMLFileContainer();
         compileCaller = new CompilerCaller();
         init();
     }
@@ -141,7 +143,6 @@ public class MainWindow extends JFrame implements ActionListener
         lblInsenseCodeGenerator = new JLabel("                                                                                     Insense Code Generator");
         menuBar.add(lblInsenseCodeGenerator);
         lblInsenseCodeGenerator.setFont(new Font("URW Bookman L", Font.PLAIN, 17));
-        // add(scrollV);
     }
     
     private void init()
@@ -202,7 +203,7 @@ public class MainWindow extends JFrame implements ActionListener
             {
                 activateTextArea();
                 this.textVisualizerArea.setText("");
-                // TODO: set the menus to be inactive
+                this.compileCaller.setInsenseFilePath ( "" );
                 break;
             }
             case "Compile for Contiki":
@@ -243,7 +244,7 @@ public class MainWindow extends JFrame implements ActionListener
             }
             else
             {
-                showFileOnTheScreen(fileNameString, ".xml");
+                showFileOnTheScreen(this.xmlFile.getFilePath ( ), ".xml");
             }
         }
         catch (FileNotFoundException e)
@@ -271,7 +272,7 @@ public class MainWindow extends JFrame implements ActionListener
             {
                 try
                 {
-                    fileNameString = fileChooser.getSelectedFile().getAbsolutePath();
+                    this.xmlFile.setFilePath ( fileChooser.getSelectedFile().getAbsolutePath() );
                     isTheCycleCompleted = true;
                     validateFileFormat();
                 }
@@ -285,7 +286,7 @@ public class MainWindow extends JFrame implements ActionListener
         {
             if (this.isTheCycleCompleted)
             {
-                parseXML(fileNameString);
+                parseXML(this.xmlFile.getFilePath ( ));
                 isGeneratedInsens = true;
                 this.compileCaller.setInsenseFilePath (  new File("").getAbsolutePath() + "/" + "temp" + "/" + "temp" + ".txt");
                 this.compileCaller.setInsenseFileName ( "temp" );

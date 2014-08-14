@@ -54,5 +54,23 @@ public class Clauses
    public static final String procedureSyntax = "proc %s ( ";
    public static final String closeProcedureDeclaration =  " ) : %s";
 
+   //Templates || Send
+   {
+       {
+           
+       }
+       {
+           
+       }
+   }
+   //Templates || Receive
+   {
+       {
+           
+       }
+       {
+           
+       }
+   }
 }
 
