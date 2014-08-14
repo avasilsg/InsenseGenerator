@@ -138,8 +138,6 @@ public class MainWindow extends JFrame implements ActionListener
         menuItem.addActionListener(this);
         mnOpen.add(menuItem);
         
-        menuItem = new JMenuItem("Compile Unix");
-        mnOpen.add(menuItem);
         lblInsenseCodeGenerator = new JLabel("                                                                                     Insense Code Generator");
         menuBar.add(lblInsenseCodeGenerator);
         lblInsenseCodeGenerator.setFont(new Font("URW Bookman L", Font.PLAIN, 17));
