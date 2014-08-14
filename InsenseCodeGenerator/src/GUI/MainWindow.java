@@ -125,7 +125,17 @@ public class MainWindow extends JFrame implements ActionListener
         menuItem.addActionListener(this);
         mnOpen.add(menuItem);
         
-        menuItem = new JMenuItem("Compile Unix");
+        menuItem = new JMenuItem("Compile for UnixOS");
+        menuItem.addActionListener(this);
+        mnOpen.add(menuItem);
+        
+        menuItem = new JMenuItem("Compile for InsenseOS");
+        menuItem.addActionListener(this);
+        mnOpen.add(menuItem);
+        
+        
+        menuItem = new JMenuItem("Compile for Contiki");
+        menuItem.addActionListener(this);
         mnOpen.add(menuItem);
         
         menuItem = new JMenuItem("Compile Unix");
@@ -197,9 +207,11 @@ public class MainWindow extends JFrame implements ActionListener
                 // TODO: set the menus to be inactive
                 break;
             }
-            case "Compile":
+            case "Compile for Contiki":
+            case "Compile for InsenseOS":
+            case "Compile for UnixOS":
             {
-                this.compileCaller.compileByUnixCompiler ( );
+                this.compileCaller.compileByVersion ( myMenu.getText() );
                 break;
             }
             case "View XML":
