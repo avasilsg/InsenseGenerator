@@ -216,7 +216,14 @@ public class MainWindow extends JFrame implements ActionListener
             case "View XML":
             case "View Insense":
             {
-                actionEventView(myMenu.getText());
+                if (null == this.xmlFile.getFilePath ( ) || "".equals ( this.xmlFile.getFilePath ( )))
+                {
+                    JOptionPane.showMessageDialog(null, "Open xml or insense file first!");
+                }
+                else
+                {
+                    actionEventView(myMenu.getText());
+                }
                 break;
             }
             case "Exit":
