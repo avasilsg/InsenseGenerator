@@ -23,10 +23,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Document;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.GroupLayout;
@@ -373,6 +376,7 @@ public class MainWindow extends JFrame implements ActionListener
     {
         textVisualizerArea.setEditable(true);
         textVisualizerArea.setEnabled(true);
+        textVisualizerArea.getDocument ( ).addDocumentListener ( new MyDocumentListener() );
     }
     
     private void showFileOnTheScreen(String path, String fileFormat) throws FileNotFoundException, IOException
@@ -483,6 +487,43 @@ public class MainWindow extends JFrame implements ActionListener
         catch (BadLocationException e)
         {
             e.printStackTrace();
+        }
+    }
+    class MyTextActionListener implements ActionListener {
+        /** Handle the text field Return. */
+        public void actionPerformed(ActionEvent e) {
+//            int selStart = textVisualizerArea.getSelectionStart();
+//            int selEnd = textVisualizerArea.getSelectionEnd();
+// 
+//            textArea.replaceRange(textField.getText(),
+//                                  selStart, selEnd);
+//            textField.selectAll();
+        }
+    }
+    class MyDocumentListener implements DocumentListener 
+    {
+        String newline = "\n";
+     
+        public void insertUpdate(DocumentEvent e) {
+            updateLog(e, "inserted into");
+        }
+        public void removeUpdate(DocumentEvent e) {
+            updateLog(e, "removed from");
+        }
+        public void changedUpdate(DocumentEvent e) {
+            //Plain text components do not fire these events
+        }
+
+        public void updateLog(DocumentEvent e, String action) 
+        {
+            System.out.println(action);
+            Document doc = (Document)e.getDocument();
+            int changeLength = e.getLength();
+//            displayArea.append(
+//                changeLength + " character" +
+//                ((changeLength == 1) ? " " : "s ") +
+//                action + doc.getProperty("name") + "." + newline +
+//                "  Text length = " + doc.getLength() + newline);
         }
     }
 }
