@@ -327,7 +327,7 @@ public class TextWriter
                 writer.write("\t\t" + String.format(Clauses.printReal, expression));
                 break;
             }
-            case "int":
+            case "integer":
             {
                 writer.write("\t\t" + String.format(Clauses.printInt, expression));
                 break;
