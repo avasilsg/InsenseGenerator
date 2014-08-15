@@ -6,8 +6,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 
-
-//import java.util.Scanner;
 import GrammarAndClauses.Clauses;
 import Units.Behaviour;
 import Units.Component;
