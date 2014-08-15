@@ -298,7 +298,7 @@ public class MainWindow extends JFrame implements ActionListener
             {
                 parseXML(this.xmlFile.getFilePath ( ));
                 isGeneratedInsens = true;
-                this.compileCaller.setInsenseFilePath (  new File("").getAbsolutePath() + "/" + "temp" + "/" + "temp" + ".txt");
+                this.compileCaller.setInsenseFilePath (  new File("").getAbsolutePath() + "/" + "temp" + "/" + "temp" + ".isf");
                 this.compileCaller.setInsenseFileName ( "temp" );
             }
             else
@@ -362,7 +362,6 @@ public class MainWindow extends JFrame implements ActionListener
         if (true == fileName.equals("xml"))
         {
             activateTextArea();
-            // this.btnViewXml.setEnabled(true);
             showFileOnTheScreen(file.getAbsolutePath(), ".xml");
         }
         else

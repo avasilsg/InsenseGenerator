@@ -4,7 +4,7 @@ endif
 
 TARGETFLAGS = $(CFLAGS) 
 
-PROJ=/home/stephan/git/InsenseGenerator/InsenseCodeGenerator/temp/temp.txt
+PROJ=/home/stephan/git/InsenseGenerator/InsenseCodeGenerator/temp/temp.isf
 
 APP_INCLUDES = -I $(INSENSE_RUNTIME_UNIX)
 APP_SRCFILES = Insense_TimedTempReader.c Insense_Printer.c main.c marshaller.c 

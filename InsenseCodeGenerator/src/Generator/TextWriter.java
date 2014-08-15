@@ -41,7 +41,7 @@ public class TextWriter
         String path = new File("").getAbsolutePath ( );
         dir = new File(path + "/" + "temp");
         dir.mkdir ( );
-        writer = new PrintWriter(dir.getAbsoluteFile ( ) + "/" + "temp" + ".txt", "UTF-8");
+        writer = new PrintWriter(dir.getAbsoluteFile ( ) + "/" + "temp" + ".isf", "UTF-8");
         // in.close();
     }
     
