@@ -325,8 +325,6 @@ public class MainWindow extends JFrame implements ActionListener
                     {
                         System.out.println("isf");
                         String file = fileChooser.getSelectedFile().getAbsolutePath() + ".isf";
-                        this.compileCaller.setInsenseFilePath ( file );
-                        this.compileCaller.setInsenseFileName ( fileChooser.getSelectedFile().getName ( ) );
                         saveToFile(file);
                         break;
                     }
@@ -342,6 +340,8 @@ public class MainWindow extends JFrame implements ActionListener
         try
         {
             out = new FileOutputStream(fileName, true);
+            this.compileCaller.setInsenseFilePath ( fileName );
+            this.compileCaller.setInsenseFileName ( fileChooser.getSelectedFile().getName ( ) );
             out.write(this.textVisualizerArea.getText().getBytes());
             out.close();
         }
