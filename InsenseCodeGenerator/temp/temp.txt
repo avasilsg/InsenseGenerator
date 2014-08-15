@@ -1,11 +1,13 @@
 
-type ITempReader is interface
+type ITimedTempReader is interface
 (
-	out bool tRequestChan;
-	in Real tValueChan;
-	out any stdoutChan;
+	out integer output;
 )
-component TempReader presents ITempReader
+type IPrinter is interface
+(
+	in integer input;
+)
+component TimedTempReader presents ITimedTempReader
 {
 
 	constructor ()
@@ -14,13 +16,19 @@ component TempReader presents ITempReader
 
 	behaviour 
 	{
-		send true on tRequestChan
-		receive temp from null
-		send any ( '\nTemp=' ) on stdoutChan
-		send any ( temp ) on stoutchan
 	}
 }
-tr = new TempReader()
-connect tr.tRequestChan to lightHumidTempSensor.tRequestChan
-connect tr.tValueChan to lightHumidTempSensor.tempOutput
-connect tr.tempOutput to standardOut
+component Printer presents IPrinter
+{
+
+	constructor ()
+	{
+	}
+
+	behaviour 
+	{
+	}
+}
+tr = new TimedTempReader()
+pr = new Printer()
+connect tr.output to pr.input

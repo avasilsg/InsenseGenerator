@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<nodeName name="demo1" ofTotal="1" orderNumber="1"/>
+<interface>
+<attribute name="ITimedTempReader"/>
+<channel direction="out" name="output" type="integer"/>
+</interface>
+<interface>
+<attribute name="IPrinter"/>
+<channel direction="in" name="input" type="integer"/>
+</interface>
+<component>
+<attribute name="TimedTempReader"/>
+<presents name="ITimedTempReader"/>
+<constructor/>
+<behaviour/>
+</component>
+<component>
+<attribute name="Printer"/>
+<presents name="IPrinter"/>
+<constructor/>
+<behaviour/>
+</component>
+<instance component="TimedTempReader" name="tr"/>
+<instance component="Printer" name="pr"/>
+<connect>
+<from name="tr" on="output"/>
+<to name="pr" on="input"/>
+</connect>
+</xsd:schema>

@@ -73,11 +73,11 @@ public class CompilerCaller
             else
             {
                 String path = new File ( "" ).getAbsolutePath ( );
-                File dir = new File ( path + "/" + "solution" );
+                File dir = new File ( path + "/" + "solution" + "/" );
                 dir.mkdir ( );
                 
                 String executable = String.format ( dir.getAbsolutePath ( )
-                        + "%s", this.insenseFileName );
+                        + "/%s", this.insenseFileName );
                 Runtime.getRuntime ( )
                         .exec ( String
                                 .format (
