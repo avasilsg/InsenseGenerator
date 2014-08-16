@@ -114,4 +114,8 @@ public class Behaviour
     {
         this.returnStatements = returnStatements;
     }
+    public void setReturnStatement(final String returnSt)
+    {
+        this.returnStatements.add ( returnSt );
+    }
 }

@@ -355,12 +355,9 @@ public class XmlParser
             }
             if ("body".equals(node.getNodeName().toLowerCase()))
             {
-                
-            }
-            if ("return".equals(node.getNodeName().toLowerCase()))
-            {
-                //TODO:
-//                procedure.setReturnStatement(parseReturn(node.getChildNodes()));
+                Behaviour behaviour = parseBehaviour(node.getChildNodes());
+                procedure.setBody ( behaviour );
+                behaviour = null;
             }
         }
         return procedure;
@@ -470,6 +467,11 @@ public class XmlParser
                 behaviour.setVariable(variable);
                 variable = null;
                 continue;
+            }
+            if ("return".equals(node.getNodeName().toLowerCase()))
+            {
+                //TODO:
+                behaviour.setReturnStatement(parseReturn(node.getChildNodes()));
             }
         }
         return behaviour;
