@@ -14,7 +14,8 @@ public class Behaviour
     private LinkedList<Variable> variables;
     private LinkedList<Print> prints;
     private LinkedList<String> order;
-
+    private LinkedList<String> returnStatements;
+    
     public Behaviour()
     {
         this.setSends(new LinkedList<Send>());
@@ -22,6 +23,7 @@ public class Behaviour
         this.setVariables(new LinkedList<Variable>());
         this.setPrints(new LinkedList<Print>());
         this.setOrder(new LinkedList<String>());
+        this.setReturnStatements ( new LinkedList<String>()  );
     }
 
     public LinkedList<Send> getSends()
@@ -101,5 +103,15 @@ public class Behaviour
     public void setOperation(String operation)
     {
         this.order.add(operation);
+    }
+
+    public LinkedList<String> getReturnStatements ( )
+    {
+        return returnStatements;
+    }
+
+    public void setReturnStatements ( LinkedList<String> returnStatements )
+    {
+        this.returnStatements = returnStatements;
     }
 }

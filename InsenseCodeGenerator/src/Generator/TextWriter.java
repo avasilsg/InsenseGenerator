@@ -205,10 +205,11 @@ public class TextWriter
             writer.println();
             writer.write("\t" + Clauses.openCurlyBracket);
             writer.println();
-            if (!"".equals(procedure.getReturnStatement()))
-            {
-                writer.write("\t\t" + "return " + procedure.getReturnStatement());
-            }
+            //TODO:
+//            if (!"".equals(procedure.getReturnStatement()))
+//            {
+//                writer.write("\t\t" + "return " + procedure.getReturnStatement());
+//            }
             writer.println();
             writer.write("\t" + Clauses.closeCurlyBracket);
         }

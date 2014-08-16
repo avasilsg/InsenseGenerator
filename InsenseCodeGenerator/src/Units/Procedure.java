@@ -10,13 +10,12 @@ public class Procedure
     private String type;
     private Behaviour body;
     private LinkedList<Field> parameters;
-    private String returnStatement;
+    
     public Procedure()
     {
         name = null;
         type = null;
         parameters = new LinkedList<>();
-        setReturnStatement(null);
     }
     
     public String getName()
@@ -42,16 +41,6 @@ public class Procedure
     public void setType(String type)
     {
         this.type = type;
-    }
-
-    public String getReturnStatement()
-    {
-        return returnStatement;
-    }
-
-    public void setReturnStatement(String returnStatement)
-    {
-        this.returnStatement = returnStatement;
     }
 
     public Behaviour getBody()

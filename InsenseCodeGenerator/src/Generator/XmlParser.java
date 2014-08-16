@@ -359,7 +359,8 @@ public class XmlParser
             }
             if ("return".equals(node.getNodeName().toLowerCase()))
             {
-                procedure.setReturnStatement(parseReturn(node.getChildNodes()));
+                //TODO:
+//                procedure.setReturnStatement(parseReturn(node.getChildNodes()));
             }
         }
         return procedure;
