@@ -180,7 +180,6 @@ public class XmlParser
                 }
             }
         }
-        // TODO: params
         codeGenerator.writeInstance(instance);
         instance = null;
     }

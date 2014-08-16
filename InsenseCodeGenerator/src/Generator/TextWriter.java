@@ -10,6 +10,7 @@ import GrammarAndClauses.Clauses;
 import Units.Behaviour;
 import Units.Component;
 import Units.Connect;
+import Units.Constructor;
 import Units.Interface;
 import Units.Procedure;
 import Units.Struct;
@@ -35,14 +36,10 @@ public class TextWriter
     
     public void openAndCreateFile() throws FileNotFoundException, UnsupportedEncodingException
     {
-        // Scanner in = new Scanner(System.in);
-        // System.out.print("Enter file name:");
-        // String fileName = in.nextLine();
         String path = new File("").getAbsolutePath ( );
         dir = new File(path + "/" + "temp");
         dir.mkdir ( );
         writer = new PrintWriter(dir.getAbsoluteFile ( ) + "/" + "temp" + ".isf", "UTF-8");
-        // in.close();
     }
     
     public void writeInterface(Interface interfs)
@@ -113,19 +110,8 @@ public class TextWriter
         writer.println();
         writeFields(component.getFields());
         writer.println();
-        writer.write("\t" + Clauses.constructor);
-        writer.write(Clauses.openBracket);
-        // TODO: contructors body
-        writer.write(Clauses.closeBracket);
-        writer.println();
-        writer.write("\t" + Clauses.openCurlyBracket);
-        writer.println();
-        writer.write("\t" + Clauses.closeCurlyBracket);
-        writer.println();
-        if (0 != component.getProcedures().size())
-        {
-            writeProcedures(component.getProcedures());
-        }
+        writeContructor (component.getConstructors ( ) );
+        writeProcedures(component.getProcedures());
         writer.println();
         writer.write("\t" + Clauses.behaviour);
         writer.println();
@@ -136,6 +122,40 @@ public class TextWriter
             throw new NullPointerException();
         }
         
+        writeBehaviour ( behaviour );
+        
+        writer.println();
+        writer.write("\t" + Clauses.closeCurlyBracket);
+        writer.println();
+        writer.write(Clauses.closeCurlyBracket);
+    }
+
+    private void writeContructor (LinkedList<Constructor> constructors)
+    {
+        for(int i = 0; i < constructors.size ( ); i++)
+        {
+            Constructor contructor = constructors.get ( i );
+            writer.write("\t" + Clauses.constructor);
+            writer.write(Clauses.openBracket);
+            writer.println();
+            writeFields(contructor.getParameters ( ));
+            writer.println();
+            writer.write(Clauses.closeBracket);
+            writer.println();
+            writer.write("\t" + Clauses.openCurlyBracket);
+            writer.println();
+            if (null != contructor.getBody ( ))
+            {
+                writeBehaviour(contructor.getBody ( ));
+            }
+            writer.write("\t" + Clauses.closeCurlyBracket);
+            writer.println();
+        }
+        constructors = null;
+    }
+
+    private void writeBehaviour ( Behaviour behaviour )
+    {
         for (int i = 0; i < behaviour.getOrder().size(); i++)
         {
             switch (behaviour.getOrder().get(i))
@@ -160,17 +180,16 @@ public class TextWriter
                     writeVariable(behaviour);
                     break;
                 }
+                case "return":
+                {
+                    writer.write("\t\t" + "return " + behaviour.getReturnStatements ( ).get ( 0 ));
+                    behaviour.getReturnStatements ( ).remove ( 0 );
+                    break;
+                }
             }
         }
-        
-        writer.println();
-        writer.write("\t" + Clauses.closeCurlyBracket);
-        writer.println();
-        writer.write(Clauses.closeCurlyBracket);
     }
-    
-    // public static final String procedureSyntax = "proc %s(%s) : %s";
-    
+      
     private void writeVariable(Behaviour behaviour)
     {
         Variable variable = behaviour.getVariables().get(0);
@@ -205,11 +224,7 @@ public class TextWriter
             writer.println();
             writer.write("\t" + Clauses.openCurlyBracket);
             writer.println();
-            //TODO:
-//            if (!"".equals(procedure.getReturnStatement()))
-//            {
-//                writer.write("\t\t" + "return " + procedure.getReturnStatement());
-//            }
+            writeBehaviour(procedure.getBody ( ));
             writer.println();
             writer.write("\t" + Clauses.closeCurlyBracket);
         }
