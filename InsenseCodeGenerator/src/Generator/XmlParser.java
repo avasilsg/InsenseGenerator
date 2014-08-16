@@ -469,7 +469,7 @@ public class XmlParser
             }
             if ("return".equals(node.getNodeName().toLowerCase()))
             {
-                //TODO:
+                behaviour.setOperation(node.getNodeName().toLowerCase());
                 behaviour.setReturnStatement(parseReturn(node.getChildNodes()));
             }
         }
