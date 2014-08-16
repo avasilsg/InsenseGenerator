@@ -238,7 +238,7 @@ public class XmlParser
             }
         }
     }
-    
+    //TODO:
     private void extractFromAttributes(Connect connect, Node node)
     {
         for (int i = 0; i < node.getAttributes().getLength(); i++)
@@ -539,7 +539,6 @@ public class XmlParser
             }
             if ("value".equals(attributes.item(i).getNodeName().toLowerCase()))
             {
-                // receive.(attributes.item(i).getNodeValue());
             }
             if ("from".equals(attributes.item(i).getNodeName().toLowerCase()))
             {
