@@ -138,7 +138,7 @@ public class TextWriter
             writer.write("\t" + Clauses.constructor);
             writer.write(Clauses.openBracket);
             writer.println();
-            writeFields(contructor.getParameters ( ));
+            extractParameters(contructor.getParameters ( ));
             writer.println();
             writer.write(Clauses.closeBracket);
             writer.println();
@@ -213,14 +213,11 @@ public class TextWriter
     {
         for (int i = 0; i < procedures.size(); i++)
         {
-            writer.println();
-            
+            writer.println();            
             Procedure procedure = procedures.get(i);
-            
             writer.write("\t" + String.format(Clauses.procedureSyntax, procedure.getName()));
-            extractParameters(i, procedure);
+            extractParameters(procedure.getParameters ( ));
             writer.write(String.format(Clauses.closeProcedureDeclaration, procedure.getType()));
-            
             writer.println();
             writer.write("\t" + Clauses.openCurlyBracket);
             writer.println();
@@ -231,11 +228,11 @@ public class TextWriter
         
     }
     
-    private void extractParameters(int i, Procedure procedure)
+    private void extractParameters(LinkedList<Field> params)
     {
-        for (int j = 0; j < procedure.getParameters().size(); j++)
+        for (int j = 0; j < params.size(); j++)
         {
-            writeField(procedure.getParameters().get(i));
+            writeField(params.get(j));
         }
     }
     
