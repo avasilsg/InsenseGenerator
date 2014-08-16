@@ -89,21 +89,13 @@ public class TextWriter
         {
             throw new NullPointerException();
         }
-        writer.println();
-        
+        writer.println();      
         if (null != component.getName())
         {
             this.componentNames.add(component.getName());
         }
         String compTitle = String.format(Clauses.component, component.getName());
-        for (int i = 0; i < component.getPresents().size(); i++)
-        {
-            if (1 < component.getPresents().size())
-            {
-                compTitle = compTitle + Clauses.comma;
-            }
-            compTitle = compTitle + component.getPresents().get(i);
-        }
+        compTitle = writeComponentPresents ( component, compTitle );
         writer.write(compTitle);
         writer.println();
         writer.write(Clauses.openCurlyBracket);
@@ -117,17 +109,28 @@ public class TextWriter
         writer.println();
         writer.write("\t" + Clauses.openCurlyBracket);
         Behaviour behaviour = component.getBehaviour();
-        if (behaviour == null)
+        if (null != behaviour)
         {
-            throw new NullPointerException();
-        }
-        
-        writeBehaviour ( behaviour );
-        
+            writeBehaviour ( behaviour );
+        }        
         writer.println();
         writer.write("\t" + Clauses.closeCurlyBracket);
         writer.println();
         writer.write(Clauses.closeCurlyBracket);
+    }
+
+    private String writeComponentPresents ( Component component,
+            String compTitle )
+    {
+        for (int i = 0; i < component.getPresents().size(); i++)
+        {
+            if (1 < component.getPresents().size())
+            {
+                compTitle = compTitle + Clauses.comma;
+            }
+            compTitle = compTitle + component.getPresents().get(i);
+        }
+        return compTitle;
     }
 
     private void writeContructor (LinkedList<Constructor> constructors)
@@ -244,7 +247,6 @@ public class TextWriter
             {
                 writer.println();
                 Field field = fields.get(i);
-                
                 writeField(field);
             }
         }
@@ -388,6 +390,7 @@ public class TextWriter
         writer.write(String.format(Clauses.structSyntax, struct.getName()));
         writer.write(Clauses.openBracket);
         writeFields(struct.getFields());
+        writer.println();
         writer.write(Clauses.closeBracket);
         writer.println();
     }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<nodeName name="Models"/>
+	<struct>
+		<attribute name="sensorReading"/>
+		<field name="photo" type="integer"/>
+		<field name="solar" type="integer"/>
+		<field name="temp" type="real"/>
+		<field name="humid" type="real"/>
+	</struct>
+	<interface>
+		<attribute name="ISensorReader"/>
+		<channel direction="in" name="ticks" type="bool"/>
+		<channel direction="out" name="printChan" type="sensorReading"/>
+		<channel direction="out" name="ledsChan" type="sensorReading"/>
+	</interface>
+	<interface>
+		<attribute name="IPrintOutput"/>
+		<channel direction="in" name="input" type="sensorReading"/>
+	</interface>
+	<interface>
+		<attribute name="ILedOutput"/>
+		<channel direction="in" name="input" type="sensorReading"/>
+	</interface>
+	<component>
+		<attribute name="SensorReader"/>
+		<presents name="ISensorReader"/>
+		<constructor/>
+		<behaviour>
+			<receive from="ticks" identifier="tick"/>
+			<variable bindingTo="photoReading()" name="photoValue" new="false" type=""/>
+			<variable bindingTo="solarReading()" name="solarValue" new="false" type=""/>
+			<variable bindingTo="tempCelsiusReading()" name="tempValue" new="false" type=""/>
+			<variable bindingTo="relHumidReading()" name="humdityValue" new="false" type=""/>
+			<variable bindingTo=" SensorReading( photoValue, solarValue, tempValue, humidityValuereading)" name="reading" new="true" type=""/>
+			<send identifier="reading" on="ledsChan"/>
+			<send identifier="reading" on="printChan"/>
+		</behaviour>
+	</component>
+	<component>
+		<attribute name="PrintOutput"/>
+		<presents name="IPrintOutput"/>
+		<field name="cycle" type="" value="0"/>
+		<constructor/>
+		<behaviour>
+			<receive from="input" identifier="reading"/>
+			<print type="string" variable="'Cycle '"/>
+			<print type="Int" variable="cycle"/>
+			<print type="string" variable="':\tphoto = '"/>
+			<print type="Int" variable="reading"/>
+			<print type="string" variable="'\tsolar = '"/>
+			<print type="Int" variable="reading"/>
+			<print type="string" variable="'\ttemp = '"/>
+			<print type="Int" variable="reading"/>
+			<print type="string" variable="'\thumid = '"/>
+			<print type="Int" variable="reading"/>
+			<print type="integer" variable="'\n'"/>
+			<variable bindingTo="cycle+1" name="cycle" new="false" type=""/>
+		</behaviour>
+	</component>
+	<component>
+		<attribute name="LedOutput"/>
+		<presents name="ILedOutput"/>
+		<field name="avgTemp" type="" value="0.0"/>
+		<field name="avgSolar" type="" value="0"/>
+		<field name="avgHumid" type="" value="0.0"/>
+		<constructor/>
+		<behaviour>
+			<receive from="input" identifier="reading"/>
+			<comment text="set LEDs, R/G/B for high temp/umidity/light"/>
+			<comment text="set averages"/>
+		</behaviour>
+	</component>
+	<instance component="SensorReader" name="sr"/>
+	<instance component="LedOutput" name="lo"/>
+	<instance component="PrintOutput" name="po"/>
+	<connect>
+		<from name="sr" on="printChan"/>
+		<to name="po" on="input"/>
+		<from name="sr" on="ledsChan"/>
+		<to name="lo" on="input"/>
+	</connect>
+</xsd:schema>
