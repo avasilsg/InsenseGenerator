@@ -228,7 +228,6 @@ public class TextWriter
             writer.println();
             writer.write("\t" + Clauses.closeCurlyBracket);
         }
-        
     }
     
     private void extractParameters(LinkedList<Field> params)
@@ -241,14 +240,11 @@ public class TextWriter
     
     private void writeFields(LinkedList<Field> fields)
     {
-        if (1 <= fields.size())
+        for (int i = 0; i < fields.size(); i++)
         {
-            for (int i = 0; i < fields.size(); i++)
-            {
-                writer.println();
-                Field field = fields.get(i);
-                writeField(field);
-            }
+            writer.println();
+            Field field = fields.get(i);
+            writeField(field);
         }
     }
     
@@ -285,7 +281,6 @@ public class TextWriter
     private void writeReceive(Behaviour behaviour)
     {
         Receive receive = behaviour.getReceives().get(0);
-        
         writer.println();
         writer.write("\t\t" + String.format(Clauses.receive, receive.getInderntifier(), receive.getFrom()));
         behaviour.getReceives().remove(0);
@@ -311,13 +306,11 @@ public class TextWriter
     {
         Print print = behaviour.getPrints().get(0);
         boolean flagAttribute = false;
-        writer.println();
-        
+        writer.println();        
         if (null != print.getAttribute() && !"".equals(print.getAttribute()))
         {
             flagAttribute = true;
         }
-        
         writer.println();
         String expression = null;
         if (flagAttribute)
