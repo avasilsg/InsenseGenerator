@@ -12,6 +12,8 @@ import Units.Interface;
 import Units.Struct;
 import Units.BasicUnits.Channel;
 import Units.BasicUnits.Field;
+import Units.BasicUnits.Receive;
+import Units.BasicUnits.Send;
 import GrammarAndClauses.Grammer;
 
 public class InsenseCodeParser
@@ -20,10 +22,15 @@ public class InsenseCodeParser
     private XMLWriter         writer;
     private String []         container;
 
+    private boolean           isCurlyBracket;
+    private boolean           isAfterComponent;
+    
     public InsenseCodeParser ( final String filePath)
     {
         try
         {
+            isAfterComponent = false;
+            isCurlyBracket   = false;
             writer = new XMLWriter ( );
             reader = new BufferedReader ( new FileReader ( filePath ) );
         }
@@ -49,7 +56,15 @@ public class InsenseCodeParser
                 {
                     continue;
                 }
-                this.container = line.split ( "\\s+" );
+                if (Grammer.findOpenDelimeterChars ( line ))
+                {
+                    this.isCurlyBracket = true;
+                    continue;
+                }
+                else
+                {
+                    this.container = line.split ( "\\s+" );
+                }
                 removeEmptyElements();
                 findExpressionType ( );
                 
@@ -72,10 +87,10 @@ public class InsenseCodeParser
 
         container = list.toArray(new String[list.size()]);
     }
-   
+   //TODO: workaround fields of component
     private void findExpressionType ( )
     {
-        
+        boolean isKeyType = false;
         for ( int i = 0; i < container.length; i++ )
         {
             String element = Grammer.findExpression ( container[i] );
@@ -83,8 +98,17 @@ public class InsenseCodeParser
             {
                 if (true == parseType ( element ))
                 {
+                    isKeyType = true;
                     break;
                 }
+            }
+        }
+        if ((0 < container.length) && !isKeyType)
+        {
+            if (this.isAfterComponent && this.isCurlyBracket)
+            {
+                Field field = parseField();
+                writer.writeXML ( "field", field );
             }
         }
     }
@@ -103,12 +127,16 @@ public class InsenseCodeParser
             case "interface":
             {
                 Interface interfs = parseInterface ( );
+                this.isAfterComponent = false;
+                this.isCurlyBracket = false;
                 writer.writeXML ( elementType, interfs );
                 return true;
             }
             case "struct":
             {
                 Struct struct = parseStruct();
+                this.isAfterComponent = false;
+                this.isCurlyBracket = false;
                 writer.writeXML ( elementType, struct );
                 return true;                
             }
@@ -122,8 +150,28 @@ public class InsenseCodeParser
             case "component":
             {
                 Component component = parseComponent();
+                this.isAfterComponent = true;
                 writer.writeXML ( elementType, component );
                 return true;                
+            }
+            case "behaviour":
+            {
+                this.isCurlyBracket = false;
+                this.isAfterComponent = false;
+                writer.writeXML ( elementType, elementType );
+                return true;
+            }
+            case "send":
+            {
+                Send send = parseSend();
+                writer.writeXML ( elementType, send );
+                return true;
+            }
+            case "receive":
+            {
+                Receive receive = parseReceive();
+                writer.writeXML ( elementType, receive );
+                return true;
             }
             case "real":
             case "integer":
@@ -131,11 +179,75 @@ public class InsenseCodeParser
             {
                 Field field = parseField();
                 writer.writeXML ( "field", field );
+                return true;
             }
+            
         }
         return false;
         
     }
+    private Receive parseReceive ( )
+    {
+        Receive receive = new Receive();
+        boolean isAfterIdentifier = false;
+        for (int i = 0; i < container.length; i++)
+        {
+            if ("receive".equals (container [i]))
+            {
+                isAfterIdentifier = true;
+                continue;
+            }
+            if ("from".equals ( container [i]))
+            {
+                isAfterIdentifier = false;
+                continue;
+            }
+            if (!"".equals ( container [i]))
+            {
+                if (isAfterIdentifier)
+                {
+                    receive.setInderntifier ( container[i] ); 
+                }
+                else
+                {
+                    receive.setFrom ( container[i] );
+                }
+            }
+        }
+        return receive;
+    }
+//  <send identifier="reading" on="printChan"/>
+    private Send parseSend ( )
+    {
+        Send send = new Send();
+        boolean isAfterIdentifier = false;
+        for (int i = 0; i < container.length; i++)
+        {
+            if ("send".equals ( container [i]))
+            {
+                isAfterIdentifier = true;
+                continue;
+            }
+            if ("on".equals ( container [i]))
+            {
+                isAfterIdentifier = false;
+                continue;
+            }
+            if (!"".equals ( container [i]))
+            {
+                if (isAfterIdentifier)
+                {
+                   send.setInderntifier ( container[i] ); 
+                }
+                else
+                {
+                    send.setOn ( container[i] );
+                }
+            }
+        }
+        return send;
+    }
+
     private Component parseComponent ( )
     {
         Component component = new Component();

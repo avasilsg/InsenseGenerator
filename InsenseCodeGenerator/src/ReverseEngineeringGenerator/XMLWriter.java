@@ -21,6 +21,8 @@ import Units.Interface;
 import Units.Struct;
 import Units.BasicUnits.Channel;
 import Units.BasicUnits.Field;
+import Units.BasicUnits.Receive;
+import Units.BasicUnits.Send;
 import AbstractGenerator.Writer;
 
 public class XMLWriter extends Writer
@@ -31,8 +33,10 @@ public class XMLWriter extends Writer
     private TransformerFactory     transformerFactory;
     private Transformer            transformer;
     private DOMSource              source;
+    
     private Element                rootElement;
     private Element                lastComputationalUnit;
+    private Element                lastSubElement;
     
     public XMLWriter ()
     {
@@ -98,9 +102,58 @@ public class XMLWriter extends Writer
                 }
                 break;
             }
+            case "behaviour":
+            {
+                writeBehaviour();
+                break;
+            }
+            case "send":
+            {
+                if ( object instanceof Send )
+                {
+                    writeSend((Send)object);
+                }
+                break;
+            }
+            case "receive":
+            {
+                if ( object instanceof Receive )
+                {
+                    writeReceive((Receive)object);
+                }
+                break;
+            }
         }
     }
-    
+//    <send identifier="reading" on="printChan"/>
+    private void writeSend ( Send send )
+    {
+        Element element = doc.createElement ( "send" );
+        this.lastSubElement.appendChild ( element );
+        
+        Attr attr = doc.createAttribute ( "on" );
+        attr.setValue ( send.getOn ( ));
+        element.setAttributeNode ( attr );
+        
+        attr = doc.createAttribute ( "identifier" );
+        attr.setValue ( send.getInderntifier ( ) );
+        element.setAttributeNode ( attr );        
+    }
+//    <receive from="input" identifier="reading"/>
+    private void writeReceive ( Receive receive )
+    {
+        Element element = doc.createElement ( "receive" );
+        this.lastSubElement.appendChild ( element );
+                
+        Attr attr = doc.createAttribute ( "identifier" );
+        attr.setValue ( receive.getInderntifier ( ) );
+        element.setAttributeNode ( attr );
+        
+        attr = doc.createAttribute ( "from" );
+        attr.setValue ( receive.getFrom ( ));
+        element.setAttributeNode ( attr );
+    }
+
     // <interface>
     // <attribute name="IPrintOutput"/>
     // <channel direction="in" name="input" type="sensorReading"/>
@@ -153,6 +206,13 @@ public class XMLWriter extends Writer
             element.appendChild ( elAttr );
             elAttr.setAttribute ( "name", component.getPresents ( ).get ( i ) );
         }
+    }
+    private void writeBehaviour ()
+    {
+        Element element = doc.createElement ( "behaviour" );
+        this.lastSubElement = element;
+        this.lastComputationalUnit.appendChild ( element );
+        
     }
 //    <field  type = "integer" name = "solar"/>
 

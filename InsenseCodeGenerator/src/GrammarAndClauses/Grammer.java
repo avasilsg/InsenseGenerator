@@ -43,17 +43,17 @@ public class Grammer extends DefaultStyledDocument
         return "";
     }
        
-    public static String findOpenDelimeterChars ( String word )
+    public static boolean findOpenDelimeterChars ( String word )
     {
         if(word.contains("{"))
         {
-            return "{";
+            return true;
         }
-        if (word.contains("("))
-        {
-            return "(";
-        }
-        return "";
+//        if (word.contains("("))
+//        {
+//            return "(";
+//        }
+        return false;
     }
     
     public static String findCloseDelimeterChars ( String word  )
