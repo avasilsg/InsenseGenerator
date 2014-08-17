@@ -3,7 +3,8 @@ type sensorReading is struct (
 	integer photo;
 	integer solar;
 	real temp;
-	real humid;)
+	real humid;
+)
 
 type ISensorReader is interface
 (
@@ -22,9 +23,6 @@ type ILedOutput is interface
 component SensorReader presents ISensorReader
 {
 
-	constructor ()
-	{
-	}
 
 	behaviour 
 	{
@@ -47,9 +45,6 @@ component PrintOutput presents IPrintOutput
 {
 
 	cycle = 0
-	constructor ()
-	{
-	}
 
 	behaviour 
 	{
@@ -86,9 +81,6 @@ component LedOutput presents ILedOutput
 	avgTemp = 0.0
 	avgSolar = 0
 	avgHumid = 0.0
-	constructor ()
-	{
-	}
 
 	behaviour 
 	{

@@ -5,11 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import Units.Component;
 import Units.Interface;
+import Units.Struct;
 import Units.BasicUnits.Channel;
+import Units.BasicUnits.Field;
 import GrammarAndClauses.Grammer;
 
 public class InsenseCodeParser
@@ -17,13 +19,7 @@ public class InsenseCodeParser
     private BufferedReader    reader;
     private XMLWriter         writer;
     private String []         container;
-//    private ArrayList<String> blockContainer;
-//    
-//    private int               openBracketCount;
-//    private int               closedBrackCount;
-//    private int               openCurclyBracketCount;
-//    private int               closedCurlyBracketCount;
-//    
+
     public InsenseCodeParser ( final String filePath)
     {
         try
@@ -76,58 +72,7 @@ public class InsenseCodeParser
 
         container = list.toArray(new String[list.size()]);
     }
-    // private boolean lineContainer ( String lineIn )
-    // {
-    //
-    // String symbol = Grammer.findOpenDelimeterChars ( lineIn );
-    // if ( "".endsWith ( symbol ) )
-    // {
-    // this.blockContainer.add ( lineIn );
-    // bracketCounter ( symbol );
-    // }
-    // symbol = Grammer.findCloseDelimeterChars ( lineIn );
-    // if ( "".endsWith ( symbol ) )
-    // {
-    // this.blockContainer.add ( lineIn );
-    // bracketCounter ( symbol );
-    // }
-    // if ( 0 == checkForClosedExpression ( ) )
-    // {
-    // return true;
-    // }
-    // return false;
-    // }
-    
-    // private void bracketCounter ( String symbol )
-    // {
-    //
-    // switch ( symbol)
-    // {
-    // case "(":
-    // {
-    // this.openBracketCount++;
-    // }
-    // case ")":
-    // {
-    // this.closedBrackCount++;
-    // }
-    // case "{":
-    // {
-    // this.openCurclyBracketCount++;
-    // }
-    // case "}":
-    // {
-    // this.closedCurlyBracketCount++;
-    // }
-    // }
-    // }
-    //
-    // private int checkForClosedExpression ( )
-    // {
-    // return (openBracketCount - closedBrackCount)
-    // + (openCurclyBracketCount - closedCurlyBracketCount);
-    // }
-    //
+   
     private void findExpressionType ( )
     {
         
@@ -161,6 +106,12 @@ public class InsenseCodeParser
                 writer.writeXML ( elementType, interfs );
                 return true;
             }
+            case "struct":
+            {
+                Struct struct = parseStruct();
+                writer.writeXML ( elementType, struct );
+                return true;                
+            }
             case "out":
             case "in":
             {
@@ -168,10 +119,118 @@ public class InsenseCodeParser
                 writer.writeXML ( "channel", channel );
                 return true;
             }
+            case "component":
+            {
+                Component component = parseComponent();
+                writer.writeXML ( elementType, component );
+                return true;                
+            }
+            case "real":
+            case "integer":
+            case "bool":
+            {
+                Field field = parseField();
+                writer.writeXML ( "field", field );
+            }
         }
-        
         return false;
         
+    }
+    private Component parseComponent ( )
+    {
+        Component component = new Component();
+        boolean isComponent = false, isPresents = false;
+//        component SensorReader presents ISensorReader 
+        for ( int i = 0; i < this.container.length; i++ )
+        {
+            container[i] = container[i].replaceAll ( "[\\{\\(;]", "" );
+            if ( container[i].equals ( "component" ) )
+            {
+                isComponent = true;
+                continue;
+            }
+            else if ( "presents".equals ( container[i] ) )
+            {
+                isPresents = true;
+                continue;
+            }
+            else if ( !"".equals ( container[i] ) )
+            {
+                if (true == isComponent)
+                {
+                    component.setName ( container[i] ); 
+                    isComponent = false;
+                }
+                if (true == isPresents)
+                {
+                    component.setPresent ( container[i] );
+                }
+            }
+        }
+        return component;
+    }
+
+    private Struct parseStruct ( )
+    {
+        // type ITimedTempReader is interface
+        Struct struct = new Struct ( );
+        for ( int i = 0; i < this.container.length; i++ )
+        {
+            container[i] = container[i].replaceAll ( "[\\{\\(;]", "" );
+            if ( container[i].equals ( "type" ) )
+            {
+                continue;
+            }
+            else if ( "is".equals ( container[i] ) )
+            {
+                continue;
+            }
+            else if ( "struct".equals ( container[i] ) )
+            {
+                continue;
+            }
+            else if ( !"".equals ( container[i] ) )
+            {
+                struct.setName ( container[i] );
+            }
+        }
+        
+        return struct;
+    }
+    
+    private Field parseField()
+    {
+        boolean isContainsEqual = false;
+        Field field = new Field();
+        for(int i = 0; i < this.container.length; i++)
+        {
+            if (container[i].contains ( "=" ))
+            {
+                isContainsEqual = true;
+            }
+            container[i] = container[i].replaceAll ( "[\\{\\(;=]", " " );
+        }
+        removeEmptyElements();
+        if (2 == container.length)
+        {
+            if (!isContainsEqual)
+            {
+                field.setType ( container[0] );
+                field.setName ( container[1] );
+            }
+            else
+            {
+                field.setName  ( container[0] );
+                field.setValue ( container[1] );
+            }
+        }
+        else
+        {
+            field.setType ( container[0] );
+            field.setName ( container[1] );
+            field.setValue( container[2] );
+        }
+        return field;
     }
     
     private Interface parseInterface ( )
@@ -207,8 +266,7 @@ public class InsenseCodeParser
         for ( int i = 0; i < container.length; i++ )
         {
             // out integer output ;
-            container[i] = container[i].replaceAll ( "\\[\\{\\(", "" )
-                    .replaceAll ( "\\]\\}\\)\\;", "" );
+            container[i] = container[i].replaceAll ( "[\\{\\(;]", "" );
             
             if ( "out".equals ( container[i] )
                     || "in".equals ( container[i] ) )
@@ -221,8 +279,7 @@ public class InsenseCodeParser
             }
             if ( !"".equals ( container[i] ) && (i == 2) )
             {
-                String str = container[i].replace ( ";", "" );
-                chan.setName ( str );
+                chan.setName ( container[i] );
             }
         }
         return chan;

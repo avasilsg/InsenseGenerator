@@ -1,7 +1,6 @@
 package ReverseEngineeringGenerator;
 
 import java.io.File;
-import java.util.LinkedList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,9 +16,11 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import Units.Component;
 import Units.Interface;
 import Units.Struct;
 import Units.BasicUnits.Channel;
+import Units.BasicUnits.Field;
 import AbstractGenerator.Writer;
 
 public class XMLWriter extends Writer
@@ -81,8 +82,20 @@ public class XMLWriter extends Writer
                 }
                 break;
             }
+            case "field":
+            {
+                if ( object instanceof Field )
+                {
+                    writeField((Field)object);
+                }
+                break;
+            }
             case "component":
             {
+                if ( object instanceof Component )
+                {
+                    writeComponent((Component)object);
+                }
                 break;
             }
         }
@@ -128,6 +141,47 @@ public class XMLWriter extends Writer
         setNameAttribute ( struct.getName ( ), element );
     }
     
+    private void writeComponent ( final Component component )
+    {
+        Element element = doc.createElement ( "component" );
+        rootElement.appendChild ( element );
+        lastComputationalUnit = element;
+        setNameAttribute ( component.getName ( ), element );
+        for (int i = 0; i < component.getPresents ( ).size ( ); i++)
+        {
+            Element elAttr = doc.createElement ( "presents" );
+            element.appendChild ( elAttr );
+            elAttr.setAttribute ( "name", component.getPresents ( ).get ( i ) );
+        }
+    }
+//    <field  type = "integer" name = "solar"/>
+
+    private void writeField ( Field field )
+    {
+        Element element = doc.createElement ( "field" );
+        this.lastComputationalUnit.appendChild ( element );
+        Attr attr = doc.createAttribute ( "type" );
+
+        if (null != field.getType ( ))
+        {
+            attr.setValue ( field.getType() );
+            element.setAttributeNode ( attr );
+        }
+        
+        if (null != field.getName ( ))
+        {
+            attr = doc.createAttribute ( "name" );
+            attr.setValue ( field.getName ( ) );
+            element.setAttributeNode ( attr );
+        }
+        if (null != field.getValue ( ))
+        {
+            attr = doc.createAttribute ( "value" );
+            attr.setValue ( field.getValue ( ) );
+            element.setAttributeNode ( attr );
+        }
+    }
+    
     private void setNameAttribute ( final String name, Element parentElement )
     {
         Element element = doc.createElement ( "attribute" );
@@ -144,13 +198,11 @@ public class XMLWriter extends Writer
         }
         catch (TransformerConfigurationException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace ( );
         }
         source = new DOMSource ( doc );
         StreamResult result = new StreamResult ( new File (
                 super.getPathToTheNewCreatedFile ( ) ) );
-        
         try
         {
             transformer.transform ( source, result );
