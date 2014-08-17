@@ -173,6 +173,11 @@ public class InsenseCodeParser
                 writer.writeXML ( elementType, receive );
                 return true;
             }
+            case "connect":
+            {
+                writer.writeXML ( elementType, elementType );
+                return true;
+            }
             case "real":
             case "integer":
             case "bool":
@@ -320,7 +325,7 @@ public class InsenseCodeParser
             {
                 isContainsEqual = true;
             }
-            container[i] = container[i].replaceAll ( "[\\{\\(;=]", " " );
+            container[i] = container[i].replaceAll ( "[\\{\\(;=]", "" );
         }
         removeEmptyElements();
         if (2 == container.length)

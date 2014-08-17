@@ -5,6 +5,7 @@ import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -17,6 +18,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import Units.Component;
+import Units.Connect;
 import Units.Interface;
 import Units.Struct;
 import Units.BasicUnits.Channel;
@@ -37,6 +39,8 @@ public class XMLWriter extends Writer
     private Element                rootElement;
     private Element                lastComputationalUnit;
     private Element                lastSubElement;
+    private Element                connectElement;
+    private boolean                isAlreadyGenerated;
     
     public XMLWriter ()
     {
@@ -49,6 +53,7 @@ public class XMLWriter extends Writer
             rootElement.setAttribute ( "xmlns:xsd",
                     "http://www.w3.org/2001/XMLSchema" );
             doc.appendChild ( rootElement );
+            isAlreadyGenerated = false;
             lastComputationalUnit = null;
         }
         catch (ParserConfigurationException e)
@@ -74,7 +79,7 @@ public class XMLWriter extends Writer
             {
                 if ( object instanceof Channel )
                 {
-                    writeChannels( (Channel) object );
+                    writeChannels ( (Channel) object );
                 }
                 break;
             }
@@ -82,7 +87,7 @@ public class XMLWriter extends Writer
             {
                 if ( object instanceof Struct )
                 {
-                    writeStruct( (Struct) object );
+                    writeStruct ( (Struct) object );
                 }
                 break;
             }
@@ -90,7 +95,7 @@ public class XMLWriter extends Writer
             {
                 if ( object instanceof Field )
                 {
-                    writeField((Field)object);
+                    writeField ( (Field) object );
                 }
                 break;
             }
@@ -98,20 +103,20 @@ public class XMLWriter extends Writer
             {
                 if ( object instanceof Component )
                 {
-                    writeComponent((Component)object);
+                    writeComponent ( (Component) object );
                 }
                 break;
             }
             case "behaviour":
             {
-                writeBehaviour();
+                writeBehaviour ( );
                 break;
             }
             case "send":
             {
                 if ( object instanceof Send )
                 {
-                    writeSend((Send)object);
+                    writeSend ( (Send) object );
                 }
                 break;
             }
@@ -119,41 +124,59 @@ public class XMLWriter extends Writer
             {
                 if ( object instanceof Receive )
                 {
-                    writeReceive((Receive)object);
+                    writeReceive ( (Receive) object );
                 }
+                break;
+            }
+            case "connect":
+            {
+                writeConnect ( );
                 break;
             }
         }
     }
-//    <send identifier="reading" on="printChan"/>
+    
+    private void writeConnect ( )
+    {
+        if ( !isAlreadyGenerated )
+        {
+            Element element = doc.createElement ( "connect" );
+            this.rootElement.appendChild ( element );
+            connectElement = element;
+            isAlreadyGenerated = true;
+        }
+    }
+    
+    // <send identifier="reading" on="printChan"/>
     private void writeSend ( Send send )
     {
         Element element = doc.createElement ( "send" );
         this.lastSubElement.appendChild ( element );
         
         Attr attr = doc.createAttribute ( "on" );
-        attr.setValue ( send.getOn ( ));
+        attr.setValue ( send.getOn ( ) );
         element.setAttributeNode ( attr );
         
         attr = doc.createAttribute ( "identifier" );
         attr.setValue ( send.getInderntifier ( ) );
-        element.setAttributeNode ( attr );        
+        element.setAttributeNode ( attr );
     }
-//    <receive from="input" identifier="reading"/>
+    
+    // <receive from="input" identifier="reading"/>
     private void writeReceive ( Receive receive )
     {
         Element element = doc.createElement ( "receive" );
         this.lastSubElement.appendChild ( element );
-                
+        
         Attr attr = doc.createAttribute ( "identifier" );
         attr.setValue ( receive.getInderntifier ( ) );
         element.setAttributeNode ( attr );
         
         attr = doc.createAttribute ( "from" );
-        attr.setValue ( receive.getFrom ( ));
+        attr.setValue ( receive.getFrom ( ) );
         element.setAttributeNode ( attr );
     }
-
+    
     // <interface>
     // <attribute name="IPrintOutput"/>
     // <channel direction="in" name="input" type="sensorReading"/>
@@ -200,41 +223,43 @@ public class XMLWriter extends Writer
         rootElement.appendChild ( element );
         lastComputationalUnit = element;
         setNameAttribute ( component.getName ( ), element );
-        for (int i = 0; i < component.getPresents ( ).size ( ); i++)
+        for ( int i = 0; i < component.getPresents ( ).size ( ); i++ )
         {
             Element elAttr = doc.createElement ( "presents" );
             element.appendChild ( elAttr );
             elAttr.setAttribute ( "name", component.getPresents ( ).get ( i ) );
         }
     }
-    private void writeBehaviour ()
+    
+    private void writeBehaviour ( )
     {
         Element element = doc.createElement ( "behaviour" );
         this.lastSubElement = element;
         this.lastComputationalUnit.appendChild ( element );
         
     }
-//    <field  type = "integer" name = "solar"/>
-
+    
+    // <field type = "integer" name = "solar"/>
+    
     private void writeField ( Field field )
     {
         Element element = doc.createElement ( "field" );
         this.lastComputationalUnit.appendChild ( element );
         Attr attr = doc.createAttribute ( "type" );
-
-        if (null != field.getType ( ))
+        
+        if ( null != field.getType ( ) )
         {
-            attr.setValue ( field.getType() );
+            attr.setValue ( field.getType ( ) );
             element.setAttributeNode ( attr );
         }
         
-        if (null != field.getName ( ))
+        if ( null != field.getName ( ) )
         {
             attr = doc.createAttribute ( "name" );
             attr.setValue ( field.getName ( ) );
             element.setAttributeNode ( attr );
         }
-        if (null != field.getValue ( ))
+        if ( null != field.getValue ( ) )
         {
             attr = doc.createAttribute ( "value" );
             attr.setValue ( field.getValue ( ) );
@@ -265,6 +290,7 @@ public class XMLWriter extends Writer
                 super.getPathToTheNewCreatedFile ( ) ) );
         try
         {
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform ( source, result );
         }
         catch (TransformerException e)
