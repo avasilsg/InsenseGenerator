@@ -40,7 +40,8 @@ import javax.swing.SwingConstants;
 
 import Generator.CompilerCaller;
 import Generator.XmlParser;
-import GrammarAndClauses.Grammar;
+import GrammarAndClauses.Grammer;
+import ReverseEngineeringGenerator.InsenseCodeParser;
 import ReverseEngineeringGenerator.XMLFileContainer;
 
 public class MainWindow extends JFrame implements ActionListener
@@ -108,7 +109,8 @@ public class MainWindow extends JFrame implements ActionListener
         mnOpen.setHorizontalAlignment(SwingConstants.CENTER);
         menuBar.add(mnOpen);
         
-        menuItem = new JMenuItem("Generate XML");
+        menuItem = new JMenuItem("Generate XML Code");
+        menuItem.addActionListener(this);
         mnOpen.add(menuItem);
         
         menuItem = new JMenuItem("Validate XML");
@@ -196,7 +198,7 @@ public class MainWindow extends JFrame implements ActionListener
                 openDialog(myMenu.getText());
                 break;
             }
-            
+            case "Generate XML Code":
             case "Generate Insense Code":
             {
                 openDialog(myMenu.getText());
@@ -273,6 +275,12 @@ public class MainWindow extends JFrame implements ActionListener
         parser.parseXML();
     }
     
+    private void parseInsense(String filePath)
+    {
+        InsenseCodeParser parser = new InsenseCodeParser(filePath);
+        parser.parseInsense();
+    }
+    
     private void openDialog(String title)
     {
         if (title == "Open file")
@@ -305,6 +313,10 @@ public class MainWindow extends JFrame implements ActionListener
             {
                 JOptionPane.showMessageDialog(null, "Choose an xml file!");
             }
+        }
+        if (title == "Generate XML Code")
+        {
+            parseInsense(this.compileCaller.getInsenseFilePath ( ));
         }
         if (title == "Save file")
         {
@@ -422,7 +434,7 @@ public class MainWindow extends JFrame implements ActionListener
             for (int i = 0; i < keyWords.length; i++)
             {
                 keyWords[i].replaceAll("\\s+", "");
-                if (!"".equals(keyWords[i]) && (Grammar.findWord(keyWords[i])))
+                if (!"".equals(keyWords[i]) && (Grammer.findWord(keyWords[i])))
                 {
                     if (0 == i)
                     {

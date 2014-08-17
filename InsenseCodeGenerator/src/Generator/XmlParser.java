@@ -25,9 +25,7 @@ import Units.BasicUnits.Send;
 import Units.BasicUnits.Variable;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 
 public class XmlParser

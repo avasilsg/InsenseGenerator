@@ -10,10 +10,12 @@ public abstract class Writer
     protected PrintWriter writer;
     protected File        dir;
     private   String      extention;
+    private   String      pathToTheNewCreatedFile;
     protected Writer ()
     {
         this.dir = null;
         this.writer = null;
+        this.setPathToTheNewCreatedFile ( null );
     }
     
     public void openAndCreateFile(String fileFormat)
@@ -36,7 +38,21 @@ public abstract class Writer
         String path = new File ( "" ).getAbsolutePath ( );
         dir = new File ( path + "/" + "temp" );
         dir.mkdir ( );
+        if (".isf".equals ( extention ))
         writer = new PrintWriter ( dir.getAbsoluteFile ( ) + "/" + "temp"
                 + extention, "UTF-8" );
+        else
+        setPathToTheNewCreatedFile ( dir.getAbsoluteFile ( ) + "/" + "temp"
+                + extention );
+    }
+
+    public String getPathToTheNewCreatedFile ( )
+    {
+        return pathToTheNewCreatedFile;
+    }
+
+    public void setPathToTheNewCreatedFile ( String pathToTheNewCreatedFile )
+    {
+        this.pathToTheNewCreatedFile = pathToTheNewCreatedFile;
     }
 }

@@ -1,23 +1,24 @@
 package GrammarAndClauses;
 
-
-
 import javax.swing.text.DefaultStyledDocument;
 
-public class Grammar extends DefaultStyledDocument 
+public class Grammer extends DefaultStyledDocument
 {
     /**
      * 
      */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID        = 1L;
     /**
      * 
      */
     
-    public static String computationalUnits[] = {"interface","component", "type", "behaviour","send","receive","proc","struct","constructor","integer","real","bool","connect","in","out","new","presents","return","on","to","from"};
-    public static String computationalUnitsRegEx = "inteface|component|behaviour|send|receive|proc|struct|constructor|integer|real|boolean|new|presents|return|on|to|from";
+    public static String      computationalUnits[]    = { "interface",
+            "component", "type", "behaviour", "send", "receive", "proc",
+            "struct", "constructor", "integer", "real", "bool", "connect",
+            "in", "out", "new", "presents", "return", "on", "to", "from" };
+    public static String      computationalUnitsRegEx = "inteface|component|behaviour|send|receive|proc|struct|constructor|integer|real|boolean|new|presents|return|on|to|from";
     
-   public static int findLastNonWordChar ( String text, int index )
+    public static int findLastNonWordChar ( String text, int index )
     {
         while (--index >= 0)
         {
@@ -41,11 +42,12 @@ public class Grammar extends DefaultStyledDocument
         }
         return index;
     }
-    public static boolean findWord(String word)
+    
+    public static boolean findWord ( String word )
     {
-        for(int i = 0; i < computationalUnits.length; i++)
+        for ( int i = 0; i < computationalUnits.length; i++ )
         {
-            if (word.equals(computationalUnits[i]))
+            if ( word.equals ( computationalUnits[i] ) )
             {
                 return true;
             }
@@ -53,11 +55,11 @@ public class Grammar extends DefaultStyledDocument
         return false;
     }
     
-    public String findExpression(String word)
+    public static String findExpression ( String word )
     {
-        for(int i = 0; i < computationalUnits.length; i++)
+        for ( int i = 0; i < computationalUnits.length; i++ )
         {
-            if (word.equals(computationalUnits[i]))
+            if ( word.equals ( computationalUnits[i] ) )
             {
                 return computationalUnits[i];
             }
@@ -65,11 +67,11 @@ public class Grammar extends DefaultStyledDocument
         return "";
     }
     
-    public boolean findOpenDelimeterChars(String[] expression)
+    public boolean findOpenDelimeterChars ( String [] expression )
     {
-        for (int i = 0; i < expression.length; i++)
+        for ( int i = 0; i < expression.length; i++ )
         {
-            switch(expression[i])
+            switch ( expression[i])
             {
                 case "{":
                 case "(":
@@ -81,11 +83,11 @@ public class Grammar extends DefaultStyledDocument
         return false;
     }
     
-    public boolean findCloseDelimeterChars(String[] expression)
+    public boolean findCloseDelimeterChars ( String [] expression )
     {
-        for (int i = 0; i < expression.length; i++)
+        for ( int i = 0; i < expression.length; i++ )
         {
-            switch(expression[i])
+            switch ( expression[i])
             {
                 case "}":
                 case ";":
