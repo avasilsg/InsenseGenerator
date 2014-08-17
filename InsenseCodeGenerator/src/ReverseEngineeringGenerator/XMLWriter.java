@@ -131,11 +131,42 @@ public class XMLWriter extends Writer
             case "connect":
             {
                 writeConnect ( );
+                if ( object instanceof Connect )
+                {
+                    writeConnection((Connect) object);
+                }
                 break;
             }
+            
         }
     }
     
+    private void writeConnection ( Connect connect )
+    {
+        Element element = doc.createElement ( "from" );
+        this.connectElement.appendChild ( element );
+        
+        Attr attr = doc.createAttribute ( "on" );
+        attr.setValue ( connect.getFromNameOn ( ) );
+        element.setAttributeNode ( attr );
+        
+        if (null != connect.getFromName ( ) || !"".equals ( connect.getFromName ( ) ))
+        {
+            attr = doc.createAttribute ( "name" );
+            attr.setValue ( connect.getFromName ( ) );
+            element.setAttributeNode ( attr );
+        }
+        element = doc.createElement ( "to" );
+        this.connectElement.appendChild ( element );
+        
+        element.setAttribute ( "on", connect.getToNameOn ( ));
+        
+        if (null != connect.getToName ( ) || !"".equals ( connect.getToName ( ) ))
+        {
+            element.setAttribute ( "name" , connect.getToName ( ) );
+        }
+    }
+
     private void writeConnect ( )
     {
         if ( !isAlreadyGenerated )

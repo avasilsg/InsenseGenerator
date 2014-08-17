@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Units.Component;
+import Units.Connect;
 import Units.Interface;
 import Units.Struct;
 import Units.BasicUnits.Channel;
@@ -176,6 +177,8 @@ public class InsenseCodeParser
             case "connect":
             {
                 writer.writeXML ( elementType, elementType );
+                Connect connect = parseConnect();
+                writer.writeXML (elementType, connect);
                 return true;
             }
             case "real":
@@ -191,6 +194,55 @@ public class InsenseCodeParser
         return false;
         
     }
+    private Connect parseConnect ( )
+    {
+        Connect connect = new Connect();
+        boolean isAfterConnect = false;
+        for(int i = 0;  i < container.length; i++)
+        {
+            if ("connect".equals ( container[i] ))
+            {
+                isAfterConnect = true;
+                continue;
+            }
+            if ("to".equals ( container[i] ))
+            {
+                isAfterConnect = false;
+                continue;
+            }
+            if (!"".equals ( container[i] ))
+            {
+                if (isAfterConnect)
+                {
+                    String []fromArray = container[i].split ("\\.");
+                    if (0 == fromArray.length)
+                    {
+                        connect.setFromNameOn ( container[i] );
+                    }
+                    else
+                    {
+                        connect.setFromName ( fromArray[0] );
+                        connect.setFromNameOn ( fromArray[1] );
+                    }
+                }
+                else
+                {
+                    String []fromArray = container[i].split ("\\.");
+                    if (0 == fromArray.length)
+                    {
+                        connect.setToNameOn (  container[i] );
+                    }
+                    else
+                    {
+                        connect.setToName ( fromArray[0] );
+                        connect.setToNameOn ( fromArray[1] );
+                    }
+                }
+            }       
+        }
+        return connect;
+    }
+
     private Receive parseReceive ( )
     {
         Receive receive = new Receive();
