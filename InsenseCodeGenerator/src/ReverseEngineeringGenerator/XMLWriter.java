@@ -23,6 +23,7 @@ import Units.Interface;
 import Units.Struct;
 import Units.BasicUnits.Channel;
 import Units.BasicUnits.Field;
+import Units.BasicUnits.Instance;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
 import AbstractGenerator.Writer;
@@ -137,10 +138,28 @@ public class XMLWriter extends Writer
                 }
                 break;
             }
+            case "instance":
+            {
+                if ( object instanceof Instance )
+                {
+                    writeInstance((Instance) object);
+                }
+                break;
+            }
             
         }
     }
     
+    private void writeInstance ( Instance instance )
+    {
+        Element element = doc.createElement ( "instance" );
+        this.rootElement.appendChild ( element );
+        lastComputationalUnit = element;
+        element.setAttribute ( "name" , instance.getName ( ) );
+        element.setAttribute ( "component" , instance.getType ( ) );
+
+    }
+
     private void writeConnection ( Connect connect )
     {
         Element element = doc.createElement ( "from" );

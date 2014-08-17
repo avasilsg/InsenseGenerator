@@ -56,20 +56,20 @@ public class Grammer extends DefaultStyledDocument
         return false;
     }
     
-    public static String findCloseDelimeterChars ( String word  )
+    public static boolean findCloseDelimeterChars ( String word  )
     {
         if(word.contains("}"))
         {
-            return "}";
+            return true;
         }
-        if (word.contains(")"))
-        {
-            return ")";
-        }
-        if (word.contains(";"))
-        {
-            return ";";
-        }
-        return "";
+//        if (word.contains(")"))
+//        {
+//            return ")";
+//        }
+//        if (word.contains(";"))
+//        {
+//            return ";";
+//        }
+        return false;
     }
 }

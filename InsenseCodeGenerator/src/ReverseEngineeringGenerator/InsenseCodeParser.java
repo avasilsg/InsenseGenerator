@@ -13,6 +13,7 @@ import Units.Interface;
 import Units.Struct;
 import Units.BasicUnits.Channel;
 import Units.BasicUnits.Field;
+import Units.BasicUnits.Instance;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
 import GrammarAndClauses.Grammer;
@@ -25,6 +26,8 @@ public class InsenseCodeParser
 
     private boolean           isCurlyBracket;
     private boolean           isAfterComponent;
+    private boolean           isCloseCurlyBracket;
+    private String            lastComputationalUnit;
     
     public InsenseCodeParser ( final String filePath)
     {
@@ -32,6 +35,8 @@ public class InsenseCodeParser
         {
             isAfterComponent = false;
             isCurlyBracket   = false;
+            isCloseCurlyBracket = false;
+            lastComputationalUnit = "";
             writer = new XMLWriter ( );
             reader = new BufferedReader ( new FileReader ( filePath ) );
         }
@@ -60,7 +65,14 @@ public class InsenseCodeParser
                 if (Grammer.findOpenDelimeterChars ( line ))
                 {
                     this.isCurlyBracket = true;
+                    this.isCloseCurlyBracket = false;
                     continue;
+                }
+                else if (Grammer.findCloseDelimeterChars (  line ))
+                {
+                    this.isCurlyBracket = false;
+                    this.isCloseCurlyBracket = true;
+                    continue; 
                 }
                 else
                 {
@@ -130,6 +142,7 @@ public class InsenseCodeParser
                 Interface interfs = parseInterface ( );
                 this.isAfterComponent = false;
                 this.isCurlyBracket = false;
+                lastComputationalUnit = elementType;
                 writer.writeXML ( elementType, interfs );
                 return true;
             }
@@ -138,6 +151,7 @@ public class InsenseCodeParser
                 Struct struct = parseStruct();
                 this.isAfterComponent = false;
                 this.isCurlyBracket = false;
+                lastComputationalUnit = elementType;
                 writer.writeXML ( elementType, struct );
                 return true;                
             }
@@ -152,6 +166,7 @@ public class InsenseCodeParser
             {
                 Component component = parseComponent();
                 this.isAfterComponent = true;
+                lastComputationalUnit = elementType;
                 writer.writeXML ( elementType, component );
                 return true;                
             }
@@ -178,7 +193,17 @@ public class InsenseCodeParser
             {
                 writer.writeXML ( elementType, elementType );
                 Connect connect = parseConnect();
+                lastComputationalUnit = elementType;
                 writer.writeXML (elementType, connect);
+                return true;
+            }
+            case "new":
+            {
+                if (this.isCloseCurlyBracket && "component".equals ( lastComputationalUnit ))
+                {
+                    Instance instance = parseInstance();
+                    writer.writeXML ("instance", instance);
+                }
                 return true;
             }
             case "real":
@@ -194,6 +219,38 @@ public class InsenseCodeParser
         return false;
         
     }
+//    <instance component="TimedTempReader" name="tr"/>
+    private Instance parseInstance ( )
+    {
+        Instance instance = new Instance();
+        boolean isAfterNew = false;
+
+        for(int i = 0; i < this.container.length; i++)
+        {
+            container[i] = container[i].replaceAll ( "[\\{\\(\\);=]", "" );
+            removeEmptyElements();
+            if ("new".equals ( container[i] ))
+            {
+                isAfterNew = true;
+                continue;
+            }
+            else
+            {
+                if (isAfterNew)
+                {
+                    instance.setType ( container [i] );
+
+                }
+                else
+                {
+                    instance.setName ( container [i] );
+                }
+            }
+        }
+        
+        return instance;
+    }
+
     private Connect parseConnect ( )
     {
         Connect connect = new Connect();
