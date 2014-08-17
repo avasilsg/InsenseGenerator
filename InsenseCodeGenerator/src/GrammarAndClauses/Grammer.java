@@ -17,32 +17,7 @@ public class Grammer extends DefaultStyledDocument
             "struct", "constructor", "integer", "real", "bool", "connect",
             "in", "out", "new", "presents", "return", "on", "to", "from" };
     public static String      computationalUnitsRegEx = "inteface|component|behaviour|send|receive|proc|struct|constructor|integer|real|boolean|new|presents|return|on|to|from";
-    
-    public static int findLastNonWordChar ( String text, int index )
-    {
-        while (--index >= 0)
-        {
-            if ( String.valueOf ( text.charAt ( index ) ).matches ( "\\W" ) )
-            {
-                break;
-            }
-        }
-        return index;
-    }
-    
-    public static int findFirstNonWordChar ( String text, int index )
-    {
-        while (index < text.length ( ))
-        {
-            if ( String.valueOf ( text.charAt ( index ) ).matches ( "\\W" ) )
-            {
-                break;
-            }
-            index++;
-        }
-        return index;
-    }
-    
+         
     public static boolean findWord ( String word )
     {
         for ( int i = 0; i < computationalUnits.length; i++ )
@@ -57,6 +32,7 @@ public class Grammer extends DefaultStyledDocument
     
     public static String findExpression ( String word )
     {
+        word = word.replaceAll("\\[\\{\\(", "").replaceAll("\\]\\}\\)\\;","");
         for ( int i = 0; i < computationalUnits.length; i++ )
         {
             if ( word.equals ( computationalUnits[i] ) )
@@ -66,37 +42,34 @@ public class Grammer extends DefaultStyledDocument
         }
         return "";
     }
-    
-    public boolean findOpenDelimeterChars ( String [] expression )
+       
+    public static String findOpenDelimeterChars ( String word )
     {
-        for ( int i = 0; i < expression.length; i++ )
+        if(word.contains("{"))
         {
-            switch ( expression[i])
-            {
-                case "{":
-                case "(":
-                {
-                    return true;
-                }
-            }
+            return "{";
         }
-        return false;
+        if (word.contains("("))
+        {
+            return "(";
+        }
+        return "";
     }
     
-    public boolean findCloseDelimeterChars ( String [] expression )
+    public static String findCloseDelimeterChars ( String word  )
     {
-        for ( int i = 0; i < expression.length; i++ )
+        if(word.contains("}"))
         {
-            switch ( expression[i])
-            {
-                case "}":
-                case ";":
-                case ")":
-                {
-                    return true;
-                }
-            }
+            return "}";
         }
-        return false;
+        if (word.contains(")"))
+        {
+            return ")";
+        }
+        if (word.contains(";"))
+        {
+            return ";";
+        }
+        return "";
     }
 }

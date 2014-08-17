@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import Units.Interface;
 import Units.BasicUnits.Channel;
@@ -12,10 +14,16 @@ import GrammarAndClauses.Grammer;
 
 public class InsenseCodeParser
 {
-    private BufferedReader reader;
-    private String []      container;
-    private XMLWriter      writer;
-    
+    private BufferedReader    reader;
+    private XMLWriter         writer;
+    private String []         container;
+//    private ArrayList<String> blockContainer;
+//    
+//    private int               openBracketCount;
+//    private int               closedBrackCount;
+//    private int               openCurclyBracketCount;
+//    private int               closedCurlyBracketCount;
+//    
     public InsenseCodeParser ( final String filePath)
     {
         try
@@ -37,14 +45,18 @@ public class InsenseCodeParser
             try
             {
                 line = readLine ( );
-                for ( int i = 0; i < container.length; i++ )
+                if ( null == line  )
                 {
-                    String element = Grammer.findExpression ( container[i] );
-                    if ( !"".equals ( element ) )
-                    {
-                        parseType ( element );
-                    }
+                    break;
                 }
+                if ("".equals ( line ))
+                {
+                    continue;
+                }
+                this.container = line.split ( "\\s+" );
+                removeEmptyElements();
+                findExpressionType ( );
+                
             }
             catch (IOException e)
             {
@@ -52,12 +64,90 @@ public class InsenseCodeParser
         }
         this.writer.writeXMLToFile ( );
     }
+    private void removeEmptyElements()
+    {
+        List<String> list = new ArrayList<String>();
+
+        for(String s : container) {
+           if(s != null && s.length() > 0) {
+              list.add(s);
+           }
+        }
+
+        container = list.toArray(new String[list.size()]);
+    }
+    // private boolean lineContainer ( String lineIn )
+    // {
+    //
+    // String symbol = Grammer.findOpenDelimeterChars ( lineIn );
+    // if ( "".endsWith ( symbol ) )
+    // {
+    // this.blockContainer.add ( lineIn );
+    // bracketCounter ( symbol );
+    // }
+    // symbol = Grammer.findCloseDelimeterChars ( lineIn );
+    // if ( "".endsWith ( symbol ) )
+    // {
+    // this.blockContainer.add ( lineIn );
+    // bracketCounter ( symbol );
+    // }
+    // if ( 0 == checkForClosedExpression ( ) )
+    // {
+    // return true;
+    // }
+    // return false;
+    // }
+    
+    // private void bracketCounter ( String symbol )
+    // {
+    //
+    // switch ( symbol)
+    // {
+    // case "(":
+    // {
+    // this.openBracketCount++;
+    // }
+    // case ")":
+    // {
+    // this.closedBrackCount++;
+    // }
+    // case "{":
+    // {
+    // this.openCurclyBracketCount++;
+    // }
+    // case "}":
+    // {
+    // this.closedCurlyBracketCount++;
+    // }
+    // }
+    // }
+    //
+    // private int checkForClosedExpression ( )
+    // {
+    // return (openBracketCount - closedBrackCount)
+    // + (openCurclyBracketCount - closedCurlyBracketCount);
+    // }
+    //
+    private void findExpressionType ( )
+    {
+        
+        for ( int i = 0; i < container.length; i++ )
+        {
+            String element = Grammer.findExpression ( container[i] );
+            if ( !"".equals ( element ) )
+            {
+                if (true == parseType ( element ))
+                {
+                    break;
+                }
+            }
+        }
+    }
     
     private String readLine ( ) throws IOException
     {
         String line;
         line = reader.readLine ( );
-        if ( null != line ) container = line.split ( "\\s+" );
         return line;
     }
     
@@ -69,6 +159,13 @@ public class InsenseCodeParser
             {
                 Interface interfs = parseInterface ( );
                 writer.writeXML ( elementType, interfs );
+                return true;
+            }
+            case "out":
+            case "in":
+            {
+                Channel channel = parseChannel ();
+                writer.writeXML ( "channel", channel );
                 return true;
             }
         }
@@ -104,10 +201,31 @@ public class InsenseCodeParser
         return interfs;
     }
     
-    private LinkedList<Channel> parseChannels ( )
+    private Channel parseChannel ( )
     {
-        // TODO Auto-generated method stub
-        return null;
+        Channel chan = new Channel ( );
+        for ( int i = 0; i < container.length; i++ )
+        {
+            // out integer output ;
+            container[i] = container[i].replaceAll ( "\\[\\{\\(", "" )
+                    .replaceAll ( "\\]\\}\\)\\;", "" );
+            
+            if ( "out".equals ( container[i] )
+                    || "in".equals ( container[i] ) )
+            {
+                chan.setDirection ( container[i] );
+            }
+            if ( !"".equals ( container[i] ) && (i == 1) )
+            {
+                chan.setType ( container[i] );
+            }
+            if ( !"".equals ( container[i] ) && (i == 2) )
+            {
+                String str = container[i].replace ( ";", "" );
+                chan.setName ( str );
+            }
+        }
+        return chan;
     }
     
 }

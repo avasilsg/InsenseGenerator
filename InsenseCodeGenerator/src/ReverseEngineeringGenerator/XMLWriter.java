@@ -18,6 +18,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import Units.Interface;
+import Units.Struct;
 import Units.BasicUnits.Channel;
 import AbstractGenerator.Writer;
 
@@ -26,42 +27,58 @@ public class XMLWriter extends Writer
     private DocumentBuilderFactory docFactory;
     private DocumentBuilder        docBuilder;
     private Document               doc;
-    private TransformerFactory     transformerFactory ;
+    private TransformerFactory     transformerFactory;
     private Transformer            transformer;
     private DOMSource              source;
     private Element                rootElement;
+    private Element                lastComputationalUnit;
+    
     public XMLWriter ()
     {
-            docFactory = DocumentBuilderFactory.newInstance ( );
-            try
-            {
-                docBuilder = docFactory.newDocumentBuilder ( );
-                doc = docBuilder.newDocument ( );
-                rootElement = doc.createElement("xsd:schema");
-                rootElement.setAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
-                doc.appendChild(rootElement);
-            }
-            catch (ParserConfigurationException e)
-            {
-                e.printStackTrace ( );
-            }
-            super.openAndCreateFile ( ".xml" );      
+        docFactory = DocumentBuilderFactory.newInstance ( );
+        try
+        {
+            docBuilder = docFactory.newDocumentBuilder ( );
+            doc = docBuilder.newDocument ( );
+            rootElement = doc.createElement ( "xsd:schema" );
+            rootElement.setAttribute ( "xmlns:xsd",
+                    "http://www.w3.org/2001/XMLSchema" );
+            doc.appendChild ( rootElement );
+            lastComputationalUnit = null;
+        }
+        catch (ParserConfigurationException e)
+        {
+            e.printStackTrace ( );
+        }
+        super.openAndCreateFile ( ".xml" );
     }
     
-    public void writeXML(String tag, Object object)
+    public void writeXML ( String tag, Object object )
     {
-        switch(tag)
+        switch ( tag)
         {
             case "interface":
             {
-                if (object instanceof Interface)
+                if ( object instanceof Interface )
                 {
-                    writeInterface((Interface)object);
+                    writeInterface ( (Interface) object );
+                }
+                break;
+            }
+            case "channel":
+            {
+                if ( object instanceof Channel )
+                {
+                    writeChannels( (Channel) object );
                 }
                 break;
             }
             case "struct":
             {
+                if ( object instanceof Struct )
+                {
+                    writeStruct( (Struct) object );
+                }
                 break;
             }
             case "component":
@@ -75,38 +92,40 @@ public class XMLWriter extends Writer
     // <attribute name="IPrintOutput"/>
     // <channel direction="in" name="input" type="sensorReading"/>
     // </interface>
-    private void writeInterface ( final Interface interfs)
+    private void writeInterface ( final Interface interfs )
     {
         Element element = doc.createElement ( "interface" );
         rootElement.appendChild ( element );
+        lastComputationalUnit = element;
         setNameAttribute ( interfs.getName ( ), element );
-        if ( 0 != interfs.getChannels ( ).size ( ) )
-        {
-            writeChannels ( interfs.getChannels ( ), element );
-        }
     }
     
-    private void writeChannels ( LinkedList<Channel> channels,
-            Element rootElement )
+    private void writeChannels ( Channel channel )
     {
-        for ( int i = 0; i < channels.size ( ); i++ )
-        {
-            Element element = doc.createElement ( "channel" );
-            rootElement.appendChild ( element );
-            
-            // set attribute to staff element
-            Attr attr = doc.createAttribute ( "direction" );
-            attr.setValue ( channels.get ( i ).getDirection ( ) );
-            element.setAttributeNode ( attr );
-            
-            attr = doc.createAttribute ( "name" );
-            attr.setValue ( channels.get ( i ).getName ( ) );
-            element.setAttributeNode ( attr );
-            
-            attr = doc.createAttribute ( "type" );
-            attr.setValue ( channels.get ( i ).getType ( ) );
-            element.setAttributeNode ( attr );
-        }
+        
+        Element element = doc.createElement ( "channel" );
+        this.lastComputationalUnit.appendChild ( element );
+        
+        Attr attr = doc.createAttribute ( "direction" );
+        attr.setValue ( channel.getDirection ( ) );
+        element.setAttributeNode ( attr );
+        
+        attr = doc.createAttribute ( "name" );
+        attr.setValue ( channel.getName ( ) );
+        element.setAttributeNode ( attr );
+        
+        attr = doc.createAttribute ( "type" );
+        attr.setValue ( channel.getType ( ) );
+        element.setAttributeNode ( attr );
+        
+    }
+    
+    private void writeStruct ( final Struct struct )
+    {
+        Element element = doc.createElement ( "struct" );
+        rootElement.appendChild ( element );
+        lastComputationalUnit = element;
+        setNameAttribute ( struct.getName ( ), element );
     }
     
     private void setNameAttribute ( final String name, Element parentElement )
@@ -116,28 +135,29 @@ public class XMLWriter extends Writer
         element.setAttribute ( "name", name );
     }
     
-    public void writeXMLToFile()
+    public void writeXMLToFile ( )
     {
-        transformerFactory = TransformerFactory.newInstance();
+        transformerFactory = TransformerFactory.newInstance ( );
         try
         {
-            transformer = transformerFactory.newTransformer();
+            transformer = transformerFactory.newTransformer ( );
         }
         catch (TransformerConfigurationException e)
         {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            e.printStackTrace ( );
         }
-        source = new DOMSource(doc);
-        StreamResult result = new StreamResult(new File(super.getPathToTheNewCreatedFile ( )));
-
+        source = new DOMSource ( doc );
+        StreamResult result = new StreamResult ( new File (
+                super.getPathToTheNewCreatedFile ( ) ) );
+        
         try
         {
-            transformer.transform(source, result);
+            transformer.transform ( source, result );
         }
         catch (TransformerException e)
         {
-            e.printStackTrace();
+            e.printStackTrace ( );
         }
     }
 }
