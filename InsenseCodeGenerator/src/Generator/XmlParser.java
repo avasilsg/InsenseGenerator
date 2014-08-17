@@ -36,7 +36,7 @@ public class XmlParser
     private File            file;
     private DocumentBuilder dBuilder;
     private Document        doc;
-    private TextWriter      codeGenerator;
+    private InsenseWriter   codeGenerator;
     
     public XmlParser(final String fXmlFile)
     {
@@ -45,20 +45,8 @@ public class XmlParser
             throw new NullPointerException();
         }
         
-        codeGenerator = new TextWriter();
-        
-        try
-        {
-            codeGenerator.openAndCreateFile();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            e.printStackTrace();
-        }
+        codeGenerator = new InsenseWriter();       
+        codeGenerator.openAndCreateFile(".isf");
         setFileName(fXmlFile);
         file = null;
     }

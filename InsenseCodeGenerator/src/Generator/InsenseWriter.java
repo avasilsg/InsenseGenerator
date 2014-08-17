@@ -1,11 +1,9 @@
 package Generator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 
+import AbstractGenerator.Writer;
 import GrammarAndClauses.Clauses;
 import Units.Behaviour;
 import Units.Component;
@@ -21,25 +19,14 @@ import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
 import Units.BasicUnits.Variable;
 
-public class TextWriter
+public class InsenseWriter extends Writer
 {
-    private PrintWriter        writer;
     private LinkedList<String> componentNames;
-    private File               dir; 
     
-    public TextWriter()
+    public InsenseWriter()
     {
-        writer = null;
+        super();
         componentNames = new LinkedList<String>();
-        dir = null;
-    }
-    
-    public void openAndCreateFile() throws FileNotFoundException, UnsupportedEncodingException
-    {
-        String path = new File("").getAbsolutePath ( );
-        dir = new File(path + "/" + "temp");
-        dir.mkdir ( );
-        writer = new PrintWriter(dir.getAbsoluteFile ( ) + "/" + "temp" + ".isf", "UTF-8");
     }
     
     public void writeInterface(Interface interfs)
