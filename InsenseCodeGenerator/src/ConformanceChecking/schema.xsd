@@ -51,16 +51,16 @@
 			<xs:sequence>
 				<xs:element name="attribute" minOccurs="1" maxOccurs="1">
 					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="name" type="xs:string"/>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="field" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-						<xs:attribute ref="type" type="xs:string" />
-						<xs:attribute ref="value" type="xs:string" />
+						<xs:attribute ref="name" type="xs:string"/>
+						<xs:attribute ref="type" type="xs:string"/>
+						<xs:attribute ref="value" type="xs:string"/>
 					</xs:complexType>
-				</xs:element>
+				</xs:element>				
 				<xs:element name="constructor">
 					<xs:element name="behaviour">
 						<xs:complexType>
@@ -93,6 +93,7 @@
 								</xs:element>
 							</xs:all>
 						</xs:complexType>
+					</xs:element>				
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

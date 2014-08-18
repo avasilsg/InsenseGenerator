@@ -57,8 +57,6 @@ public class Clauses
    //Templates || Send
    {
        {
-//           public static String interfaceRadio = interfaceGrammar + "\n" +
-//                   openBracket + channel + 
 //           type IRadioOutChannel is interface ( in integer input ; out RadioPacket unicast )
 //
 //           component RadioOutChannel presents IRadioOutChannel {
@@ -80,13 +78,8 @@ public class Clauses
        }
    }
    //Templates || Receive
-   {
-       {
-           
-       }
-       {
-           
-       }
-   }
+
+   public static String IRadioInChannel  = "IRadioInChannel" + "%i";
+   public static String interfaceRadio = interfaceGrammar + "\n" + openBracket ; 
 }
 

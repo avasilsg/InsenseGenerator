@@ -119,6 +119,11 @@ public class XmlParser
         String currentTag = currentNode.getNodeName();
         switch (currentTag)
         {
+            case "node":
+            {
+                parseNode(currentNode);
+                break;
+            }
             case "interface":
             {
                 parseInterface(currentNode);
@@ -147,6 +152,11 @@ public class XmlParser
         }
     }
     
+    private void parseNode ( Node currentNode )
+    {
+        
+    }
+
     private void instanceParsing(Node currentNode)
     {
         Instance instance = new Instance();

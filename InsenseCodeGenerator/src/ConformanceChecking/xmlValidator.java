@@ -23,7 +23,7 @@ public class xmlValidator
 //        URL schemaFile = new URL("http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd");
         xmlFile = new StreamSource(new File("web.xml"));
         schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        schema = schemaFactory.newSchema(new Source("schema.xml"));
+//        schema = schemaFactory.newSchema(new Source("schema.xml"));
     }
     
     public boolean validateXMLFile() throws SAXException, IOException
