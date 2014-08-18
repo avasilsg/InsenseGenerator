@@ -9,9 +9,11 @@ import Units.Behaviour;
 import Units.Component;
 import Units.Connect;
 import Units.Constructor;
+import Units.InsenseNode;
 import Units.Interface;
 import Units.Procedure;
 import Units.Struct;
+import Units.BasicUnits.Channel;
 import Units.BasicUnits.Field;
 import Units.BasicUnits.Instance;
 import Units.BasicUnits.Print;
@@ -380,5 +382,61 @@ public class InsenseWriter extends Writer
     {
         File tempFile = new File(dir.getAbsolutePath ( ));
         tempFile.delete();
+    }
+
+    public void writeNodePattern ( InsenseNode nodeInfo )
+    {
+       Interface interfs = new Interface();
+       switch(nodeInfo.getDirection ( ))
+       {
+           case "receive":
+           {
+               String interfaceRadioName = String.format ( Clauses.IRadioSensorReceive, Integer.toString (nodeInfo.getNodeOrderNumber ( ) )); 
+               interfs.setName ( interfaceRadioName );
+               fulfilNodeChannelReceive ( nodeInfo, interfs );
+               Component component = new Component();
+               component.setName ( String.format(Clauses.RadioSensorReceive, Integer.toString (nodeInfo.getNodeOrderNumber ( ) ) ));
+               break;
+           }
+           case "send":
+           {
+               String interfaceRadioName = String.format ( Clauses.IRadioSensorSend, Integer.toString (nodeInfo.getNodeOrderNumber ( ) )); 
+               interfs.setName ( interfaceRadioName );
+               fulfilNodeChannelSend (nodeInfo, interfs );
+               Component component = new Component();
+               component.setName ( String.format(Clauses.RadioSensorSend, Integer.toString (nodeInfo.getNodeOrderNumber ( ) ) ));
+               break;
+           }
+       }
+       writeInterface(interfs);
+      
+    }
+
+    private void fulfilNodeChannelSend ( InsenseNode nodeInfo, Interface interfs )
+    {
+           Channel chan = new Channel();
+           chan.setDirection ( "in" );
+           chan.setType ( nodeInfo.getInstance ( ) );
+           chan.setName ( "input" );
+           interfs.setChannel ( chan );
+           chan = new Channel();
+           chan.setDirection ( "in" );
+           chan.setType ( "RadioPacket" );
+           chan.setName ( "unicast" );
+           interfs.setChannel ( chan );
+    }
+    
+    private void fulfilNodeChannelReceive ( InsenseNode nodeInfo, Interface interfs )
+    {
+           Channel chan = new Channel();
+           chan.setDirection ( "out" );
+           chan.setType ( nodeInfo.getInstance ( ) );
+           chan.setName ( "output" );
+           interfs.setChannel ( chan );
+           chan = new Channel();
+           chan.setDirection ( "in" );
+           chan.setType ( "RadioPacket" );
+           chan.setName ( "received" );
+           interfs.setChannel ( chan );
     }
 }

@@ -14,6 +14,7 @@ import Units.Behaviour;
 import Units.Component;
 import Units.Connect;
 import Units.Constructor;
+import Units.InsenseNode;
 import Units.Interface;
 import Units.Procedure;
 import Units.Struct;
@@ -36,6 +37,7 @@ public class XmlParser
     private DocumentBuilder dBuilder;
     private Document        doc;
     private InsenseWriter   codeGenerator;
+    private InsenseNode     nodeInfo;
     
     public XmlParser(final String fXmlFile)
     {
@@ -117,11 +119,16 @@ public class XmlParser
     private void parseComputationalUnit(Node currentNode)
     {
         String currentTag = currentNode.getNodeName();
-        switch (currentTag)
+        switch (currentTag.toLowerCase ( ))
         {
-            case "node":
+            case "nodename":
             {
                 parseNode(currentNode);
+                break;
+            }
+            case "internodeconnect":
+            {
+                parseInterNodeConnection(currentNode);
                 break;
             }
             case "interface":
@@ -152,9 +159,67 @@ public class XmlParser
         }
     }
     
+    private void parseInterNodeConnection ( Node currentNode )
+    {
+        if (null != this.nodeInfo)
+        {
+            for (int i = 0; i < currentNode.getAttributes().getLength(); i++)
+            {
+                if ("type".equals(currentNode.getAttributes().item(i).getNodeName()))
+                {
+                    if (null != currentNode.getAttributes().item(i).getNodeValue())
+                    {
+                        nodeInfo.setInstance ( currentNode.getAttributes().item(i).getNodeValue());
+                    }
+                }
+                if ("direction".equals(currentNode.getAttributes().item(i).getNodeName()))
+                {
+                    nodeInfo.setDirection ( currentNode.getAttributes().item(i).getNodeValue());
+                }
+            }
+        }
+        this.codeGenerator.writeNodePattern(this.nodeInfo);
+        if (currentNode.hasChildNodes ( ))
+        {
+            parseInterConnectNodeChildren(currentNode.getChildNodes ( ));
+        }
+    }
+
+    private void parseInterConnectNodeChildren ( NodeList childNodes )
+    {
+        for (int count = 0; count < childNodes.getLength(); count++)
+        {
+            Node node = childNodes.item ( count );
+            if ("connect".equals ( node.getNodeName ( ) ))
+            {
+                 connectionParsing(node);
+            }
+        }
+    }
+
     private void parseNode ( Node currentNode )
     {
-        
+        nodeInfo = new InsenseNode();
+        for (int i = 0; i < currentNode.getAttributes().getLength(); i++)
+        {
+            if ("name".equals(currentNode.getAttributes().item(i).getNodeName()))
+            {
+                if (null != currentNode.getAttributes().item(i).getNodeValue())
+                {
+                    nodeInfo.setNodeName(currentNode.getAttributes().item(i).getNodeValue());
+                }
+            }
+            if ("ofTotal".equals(currentNode.getAttributes().item(i).getNodeName()))
+            {
+                Integer intNum = Integer.parseInt ( currentNode.getAttributes().item(i).getNodeValue() ) ;
+                nodeInfo.setTotalNodeNumbers ( null != intNum ? intNum : 0 );
+            }
+            if ("orderNumber".equals(currentNode.getAttributes().item(i).getNodeName()))
+            {
+                Integer intNum = Integer.parseInt ( currentNode.getAttributes().item(i).getNodeValue() ) ;
+                nodeInfo.setNodeOrderNumber ( null != intNum ? intNum : 0 );
+            }
+        }
     }
 
     private void instanceParsing(Node currentNode)

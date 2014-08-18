@@ -22,6 +22,13 @@ void behaviour_Printer( PrinterPNTR this ) {
 	while( ! this->stopped ) { 
 
 	// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Sequence::complete
+	int temp;
+
+	// Make call to receive function 
+	channel_receive( this->input_comp,&temp,false ) ;
+;
+	printInt_proc(this, NULL, temp ) ;
+	printString_proc(this, NULL, Construct_String0(" is the current temp\n") ) ;
 	// End of sequence
 
 	} 

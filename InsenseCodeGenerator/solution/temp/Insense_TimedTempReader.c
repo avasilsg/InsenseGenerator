@@ -22,6 +22,15 @@ void behaviour_TimedTempReader( TimedTempReaderPNTR this ) {
 	while( ! this->stopped ) { 
 
 	// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Sequence::complete
+	int temp;
+	temp = tempReading_proc(this, NULL ) ;
+	// Make call to send op
+{ 
+	int _temp_var = temp;
+	channel_send( this->output_comp,&_temp_var,NULL  ) ;
+	// end of send op 
+} 
+;
 	// End of sequence
 
 	} 

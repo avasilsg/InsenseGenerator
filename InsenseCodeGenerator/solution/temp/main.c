@@ -20,11 +20,11 @@ int main_stack_size = 94;
 void primordial_main( void *this ) {
 // Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Sequence::complete
 	TimedTempReaderPNTR tr_glob = NULL;
-	DAL_assign(&tr_glob , component_create( ((behaviour_ft)&Construct_TimedTempReader0), sizeof( TimedTempReaderStruct ) , 6, 0, NULL , -1) );
+	DAL_assign(&tr_glob , component_create( ((behaviour_ft)&Construct_TimedTempReader0), sizeof( TimedTempReaderStruct ) , 24, 0, NULL , -1) );
 	component_yield(  ) ;
 ;
 	PrinterPNTR pr_glob = NULL;
-	DAL_assign(&pr_glob , component_create( ((behaviour_ft)&Construct_Printer0), sizeof( PrinterStruct ) , 6, 0, NULL , -1) );
+	DAL_assign(&pr_glob , component_create( ((behaviour_ft)&Construct_Printer0), sizeof( PrinterStruct ) , 22, 0, NULL , -1) );
 	component_yield(  ) ;
 ;
 

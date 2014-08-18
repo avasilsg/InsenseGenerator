@@ -79,7 +79,10 @@ public class Clauses
    }
    //Templates || Receive
 
-   public static String IRadioInChannel  = "IRadioInChannel" + "%i";
-   public static String interfaceRadio = interfaceGrammar + "\n" + openBracket ; 
+   public static String IRadioSensorReceive  = "IRadioSensorReceive" + "%s";
+   public static String IRadioSensorSend     = "IRadioSensorSend" + "%s";
+   public static String RadioSensorReceive  =  "RadioSensorReceive" + "%s";
+   public static String RadioSensorSend     =  "RadioSensorSend" + "%s";
+
 }
 
