@@ -57,7 +57,23 @@ public class Clauses
    //Templates || Send
    {
        {
-           
+//           public static String interfaceRadio = interfaceGrammar + "\n" +
+//                   openBracket + channel + 
+//           type IRadioOutChannel is interface ( in integer input ; out RadioPacket unicast )
+//
+//           component RadioOutChannel presents IRadioOutChannel {
+//
+//              constructor(){
+//              }
+//
+//              behaviour {
+//                 receive value from input
+//                 packet = new RadioPacket(NodeB, any(value))
+//                 send packet on unicast
+//              }
+//           }
+
+
        }
        {
            

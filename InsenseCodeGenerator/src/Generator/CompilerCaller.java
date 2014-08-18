@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
+import GUI.EditorWindow;
+
 public class CompilerCaller
 {
     private String insenseFileName;
@@ -78,12 +80,13 @@ public class CompilerCaller
                 
                 String executable = String.format ( dir.getAbsolutePath ( )
                         + "/%s", this.insenseFileName );
-                Runtime.getRuntime ( )
-                        .exec ( String
+                String output = execCmd ( String
                                 .format (
                                         "java -jar /home/stephan/git/InsenseGenerator/InsenseCodeGenerator/src/GUI/%s %s %s",
                                         insenseCompiler, insenseFilePath,
                                         executable ) );
+                @SuppressWarnings ("unused")
+                EditorWindow window = new EditorWindow(output);
             }
         }
         catch (IOException e)
@@ -91,7 +94,21 @@ public class CompilerCaller
             e.printStackTrace ( );
         }
     }
-    
+    public String execCmd(String cmd) throws java.io.IOException {
+        Process proc = Runtime.getRuntime().exec(cmd);
+        java.io.InputStream is = proc.getInputStream();
+        @SuppressWarnings ("resource")
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        String val = "";
+        if (s.hasNext()) {
+            val = s.next();
+        }
+        else {
+            val = "";
+        }
+        s.close ( );
+        return val;
+}
     public String getInsenseFileName ( )
     {
         return insenseFileName;
