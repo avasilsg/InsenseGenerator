@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<!-- define nodeName -->
+
+	<xs:element name="nodeName" minOccurs="0" maxOccurs="1">
+		<xs:complexType>
+			<xs:attribute ref="name" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="struct" minOccurs="0" maxOccurs="unbounded">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="attribute" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="field" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="type" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="interface" minOccurs="0" maxOccurs="unbounded">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="attribute" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="channel" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="type" type="xs:string" />
+						<xs:attribute ref="direction" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="component minOccurs=" 0 maxOccurs="unbounded">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="attribute" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="field" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="type" type="xs:string" />
+						<xs:attribute ref="value" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="constructor">
+					<xs:element name="behaviour">
+						<xs:complexType>
+							<xs:all>
+								<xs:element name=send minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:attribute ref="identifier" type="xs:string" />
+										<xs:attribute ref="on" type="xs:string" />
+									</xs:complexType>
+								</xs:element>
+								<xs:element name=receive minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:attribute ref="identifier" type="xs:string" />
+										<xs:attribute ref="from" type="xs:string" />
+									</xs:complexType>
+								</xs:element>
+								<xs:element name=variable minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:attribute ref="type" type="xs:string" />
+										<xs:attribute ref="allocation" type="xs:string" />
+										<xs:attribute ref="bindingTo" type="xs:string" />
+										<xs:attribute ref="name" type="xs:string" />
+									</xs:complexType>
+								</xs:element>
+								<xs:element name=print minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:attribute ref="type" type="xs:string" />
+										<xs:attribute ref="variable" type="xs:string" />
+									</xs:complexType>
+								</xs:element>
+							</xs:all>
+						</xs:complexType>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="instance minOccurs=" 0 maxOccurs="unbounded">
+		<xs:complexType>
+			<xs:attribute ref="component" type="xs:string" />
+			<xs:attribute ref="name" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name=connect minOccurs="0" maxOccurs="unbounded">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="from minOccurs=" 1 maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="on" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="on minOccurs=" 1 maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="on" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name=connect minOccurs="0" maxOccurs="unbounded">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="from minOccurs=" 1 maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="on" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="on minOccurs=" 1 maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="on" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name=interNodeConnect minOccurs="0" maxOccurs="unbounded">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="from minOccurs=" 1 maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="on" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="on minOccurs=" 1 maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="on" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute ref="dirction" type="xs:string" />
+			<xs:attribute ref="otherNode" type="xs:string" />
+			<xs:attribute ref="type" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
