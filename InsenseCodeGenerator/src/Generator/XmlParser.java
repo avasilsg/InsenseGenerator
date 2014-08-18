@@ -499,7 +499,8 @@ public class XmlParser
         {
             if ("variable".equals(attributes.item(i).getNodeName().toLowerCase()))
             {
-                print.setVariable(attributes.item(i).getNodeValue());
+                String str = attributes.item(i).getNodeValue().replace ( '\'','\"' );
+                print.setVariable(str);
             }
             if ("type".equals(attributes.item(i).getNodeName().toLowerCase()))
             {

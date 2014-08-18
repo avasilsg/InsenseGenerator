@@ -26,6 +26,7 @@ import Units.BasicUnits.Field;
 import Units.BasicUnits.Instance;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
+import Units.BasicUnits.Variable;
 import AbstractGenerator.Writer;
 
 public class XMLWriter extends Writer
@@ -146,10 +147,27 @@ public class XMLWriter extends Writer
                 }
                 break;
             }
-            
+            case "variable":
+            {
+                if ( object instanceof Variable )
+                {
+                    writeVariable((Variable) object);
+                }
+                break;
+            }
         }
     }
     
+    private void writeVariable ( Variable variable )
+    {
+        Element element = doc.createElement ( "variable" );
+        this.lastSubElement.appendChild ( element );
+        element.setAttribute ( "name" , variable.getName ( ) );
+        element.setAttribute ( "bindingTo" , variable.getBindingTo ( ) );
+        element.setAttribute ( "new" , true == variable.isNewOp ( ) ? "true" : "false");
+
+    }
+
     private void writeInstance ( Instance instance )
     {
         Element element = doc.createElement ( "instance" );
@@ -197,7 +215,6 @@ public class XMLWriter extends Writer
         }
     }
     
-    // <send identifier="reading" on="printChan"/>
     private void writeSend ( Send send )
     {
         Element element = doc.createElement ( "send" );
@@ -212,7 +229,6 @@ public class XMLWriter extends Writer
         element.setAttributeNode ( attr );
     }
     
-    // <receive from="input" identifier="reading"/>
     private void writeReceive ( Receive receive )
     {
         Element element = doc.createElement ( "receive" );
@@ -227,10 +243,6 @@ public class XMLWriter extends Writer
         element.setAttributeNode ( attr );
     }
     
-    // <interface>
-    // <attribute name="IPrintOutput"/>
-    // <channel direction="in" name="input" type="sensorReading"/>
-    // </interface>
     private void writeInterface ( final Interface interfs )
     {
         Element element = doc.createElement ( "interface" );
@@ -288,9 +300,7 @@ public class XMLWriter extends Writer
         this.lastComputationalUnit.appendChild ( element );
         
     }
-    
-    // <field type = "integer" name = "solar"/>
-    
+        
     private void writeField ( Field field )
     {
         Element element = doc.createElement ( "field" );

@@ -16,6 +16,7 @@ import Units.BasicUnits.Field;
 import Units.BasicUnits.Instance;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
+import Units.BasicUnits.Variable;
 import GrammarAndClauses.Grammer;
 
 public class InsenseCodeParser
@@ -204,6 +205,11 @@ public class InsenseCodeParser
                     Instance instance = parseInstance();
                     writer.writeXML ("instance", instance);
                 }
+                else
+                {
+                    Variable variable = parseVariable();
+                    writer.writeXML ( "variable", variable );
+                }
                 return true;
             }
             case "real":
@@ -219,11 +225,44 @@ public class InsenseCodeParser
         return false;
         
     }
-//    <instance component="TimedTempReader" name="tr"/>
+
+    private Variable parseVariable ( )
+    {
+        Variable variable = new Variable();
+        boolean isAfterNew = false;
+        removeEmptyElements();
+
+        for(int i = 0; i < 3; i++)
+        {
+            container[i] = container[i].replaceAll ( "[\\{\\(\\;,=]", "" );
+            removeEmptyElements();
+            if ("new".equals ( container[i] ))
+            {
+                isAfterNew = true;
+                variable.setNewOp ( true );
+                continue;
+            }
+            else
+            {
+                if (isAfterNew)
+                {
+                    variable.setBindingTo (container[i] );
+                }
+                else 
+                {
+                    variable.setName (container [i] ) ;
+                }
+            }
+        }
+
+        return variable;
+    }
+
     private Instance parseInstance ( )
     {
         Instance instance = new Instance();
         boolean isAfterNew = false;
+        removeEmptyElements();
 
         for(int i = 0; i < this.container.length; i++)
         {
@@ -239,7 +278,6 @@ public class InsenseCodeParser
                 if (isAfterNew)
                 {
                     instance.setType ( container [i] );
-
                 }
                 else
                 {
@@ -330,7 +368,7 @@ public class InsenseCodeParser
         }
         return receive;
     }
-//  <send identifier="reading" on="printChan"/>
+
     private Send parseSend ( )
     {
         Send send = new Send();
