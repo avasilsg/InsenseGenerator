@@ -2,10 +2,6 @@ package GUI;
 
 import javax.swing.*;
 
-import java.awt.*;
-
-import javax.swing.text.*;
-
 public class EditorWindow extends JFrame
 {
     /**
@@ -15,7 +11,7 @@ public class EditorWindow extends JFrame
 
     public EditorWindow(String text)
     {
-        setSize(663, 599);
+        setSize(600, 400);
         setLocationRelativeTo(null);
        
         JTextPane txt = new JTextPane();

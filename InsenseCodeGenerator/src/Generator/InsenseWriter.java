@@ -126,14 +126,11 @@ public class InsenseWriter extends Writer
         {
             Constructor constructor = constructors.get ( i );
             writer.write("\t" + Clauses.constructor);
-            writer.println();
             writer.write(Clauses.openBracket);
-            writer.println();
             if (null != constructor.getParameters ( ))
             {
                 extractParameters(constructor.getParameters ( ));
             }
-            writer.println();
             writer.write(Clauses.closeBracket);
             writer.println();
             writer.write("\t" + Clauses.openCurlyBracket);
