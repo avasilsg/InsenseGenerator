@@ -124,19 +124,23 @@ public class InsenseWriter extends Writer
     {
         for(int i = 0; i < constructors.size ( ); i++)
         {
-            Constructor contructor = constructors.get ( i );
+            Constructor constructor = constructors.get ( i );
             writer.write("\t" + Clauses.constructor);
+            writer.println();
             writer.write(Clauses.openBracket);
             writer.println();
-            extractParameters(contructor.getParameters ( ));
+            if (null != constructor.getParameters ( ))
+            {
+                extractParameters(constructor.getParameters ( ));
+            }
             writer.println();
             writer.write(Clauses.closeBracket);
             writer.println();
             writer.write("\t" + Clauses.openCurlyBracket);
             writer.println();
-            if (null != contructor.getBody ( ))
+            if (null != constructor.getBody ( ))
             {
-                writeBehaviour(contructor.getBody ( ));
+                writeBehaviour(constructor.getBody ( ));
             }
             writer.write("\t" + Clauses.closeCurlyBracket);
             writer.println();

@@ -212,6 +212,13 @@ public class InsenseCodeParser
                 }
                 return true;
             }
+            case "constructor":
+            {
+                writer.writeXML ( "constructor", elementType );
+                this.isCurlyBracket = false;
+                this.isAfterComponent = false;
+                return true;
+            }
             case "real":
             case "integer":
             case "bool":

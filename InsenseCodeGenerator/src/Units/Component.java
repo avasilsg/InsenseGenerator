@@ -99,19 +99,19 @@ public class Component
         }
     }
     
-    public void setContructor(Constructor constructor)
-    {
-        if (null != constructor)
-        {
-            constructors.add(constructor);
-        }
-    }
-    
     public void setProcedure(Procedure procedure)
     {
         if (null != procedure)
         {
             procedures.add(procedure);
+        }
+    }
+
+    public void setConstructor ( Constructor constructor )
+    {
+        if (null != constructor)
+        {
+            constructors.add(constructor);
         }
     }
 }

@@ -139,6 +139,10 @@ public class XMLWriter extends Writer
                 }
                 break;
             }
+            case "constructor":
+            {
+                writeConstructor ( );
+            }
             case "instance":
             {
                 if ( object instanceof Instance )
@@ -158,6 +162,12 @@ public class XMLWriter extends Writer
         }
     }
     
+    private void writeConstructor ( )
+    {
+        Element element = doc.createElement ( "constructor" );
+        this.lastComputationalUnit.appendChild ( element );        
+    }
+
     private void writeVariable ( Variable variable )
     {
         Element element = doc.createElement ( "variable" );

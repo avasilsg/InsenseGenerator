@@ -13,6 +13,7 @@ import org.xml.sax.SAXException;
 import Units.Behaviour;
 import Units.Component;
 import Units.Connect;
+import Units.Constructor;
 import Units.Interface;
 import Units.Procedure;
 import Units.Struct;
@@ -277,8 +278,10 @@ public class XmlParser
             
             if ("constructor".equals(node.getNodeName().toLowerCase()))
             {
+                Constructor constructor = new Constructor();
                 if (true == node.hasChildNodes())
-                    parseProcedure(node.getChildNodes());
+                    constructor =  parseContructorNodes(node.getChildNodes());
+                component.setConstructor ( constructor );
                 continue;
             }
             
@@ -303,6 +306,25 @@ public class XmlParser
             }
         }
         return component;
+    }
+    private Constructor parseContructorNodes(NodeList childNodes)
+    {
+        Constructor constructor = new Constructor();
+        for (int count = 0; count < childNodes.getLength(); count++)
+        {
+            Node node = childNodes.item(count);
+            if ("parameters".equals(node.getNodeName().toLowerCase()))
+            {
+                constructor.setParameters(parseParameters(node));
+            }
+            if ("body".equals(node.getNodeName().toLowerCase()))
+            {
+                Behaviour behaviour = parseBehaviour(node.getChildNodes());
+                constructor.setBody ( behaviour );
+                behaviour = null;
+            }
+        }
+        return constructor;
     }
     
     private String parseProcedureAttributes(Node node)
