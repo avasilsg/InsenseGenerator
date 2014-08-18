@@ -351,7 +351,7 @@ public class MainWindow extends JFrame implements ActionListener
         FileOutputStream out;
         try
         {
-            out = new FileOutputStream(fileName, true);
+            out = new FileOutputStream(fileName, false);
             this.compileCaller.setInsenseFilePath ( fileName );
             this.compileCaller.setInsenseFileName ( fileChooser.getSelectedFile().getName ( ) );
             out.write(this.textVisualizerArea.getText().getBytes());
