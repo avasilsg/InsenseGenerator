@@ -16,9 +16,6 @@ component TimedTempReader presents ITimedTempReader
 
 	behaviour 
 	{
-		temp = tempReading()
-
-		send temp on output
 	}
 }
 component Printer presents IPrinter
@@ -30,11 +27,6 @@ component Printer presents IPrinter
 
 	behaviour 
 	{
-		receive temp from input
-
-		printInt(temp)
-
-		printString(" is the current temp\n")
 	}
 }
 tr = new TimedTempReader()

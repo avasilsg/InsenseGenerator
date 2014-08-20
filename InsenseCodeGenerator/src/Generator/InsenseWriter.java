@@ -383,7 +383,7 @@ public class InsenseWriter extends Writer
         File tempFile = new File(dir.getAbsolutePath ( ));
         tempFile.delete();
     }
-
+//TODO: rember to check the version with the keys
     public void writeNodePattern ( InsenseNode nodeInfo )
     {
        Interface interfs = new Interface();
