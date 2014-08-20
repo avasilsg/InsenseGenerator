@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
-	<!-- define nodeName -->
-
-	<xs:element name="nodeName" minOccurs="0" maxOccurs="1">
+	<xs:element name="nodeName">
 		<xs:complexType>
 			<xs:attribute ref="name" type="xs:string" />
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="struct" minOccurs="0" maxOccurs="unbounded">
+	<xs:element name="struct">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="attribute" minOccurs="1" maxOccurs="1">
@@ -27,7 +24,7 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="interface" minOccurs="0" maxOccurs="unbounded">
+	<xs:element name="interface">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="attribute" minOccurs="1" maxOccurs="1">
@@ -35,7 +32,7 @@
 						<xs:attribute ref="name" type="xs:string" />
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="channel" minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="channel">
 					<xs:complexType>
 						<xs:attribute ref="name" type="xs:string" />
 						<xs:attribute ref="type" type="xs:string" />
@@ -45,8 +42,52 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	
+	<xs:element name="instance">
+		<xs:complexType>
+			<xs:attribute ref="component" type="xs:string"/>
+			<xs:attribute ref="name" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
 
-	<xs:element name="component minOccurs=" 0 maxOccurs="unbounded">
+	<xs:element name="connect">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="from" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="on" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="on" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="on" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="connect">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="from" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string" />
+						<xs:attribute ref="on" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="on" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute ref="name" type="xs:string"/>
+						<xs:attribute ref="on" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+<xs:element name="component">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="attribute" minOccurs="1" maxOccurs="1">
@@ -65,19 +106,19 @@
 					<xs:element name="behaviour">
 						<xs:complexType>
 							<xs:all>
-								<xs:element name=send minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="send">
 									<xs:complexType>
 										<xs:attribute ref="identifier" type="xs:string" />
 										<xs:attribute ref="on" type="xs:string" />
 									</xs:complexType>
 								</xs:element>
-								<xs:element name=receive minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="receive">
 									<xs:complexType>
 										<xs:attribute ref="identifier" type="xs:string" />
 										<xs:attribute ref="from" type="xs:string" />
 									</xs:complexType>
 								</xs:element>
-								<xs:element name=variable minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="variable">
 									<xs:complexType>
 										<xs:attribute ref="type" type="xs:string" />
 										<xs:attribute ref="allocation" type="xs:string" />
@@ -85,7 +126,7 @@
 										<xs:attribute ref="name" type="xs:string" />
 									</xs:complexType>
 								</xs:element>
-								<xs:element name=print minOccurs="0" maxOccurs="unbounded">
+								<xs:element name="print">
 									<xs:complexType>
 										<xs:attribute ref="type" type="xs:string" />
 										<xs:attribute ref="variable" type="xs:string" />
@@ -97,71 +138,25 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-
-	<xs:element name="instance minOccurs=" 0 maxOccurs="unbounded">
-		<xs:complexType>
-			<xs:attribute ref="component" type="xs:string" />
-			<xs:attribute ref="name" type="xs:string" />
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name=connect minOccurs="0" maxOccurs="unbounded">
+	<xs:element name="interNodeConnect">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="from minOccurs=" 1 maxOccurs="1">
+				<xs:element name="from" minOccurs="1" maxOccurs="1">
 					<xs:complexType>
 						<xs:attribute ref="name" type="xs:string" />
 						<xs:attribute ref="on" type="xs:string" />
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="on minOccurs=" 1 maxOccurs="1">
+				<xs:element name="on" minOccurs="1" maxOccurs="1">
 					<xs:complexType>
 						<xs:attribute ref="name" type="xs:string" />
 						<xs:attribute ref="on" type="xs:string" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name=connect minOccurs="0" maxOccurs="unbounded">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="from minOccurs=" 1 maxOccurs="1">
-					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-						<xs:attribute ref="on" type="xs:string" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="on minOccurs=" 1 maxOccurs="1">
-					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-						<xs:attribute ref="on" type="xs:string" />
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name=interNodeConnect minOccurs="0" maxOccurs="unbounded">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="from minOccurs=" 1 maxOccurs="1">
-					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-						<xs:attribute ref="on" type="xs:string" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="on minOccurs=" 1 maxOccurs="1">
-					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-						<xs:attribute ref="on" type="xs:string" />
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-			<xs:attribute ref="dirction" type="xs:string" />
-			<xs:attribute ref="otherNode" type="xs:string" />
-			<xs:attribute ref="type" type="xs:string" />
+				<xs:attribute ref="dirction" type="xs:string" />
+				<xs:attribute ref="otherNode" type="xs:string" />
+				<xs:attribute ref="type" type="xs:string" />
 		</xs:complexType>
 	</xs:element>
 </xs:schema>
