@@ -172,6 +172,34 @@ public class MainWindow extends JFrame implements ActionListener
         
         textVisualizerArea = new JTextPane();
         textVisualizerArea.setBackground(UIManager.getColor("Button.background"));
+        textVisualizerArea.getDocument ( ).addDocumentListener ( new DocumentListener ()
+        {
+            public void insertUpdate(DocumentEvent e) {
+                updateLog(e, "inserted into");
+            }
+            public void removeUpdate(DocumentEvent e) {
+                updateLog(e, "removed from");
+            }
+            public void changedUpdate(DocumentEvent e) {
+                updateLog(e, "change from");
+            }
+            public void updateLog(DocumentEvent documentEvent, String action) 
+            {
+                DocumentEvent.EventType type = documentEvent.getType();
+                String typeString = null;
+                if (type.equals(DocumentEvent.EventType.CHANGE)) {
+                  typeString = "Change";
+                }  else if (type.equals(DocumentEvent.EventType.INSERT)) {
+                  typeString = "Insert";
+                }  else if (type.equals(DocumentEvent.EventType.REMOVE)) {
+                  typeString = "Remove";
+                }
+                System.out.print("Type : " + typeString);
+                Document source = documentEvent.getDocument();
+                int length = source.getLength();
+                System.out.println("Length: " + length);
+            }
+        });
         textVisualizerArea.setEnabled(false);
         textVisualizerArea.setEditable(false);
         textVisualizerArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -343,7 +371,6 @@ public class MainWindow extends JFrame implements ActionListener
                 }
             }
         }
-        
     }
     
     void saveToFile(String fileName)
@@ -387,7 +414,7 @@ public class MainWindow extends JFrame implements ActionListener
     {
         textVisualizerArea.setEditable(true);
         textVisualizerArea.setEnabled(true);
-        textVisualizerArea.getDocument ( ).addDocumentListener ( new MyDocumentListener() );
+//        textVisualizerArea.getDocument ( ).addDocumentListener ( new MyDocumentListener() );
     }
     
     private void showFileOnTheScreen(String path, String fileFormat) throws FileNotFoundException, IOException
@@ -498,43 +525,6 @@ public class MainWindow extends JFrame implements ActionListener
         catch (BadLocationException e)
         {
             e.printStackTrace();
-        }
-    }
-    class MyTextActionListener implements ActionListener {
-        /** Handle the text field Return. */
-        public void actionPerformed(ActionEvent e) {
-//            int selStart = textVisualizerArea.getSelectionStart();
-//            int selEnd = textVisualizerArea.getSelectionEnd();
-// 
-//            textArea.replaceRange(textField.getText(),
-//                                  selStart, selEnd);
-//            textField.selectAll();
-        }
-    }
-    class MyDocumentListener implements DocumentListener 
-    {
-        String newline = "\n";
-     
-        public void insertUpdate(DocumentEvent e) {
-            updateLog(e, "inserted into");
-        }
-        public void removeUpdate(DocumentEvent e) {
-            updateLog(e, "removed from");
-        }
-        public void changedUpdate(DocumentEvent e) {
-            //Plain text components do not fire these events
-        }
-
-        public void updateLog(DocumentEvent e, String action) 
-        {
-            System.out.println(action);
-            Document doc = (Document)e.getDocument();
-            int changeLength = e.getLength();
-//            displayArea.append(
-//                changeLength + " character" +
-//                ((changeLength == 1) ? " " : "s ") +
-//                action + doc.getProperty("name") + "." + newline +
-//                "  Text length = " + doc.getLength() + newline);
         }
     }
 }

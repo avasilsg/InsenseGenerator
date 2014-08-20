@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<nodeName name="Node1" ofTotal="2" orderNumber="1"/>
+<struct>
+<attribute name="sensorReading"/>
+<field name="photo" type="integer"/>
+<field name="solar" type="integer"/>
+<field name="temp" type="real"/>
+<field name="humid" type="real"/>
+</struct>
+<interface>
+<attribute name="ISensorReader"/>
+<channel direction="in" name="ticks" type="bool"/>
+<channel direction="out" name="printChan" type="sensorReading"/>
+<channel direction="out" name="ledsChan" type="sensorReading"/>
+</interface>
+<component>
+<attribute name="SensorReader"/>
+<presents name="ISensorReader"/>
+<constructor/>
+<behaviour>
+<receive from="ticks" identifier="tick"/>
+<variable bindingTo="photoReading()" name="photoValue" new="false" type=""/>
+<variable bindingTo="solarReading()" name="solarValue" new="false" type=""/>
+<variable bindingTo="tempCelsiusReading()" name="tempValue" new="false" type=""/>
+<variable bindingTo="relHumidReading()" name="humdityValue" new="false" type=""/>
+<variable bindingTo=" SensorReading( photoValue, solarValue, tempValue, humidityValuereading)" name="reading" new="true" type=""/>
+<send identifier="reading" on="ledsChan"/>
+<send identifier="reading" on="printChan"/>
+</behaviour>
+</component>
+<instance component="SensorReader" name="sr"/>
+<connect/>
+<interNodeConnect direction="send" otherNode="Node2" type="sensorReading">
+<to name="lo" on="input"/>
+<from name="sr" on="ledsChan"/>
+</interNodeConnect>
+<interNodeConnect direction="send" otherNode="Node2" type="sensorReading">
+<to name="po" on="input"/>
+<from name="sr" on="printChan"/>
+</interNodeConnect>
+</xsd:schema>

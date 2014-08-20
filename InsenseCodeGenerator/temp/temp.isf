@@ -1,13 +1,26 @@
 
-type ITimedTempReader is interface
-(
-	out integer output;
+type sensorReading is struct (
+	integer photo;
+	integer solar;
+	real temp;
+	real humid;
 )
-type IPrinter is interface
+
+type ISensorReader is interface
 (
-	in integer input;
+	in bool ticks;
+	out sensorReading printChan;
+	out sensorReading ledsChan;
 )
-component TimedTempReader presents ITimedTempReader
+type IPrintOutput is interface
+(
+	in sensorReading input;
+)
+type ILedOutput is interface
+(
+	in sensorReading input;
+)
+component SensorReader presents ISensorReader
 {
 
 	constructor ()
@@ -16,19 +29,75 @@ component TimedTempReader presents ITimedTempReader
 
 	behaviour 
 	{
+		receive tick from ticks
+		photoValue = photoReading()
+
+		solarValue = solarReading()
+
+		tempValue = tempCelsiusReading()
+
+		humdityValue = relHumidReading()
+
+		reading = new  SensorReading( photoValue, solarValue, tempValue, humidityValuereading)
+
+		send reading on ledsChan
+		send reading on printChan
 	}
 }
-component Printer presents IPrinter
+component PrintOutput presents IPrintOutput
 {
 
+	cycle = 0
 	constructor ()
 	{
 	}
 
 	behaviour 
 	{
+		receive reading from input
+
+		printString("Cycle ")
+
+
+
+		printString(":\tphoto = ")
+
+
+
+		printString("\tsolar = ")
+
+
+
+		printString("\ttemp = ")
+
+
+
+		printString("\thumid = ")
+
+
+
+		printInt("\n")
+		cycle = cycle+1
+
 	}
 }
-tr = new TimedTempReader()
-pr = new Printer()
-connect tr.output to pr.input
+component LedOutput presents ILedOutput
+{
+
+	avgTemp = 0.0
+	avgSolar = 0
+	avgHumid = 0.0
+	constructor ()
+	{
+	}
+
+	behaviour 
+	{
+		receive reading from input
+	}
+}
+sr = new SensorReader()
+lo = new LedOutput()
+po = new PrintOutput()
+connect sr.printChan to po.input
+connect sr.ledsChan to lo.input

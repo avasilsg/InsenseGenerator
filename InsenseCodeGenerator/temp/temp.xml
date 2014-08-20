@@ -7,7 +7,6 @@
 <interface>
 <attribute name="IPrinter"/>
 <channel direction="in" name="input" type="integer"/>
-<channel direction="in" name="input2" type="integer"/>
 </interface>
 <component>
 <attribute name="TimedTempReader"/>
