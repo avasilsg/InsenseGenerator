@@ -61,7 +61,7 @@
 						<xs:attribute ref="value" type="xs:string"/>
 					</xs:complexType>
 				</xs:element>				
-				<xs:element name="constructor">
+				<xs:element name="constructor"/>
 					<xs:element name="behaviour">
 						<xs:complexType>
 							<xs:all>
@@ -93,7 +93,7 @@
 								</xs:element>
 							</xs:all>
 						</xs:complexType>
-					</xs:element>				
+				</xs:element>			
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
