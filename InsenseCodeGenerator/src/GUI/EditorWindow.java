@@ -50,6 +50,7 @@ public class EditorWindow extends JFrame
         };
         JTextPane txt = new JTextPane(doc);
         txt.setText ( text );
+        txt.setEditable ( false );
         getContentPane().add(new JScrollPane(txt));
         setVisible(true);
     }
