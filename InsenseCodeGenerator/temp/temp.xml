@@ -12,13 +12,17 @@
 <attribute name="TimedTempReader"/>
 <presents name="ITimedTempReader"/>
 <constructor/>
-<behaviour/>
+<behaviour>
+<send identifier="temp" on="output"/>
+</behaviour>
 </component>
 <component>
 <attribute name="Printer"/>
 <presents name="IPrinter"/>
 <constructor/>
-<behaviour/>
+<behaviour>
+<receive from="input" identifier="temp"/>
+</behaviour>
 </component>
 <instance component="TimedTempReader" name="tr"/>
 <instance component="Printer" name="pr"/>

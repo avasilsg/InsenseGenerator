@@ -1,7 +1,6 @@
 package GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,8 +29,6 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -50,6 +47,9 @@ public class MainWindow extends JFrame implements ActionListener
      * 
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * 
+     */
     private final int         window_Len       = 1024;
     private final int         window_vLen      = 768;
     private JPanel            contentPane;
@@ -59,24 +59,23 @@ public class MainWindow extends JFrame implements ActionListener
     private JPanel            panel;
     private boolean           isTheCycleCompleted;
     private boolean           isGeneratedInsens;
+    private boolean           isTheFileChanged;
     private XMLFileContainer  xmlFile;
     private CompilerCaller    compileCaller;
     private JLabel            lblInsenseCodeGenerator;
     private JMenuBar          menuBar;
     private JTextPane         textVisualizerArea;
-    //TODO: move them to grammar
-    private int               count = 0;
-    private String            tabs = "";
-    
+    private DefaultStyledDocument documentPresentationLayer;
     /**
      * Create main window.
      */
     public MainWindow()
     {
-        isTheCycleCompleted = false;
-        isGeneratedInsens = false;
-        xmlFile       = new XMLFileContainer();
-        compileCaller = new CompilerCaller();
+        isTheCycleCompleted  = false;
+        isGeneratedInsens    = false;
+        isTheFileChanged     = false;
+        xmlFile              = new XMLFileContainer();
+        compileCaller        = new CompilerCaller();
         init();
     }
     
@@ -150,6 +149,7 @@ public class MainWindow extends JFrame implements ActionListener
         lblInsenseCodeGenerator.setFont(new Font("URW Bookman L", Font.PLAIN, 17));
     }
     
+    @SuppressWarnings ("serial")
     private void init()
     {
         setAlwaysOnTop(true);
@@ -175,13 +175,53 @@ public class MainWindow extends JFrame implements ActionListener
         textVisualizerArea.setEnabled(false);
         textVisualizerArea.setEditable(false);
         textVisualizerArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        documentPresentationLayer = new DefaultStyledDocument() 
+        {
+            public void insertString (int offset, String str, AttributeSet a) throws BadLocationException {
+                super.insertString(offset, str, a);
+
+                String text = getText(0, getLength());
+                int before = Grammer.findLastNonWordChar(text, offset);
+                if (before < 0) before = 0;
+                int after = Grammer.findFirstNonWordChar(text, offset + str.length());
+                int wordL = before;
+                int wordR = before;
+
+                while (wordR <= after) {
+                    if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
+                        if (text.substring(wordL, wordR).matches("(\\W)*" + Grammer.computationalUnitsRegEx))
+                            setCharacterAttributes(wordL, wordR - wordL, Grammer.attr, false);
+                        else
+                            setCharacterAttributes(wordL, wordR - wordL, Grammer.attrBlack, false);
+                        wordL = wordR;
+                    }
+                    wordR++;
+                }
+            }
+
+            public void remove (int offs, int len) throws BadLocationException {
+                super.remove(offs, len);
+
+                String text = getText(0, getLength());
+                int before = Grammer.findLastNonWordChar(text, offs);
+                if (before < 0) before = 0;
+                int after = Grammer.findFirstNonWordChar(text, offs);
+
+                if (text.substring(before, after).matches("(\\W)*" + Grammer.computationalUnitsRegEx)) {
+                    setCharacterAttributes(before, after - before, Grammer.attr, false);
+                } else {
+                    setCharacterAttributes(before, after - before, Grammer.attrBlack, false);
+                }
+            }
+            
+        };
+        textVisualizerArea.setDocument ( documentPresentationLayer );
         getContentPane().add(new JScrollPane(textVisualizerArea));
         panel.setLayout(gl_panel);
     }
     
     public void actionPerformed(ActionEvent event)
     {
-        
         JMenuItem myMenu = (JMenuItem) event.getSource();
         fileChooser = new JFileChooser();
         switch (myMenu.getText())
@@ -391,7 +431,6 @@ public class MainWindow extends JFrame implements ActionListener
     private void showFileOnTheScreen(String path, String fileFormat) throws FileNotFoundException, IOException
     {
         textVisualizerArea.setText("");
-        DefaultStyledDocument doc = new DefaultStyledDocument();
         FileReader fileReader = new FileReader(path);
         @SuppressWarnings("resource")
         BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -407,19 +446,20 @@ public class MainWindow extends JFrame implements ActionListener
             {
                 if (".isf".equals(fileFormat))
                 {
-                    parseInsenseToScreen(doc, lineIn);
+                    addToDocument(documentPresentationLayer, lineIn);                    
+                    addToDocument(documentPresentationLayer, "\n");
                 }
                 else
                 {
-                    addToDocument(doc, null, lineIn);
-                    addToDocument(doc, null, "\n");
+                    addToDocument(documentPresentationLayer, lineIn);
+                    addToDocument(documentPresentationLayer, "\n");
                 }
                 
             }
         }
-        textVisualizerArea.setDocument(doc);
+
         textVisualizerArea.getDocument ( ).addDocumentListener ( new DocumentListener ()
-        {
+        {           
             public void insertUpdate(DocumentEvent e) {
                 updateLog(e, "inserted into");
             }
@@ -432,94 +472,33 @@ public class MainWindow extends JFrame implements ActionListener
             public void updateLog(DocumentEvent documentEvent, String action) 
             {
                 DocumentEvent.EventType type = documentEvent.getType();
-                String typeString = null;
-                if (type.equals(DocumentEvent.EventType.CHANGE)) {
-                  typeString = "Change";
-                }  else if (type.equals(DocumentEvent.EventType.INSERT)) {
-                  typeString = "Insert";
-                }  else if (type.equals(DocumentEvent.EventType.REMOVE)) {
-                  typeString = "Remove";
-                }
-                System.out.print("Type : " + typeString);
                 Document source = documentEvent.getDocument();
+                                    
+                String typeString = null;
+                if (type.equals(DocumentEvent.EventType.CHANGE)) 
+                {
+                  typeString = "Change";
+                  isTheFileChanged = true;
+                }  
+                else if (type.equals(DocumentEvent.EventType.INSERT)) 
+                {
+                  typeString = "Insert";                 
+                }  
+                else if (type.equals(DocumentEvent.EventType.REMOVE)) 
+                {
+
+                }
+                System.out.println("Type : " + typeString + " : " + isTheFileChanged + " : ");
                 int length = source.getLength();
                 System.out.println("Length: " + length);
             }
         });
-    }
-    
-    private void parseInsenseToScreen(DefaultStyledDocument doc, String lineIn)
-    {
-        final StyleContext cont = StyleContext.getDefaultStyleContext();
-        final AttributeSet attr = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLUE);
-        final AttributeSet attrBlack = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
-
-        if (1 < lineIn.length())
-        {
-            String keyWords[] = lineIn.split("\\s+");
-            for (int i = 0; i < keyWords.length; i++)
-            {
-                keyWords[i].replaceAll("\\s+", "");
-                if (!"".equals(keyWords[i]) && (Grammer.findWord(keyWords[i])))
-                {
-                    if (0 == i)
-                    {
-                        addToDocument(doc, attr, tabs + keyWords[i] + " ");
-                    }
-                    else
-                    {
-                        addToDocument(doc, attr, keyWords[i] + " ");
-                    }
-                }
-                else
-                {
-                    if (0 == i)
-                    {
-                        addToDocument(doc, attrBlack, tabs + keyWords[i] + " ");
-                    }
-                    else
-                    {
-                        addToDocument(doc, attrBlack, keyWords[i] + " ");
-                    }
-                }
-            }
-            addToDocument(doc, attrBlack, "\n");
-        }
-        else if (!"".equals(lineIn))
-        {
-            if ("{".equals(lineIn))
-            {
-                ++count;
-                addToDocument(doc, attrBlack, tabs + lineIn + " ");
-                for (int j = 0; j < count; j++)
-                {
-                    tabs += "    ";
-                }
-            }
-            else if ("}".equals(lineIn))
-            {
-                --count;
-                tabs = "";
-                for (int j = 0; j < count; j++)
-                {
-                    tabs += "    ";
-                }                
-                addToDocument(doc, attrBlack, tabs + lineIn + " ");                                      
-            }
-            else
-            {
-                addToDocument(doc, attrBlack, lineIn + " ");
-            }
-
-            addToDocument(doc, attrBlack, "\n");
-        }
-    }
-    
-    private void addToDocument(DefaultStyledDocument doc, final AttributeSet attr, String keyWords)
+    } 
+    private void addToDocument(DefaultStyledDocument doc,  String keyWords)
     {
         try
         {
-            doc.insertString(doc.getLength(), keyWords, attr);
+            doc.insertString(doc.getLength(), keyWords, null);
         }
         catch (BadLocationException e)
         {
