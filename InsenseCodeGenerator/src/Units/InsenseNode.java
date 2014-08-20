@@ -8,6 +8,7 @@ public class InsenseNode
     private String connectToNode;
     private String type;
     private String direction;
+    private Connect connect;
     
     public InsenseNode()
     {
@@ -68,5 +69,14 @@ public class InsenseNode
     public void setDirection ( String direction )
     {
         this.direction = direction;
+    }
+
+    public void setConnect ( Connect connect )
+    {
+        this.connect = connect;
+    }
+    public Connect getConnect()
+    {
+        return connect;
     }
 }

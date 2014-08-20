@@ -38,6 +38,7 @@ public class XmlParser
     private Document        doc;
     private InsenseWriter   codeGenerator;
     private InsenseNode     nodeInfo;
+    private boolean         isInterConnect;
     
     public XmlParser(final String fXmlFile)
     {
@@ -45,7 +46,7 @@ public class XmlParser
         {
             throw new NullPointerException();
         }
-        
+        isInterConnect = false;
         codeGenerator = new InsenseWriter();       
         codeGenerator.openAndCreateFile(".isf");
         setFileName(fXmlFile);
@@ -178,11 +179,13 @@ public class XmlParser
                 }
             }
         }
-        this.codeGenerator.writeNodePattern(this.nodeInfo);
         if (currentNode.hasChildNodes ( ))
         {
+            isInterConnect = true;
             parseInterConnectNodeChildren(currentNode.getChildNodes ( ));
         }
+        this.codeGenerator.writeNodePattern(this.nodeInfo);
+
     }
 
     private void parseInterConnectNodeChildren ( NodeList childNodes )
@@ -276,10 +279,15 @@ public class XmlParser
                 continue;
             }
             
-            if (flagOpen && flagClosed)
+            if (flagOpen && flagClosed && !isInterConnect)
             {
                 codeGenerator.writeConnection(connect);
                 flagClosed = flagOpen = false;
+                continue;
+            }
+            else if (isInterConnect)
+            {
+                this.nodeInfo.setConnect(connect);
                 continue;
             }
         }

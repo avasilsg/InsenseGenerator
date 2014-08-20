@@ -15,7 +15,7 @@ public class Behaviour
     private LinkedList<Print> prints;
     private LinkedList<String> order;
     private LinkedList<String> returnStatements;
-    
+    private Template template;
     public Behaviour()
     {
         this.setSends(new LinkedList<Send>());
@@ -117,5 +117,15 @@ public class Behaviour
     public void setReturnStatement(final String returnSt)
     {
         this.returnStatements.add ( returnSt );
+    }
+
+    public Template getTemplate ( )
+    {
+        return template;
+    }
+
+    public void setTemplate ( Template template )
+    {
+        this.template = template;
     }
 }
