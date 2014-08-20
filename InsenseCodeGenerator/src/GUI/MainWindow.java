@@ -172,34 +172,6 @@ public class MainWindow extends JFrame implements ActionListener
         
         textVisualizerArea = new JTextPane();
         textVisualizerArea.setBackground(UIManager.getColor("Button.background"));
-        textVisualizerArea.getDocument ( ).addDocumentListener ( new DocumentListener ()
-        {
-            public void insertUpdate(DocumentEvent e) {
-                updateLog(e, "inserted into");
-            }
-            public void removeUpdate(DocumentEvent e) {
-                updateLog(e, "removed from");
-            }
-            public void changedUpdate(DocumentEvent e) {
-                updateLog(e, "change from");
-            }
-            public void updateLog(DocumentEvent documentEvent, String action) 
-            {
-                DocumentEvent.EventType type = documentEvent.getType();
-                String typeString = null;
-                if (type.equals(DocumentEvent.EventType.CHANGE)) {
-                  typeString = "Change";
-                }  else if (type.equals(DocumentEvent.EventType.INSERT)) {
-                  typeString = "Insert";
-                }  else if (type.equals(DocumentEvent.EventType.REMOVE)) {
-                  typeString = "Remove";
-                }
-                System.out.print("Type : " + typeString);
-                Document source = documentEvent.getDocument();
-                int length = source.getLength();
-                System.out.println("Length: " + length);
-            }
-        });
         textVisualizerArea.setEnabled(false);
         textVisualizerArea.setEditable(false);
         textVisualizerArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -414,7 +386,6 @@ public class MainWindow extends JFrame implements ActionListener
     {
         textVisualizerArea.setEditable(true);
         textVisualizerArea.setEnabled(true);
-//        textVisualizerArea.getDocument ( ).addDocumentListener ( new MyDocumentListener() );
     }
     
     private void showFileOnTheScreen(String path, String fileFormat) throws FileNotFoundException, IOException
@@ -447,6 +418,34 @@ public class MainWindow extends JFrame implements ActionListener
             }
         }
         textVisualizerArea.setDocument(doc);
+        textVisualizerArea.getDocument ( ).addDocumentListener ( new DocumentListener ()
+        {
+            public void insertUpdate(DocumentEvent e) {
+                updateLog(e, "inserted into");
+            }
+            public void removeUpdate(DocumentEvent e) {
+                updateLog(e, "removed from");
+            }
+            public void changedUpdate(DocumentEvent e) {
+                updateLog(e, "change from");
+            }
+            public void updateLog(DocumentEvent documentEvent, String action) 
+            {
+                DocumentEvent.EventType type = documentEvent.getType();
+                String typeString = null;
+                if (type.equals(DocumentEvent.EventType.CHANGE)) {
+                  typeString = "Change";
+                }  else if (type.equals(DocumentEvent.EventType.INSERT)) {
+                  typeString = "Insert";
+                }  else if (type.equals(DocumentEvent.EventType.REMOVE)) {
+                  typeString = "Remove";
+                }
+                System.out.print("Type : " + typeString);
+                Document source = documentEvent.getDocument();
+                int length = source.getLength();
+                System.out.println("Length: " + length);
+            }
+        });
     }
     
     private void parseInsenseToScreen(DefaultStyledDocument doc, String lineIn)
