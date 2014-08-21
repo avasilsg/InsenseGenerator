@@ -3,6 +3,7 @@
 <interface>
 <attribute name="ITimedTempReader"/>
 <channel direction="out" name="output" type="integer"/>
+<channel direction="out" name="printOutput" type="real"/>
 </interface>
 <interface>
 <attribute name="IPrinter"/>

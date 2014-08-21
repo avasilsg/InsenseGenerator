@@ -2,51 +2,43 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="nodeName">
 		<xs:complexType>
-			<xs:attribute ref="name" type="xs:string" />
+			<xs:attribute name="name"  type="xs:string" use="required"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="struct">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="attribute" minOccurs="1" maxOccurs="1">
-					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-					</xs:complexType>
-				</xs:element>
 				<xs:element name="field" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-						<xs:attribute ref="type" type="xs:string" />
+						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="type" type="xs:string" use="required"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
+			<xs:attribute name="name" type="xs:string" use="required"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="interface">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="attribute" minOccurs="1" maxOccurs="1">
-					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-					</xs:complexType>
-				</xs:element>
 				<xs:element name="channel">
 					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-						<xs:attribute ref="type" type="xs:string" />
-						<xs:attribute ref="direction" type="xs:string" />
+						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="type" type="xs:string" use="required"/>
+						<xs:attribute name="direction" type="xs:string" use="required"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
+			<xs:attribute name="name" type="xs:string" use="required"/>			
 		</xs:complexType>
 	</xs:element>
 	
 	<xs:element name="instance">
 		<xs:complexType>
-			<xs:attribute ref="component" type="xs:string"/>
-			<xs:attribute ref="name" type="xs:string"/>
+			<xs:attribute name="component" type="xs:string" use="required"/>
+			<xs:attribute name="name" type="xs:string" use="required"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -55,51 +47,27 @@
 			<xs:sequence>
 				<xs:element name="from" minOccurs="1" maxOccurs="1">
 					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-						<xs:attribute ref="on" type="xs:string" />
+						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="on" type="xs:string" use="required"/>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="on" minOccurs="1" maxOccurs="1">
 					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-						<xs:attribute ref="on" type="xs:string" />
+						<xs:attribute name="name" type="xs:string" />
+						<xs:attribute name="on" type="xs:string" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-
-	<xs:element name="connect">
+	<xs:element name="component">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="from" minOccurs="1" maxOccurs="1">
-					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-						<xs:attribute ref="on" type="xs:string" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="on" minOccurs="1" maxOccurs="1">
-					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string"/>
-						<xs:attribute ref="on" type="xs:string"/>
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-<xs:element name="component">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="attribute" minOccurs="1" maxOccurs="1">
-					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string"/>
-					</xs:complexType>
-				</xs:element>
 				<xs:element name="field" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string"/>
-						<xs:attribute ref="type" type="xs:string"/>
-						<xs:attribute ref="value" type="xs:string"/>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="type" type="xs:string"/>
+						<xs:attribute name="value" type="xs:string"/>
 					</xs:complexType>
 				</xs:element>				
 				<xs:element name="constructor"/>
@@ -108,34 +76,35 @@
 							<xs:all>
 								<xs:element name="send">
 									<xs:complexType>
-										<xs:attribute ref="identifier" type="xs:string" />
-										<xs:attribute ref="on" type="xs:string" />
+										<xs:attribute name="identifier" type="xs:string" use="required"/>
+										<xs:attribute name="on" type="xs:string" use="required"/>
 									</xs:complexType>
 								</xs:element>
 								<xs:element name="receive">
 									<xs:complexType>
-										<xs:attribute ref="identifier" type="xs:string" />
-										<xs:attribute ref="from" type="xs:string" />
+										<xs:attribute name="identifier" type="xs:string" use="required"/>
+										<xs:attribute name="from" type="xs:string" use="required"/>
 									</xs:complexType>
 								</xs:element>
 								<xs:element name="variable">
 									<xs:complexType>
-										<xs:attribute ref="type" type="xs:string" />
-										<xs:attribute ref="allocation" type="xs:string" />
-										<xs:attribute ref="bindingTo" type="xs:string" />
-										<xs:attribute ref="name" type="xs:string" />
+										<xs:attribute name="type" type="xs:string" use="required"/>
+										<xs:attribute name="allocation" type="xs:string" use="required"/>
+										<xs:attribute name="bindingTo" type="xs:string" />
+										<xs:attribute name="name" type="xs:string" use="required"/>
 									</xs:complexType>
 								</xs:element>
 								<xs:element name="print">
 									<xs:complexType>
-										<xs:attribute ref="type" type="xs:string" />
-										<xs:attribute ref="variable" type="xs:string" />
+										<xs:attribute name="type" type="xs:string" use="required"/>
+										<xs:attribute name="variable" type="xs:string" use="required"/>
 									</xs:complexType>
 								</xs:element>
 							</xs:all>
 						</xs:complexType>
 				</xs:element>			
 			</xs:sequence>
+			<xs:attribute name="name" type="xs:string" use="required"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="interNodeConnect">
@@ -143,20 +112,20 @@
 			<xs:sequence>
 				<xs:element name="from" minOccurs="1" maxOccurs="1">
 					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-						<xs:attribute ref="on" type="xs:string" />
+						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="on" type="xs:string" use="required"/>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="on" minOccurs="1" maxOccurs="1">
 					<xs:complexType>
-						<xs:attribute ref="name" type="xs:string" />
-						<xs:attribute ref="on" type="xs:string" />
+						<xs:attribute name="name" type="xs:string" use="required"/>
+						<xs:attribute name="on" type="xs:string"   use="required"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
-				<xs:attribute ref="dirction" type="xs:string" />
-				<xs:attribute ref="otherNode" type="xs:string" />
-				<xs:attribute ref="type" type="xs:string" />
+				<xs:attribute name="dirction" type="xs:string" use="required"/>
+				<xs:attribute name="otherNode" type="xs:string" use="required"/>
+				<xs:attribute name="type" type="xs:string" use="required"/>
 		</xs:complexType>
 	</xs:element>
 </xs:schema>
