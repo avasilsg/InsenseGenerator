@@ -26,6 +26,11 @@ public class EditorWindow extends JFrame
         final AttributeSet attr = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.RED);
         final AttributeSet attrBlack = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);
         DefaultStyledDocument doc = new DefaultStyledDocument() {
+            /**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
             public void insertString (int offset, String str, AttributeSet a) throws BadLocationException {
                 super.insertString(offset, str, a);
 

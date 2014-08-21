@@ -1,5 +1,9 @@
 package Units;
 
+import java.util.LinkedList;
+
+import Units.BasicUnits.Instance;
+
 public class InsenseNode
 {
     private String nodeName;
@@ -9,6 +13,7 @@ public class InsenseNode
     private String type;
     private String direction;
     private Connect connect;
+    private LinkedList<Instance> instances;
     
     public InsenseNode()
     {
@@ -17,7 +22,7 @@ public class InsenseNode
         this.nodeOrderNumber = 0;
         this.totalNodeNumbers = 0;
         this.nodeName = null;
-        
+        this.instances = new LinkedList<Instance>();
     }
     
     public String getNodeName ( )
@@ -78,5 +83,20 @@ public class InsenseNode
     public Connect getConnect()
     {
         return connect;
+    }
+
+    public LinkedList<Instance> getInstances ( )
+    {
+        return instances;
+    }
+
+    public void setInstances ( LinkedList<Instance> instances )
+    {
+        this.instances = instances;
+    }
+    
+    public void setInstance ( Instance instance )
+    {
+        this.instances.add (instance);
     }
 }

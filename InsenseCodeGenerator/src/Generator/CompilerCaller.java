@@ -74,7 +74,9 @@ public class CompilerCaller
             }
             else
             {
+
                 String path = new File ( "" ).getAbsolutePath ( );
+                System.out.println(path);
                 File dir = new File ( path + "/" + "solution" + "/" );
                 dir.mkdir ( );
                 
@@ -82,8 +84,8 @@ public class CompilerCaller
                         + "/%s", this.insenseFileName );
                 String output = execCmd ( String
                                 .format (
-                                        "java -jar /home/stephan/git/InsenseGenerator/InsenseCodeGenerator/src/GUI/%s %s %s",
-                                        insenseCompiler, insenseFilePath,
+                                        "java -jar %s %s %s",
+                                        path + "/compilers/" + insenseCompiler, insenseFilePath,
                                         executable ) );
                 @SuppressWarnings ("unused")
                 EditorWindow window = new EditorWindow(output);

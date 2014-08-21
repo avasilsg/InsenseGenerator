@@ -21,7 +21,7 @@ public class Grammer extends DefaultStyledDocument
             "component", "type", "behaviour", "send", "receive", "proc",
             "struct", "constructor", "integer", "real", "bool", "connect",
             "in", "out", "new", "presents", "return", "on", "to", "from" };
-    public static String      computationalUnitsRegEx = "(connect|type|interface|component|behaviour|send|receive|proc|struct|constructor|integer|real|bool|new|presents|return|on|to|from|in|out)";
+    public static String      computationalUnitsRegEx = "(connect|type|is|any|interface|component|behaviour|send|receive|proc|struct|constructor|integer|real|bool|new|presents|return|on|to|from|in|out)";
     final  static StyleContext cont = StyleContext.getDefaultStyleContext();
     final  public static AttributeSet attr = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.RED);
     final  public static AttributeSet attrBlack = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, Color.BLACK);     

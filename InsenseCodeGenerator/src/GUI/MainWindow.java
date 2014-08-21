@@ -66,6 +66,7 @@ public class MainWindow extends JFrame implements ActionListener
     private JMenuBar          menuBar;
     private JTextPane         textVisualizerArea;
     private DefaultStyledDocument documentPresentationLayer;
+    private String            fileFormat;
     /**
      * Create main window.
      */
@@ -74,6 +75,7 @@ public class MainWindow extends JFrame implements ActionListener
         isTheCycleCompleted  = false;
         isGeneratedInsens    = false;
         isTheFileChanged     = false;
+        fileFormat           = "";
         xmlFile              = new XMLFileContainer();
         compileCaller        = new CompilerCaller();
         init();
@@ -153,7 +155,7 @@ public class MainWindow extends JFrame implements ActionListener
     private void init()
     {
         setAlwaysOnTop(true);
-        setResizable(false);
+        setResizable(true);
         setTitle("Insense Code Generator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(window_Len, window_vLen);
@@ -188,8 +190,10 @@ public class MainWindow extends JFrame implements ActionListener
                 int wordR = before;
 
                 while (wordR <= after) {
-                    if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
-                        if (text.substring(wordL, wordR).matches("(\\W)*" + Grammer.computationalUnitsRegEx))
+                    if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) 
+                    {
+                        
+                        if (text.substring(wordL, wordR).matches("(\\W)*" + Grammer.computationalUnitsRegEx) && "isf" == fileFormat)
                             setCharacterAttributes(wordL, wordR - wordL, Grammer.attr, false);
                         else
                             setCharacterAttributes(wordL, wordR - wordL, Grammer.attrBlack, false);
@@ -287,6 +291,7 @@ public class MainWindow extends JFrame implements ActionListener
             {
                 if (this.isGeneratedInsens)
                 {
+                    fileFormat = "isf";
                     showFileOnTheScreen(this.compileCaller.getInsenseFilePath ( ), ".isf");
                 }
                 else
@@ -296,6 +301,7 @@ public class MainWindow extends JFrame implements ActionListener
             }
             else
             {
+                fileFormat = "xml";
                 showFileOnTheScreen(this.xmlFile.getFilePath ( ), ".xml");
             }
         }
@@ -412,8 +418,17 @@ public class MainWindow extends JFrame implements ActionListener
         String fileName = file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()).toLowerCase();
         if (true == fileName.equals("xml"))
         {
+            fileFormat = "xml";
             activateTextArea();
             showFileOnTheScreen(file.getAbsolutePath(), ".xml");
+        }
+        else if (true == fileName.equals ( "isf" ))
+        {
+            fileFormat = "isf";
+            activateTextArea();
+            showFileOnTheScreen(file.getAbsolutePath(), ".isf");
+            this.compileCaller.setInsenseFilePath ( file.getAbsolutePath ( ) );
+            this.compileCaller.setInsenseFileName ( file.getName ( ).indexOf(".") > 0 ? file.getName ( ).substring(0, file.getName ( ).lastIndexOf(".")) : file.getName ( ) );
         }
         else
         {

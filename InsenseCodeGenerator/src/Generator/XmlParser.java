@@ -177,6 +177,10 @@ public class XmlParser
                 {
                     nodeInfo.setDirection ( currentNode.getAttributes().item(i).getNodeValue());
                 }
+                if ("otherNode".equals(currentNode.getAttributes().item(i).getNodeName()))
+                {
+                    nodeInfo.setConnectToNode ( currentNode.getAttributes().item(i).getNodeValue() );
+                }
             }
         }
         if (currentNode.hasChildNodes ( ))
@@ -245,8 +249,15 @@ public class XmlParser
                 }
             }
         }
-        codeGenerator.writeInstance(instance);
-        instance = null;
+        if (null != this.nodeInfo && 1 < nodeInfo.getTotalNodeNumbers ( ))
+        {
+            this.nodeInfo.setInstance ( instance );
+        }
+        else
+        {
+            codeGenerator.writeInstance(instance);
+            instance = null;
+        }
     }
     
     private void connectionParsing(Node currentNode)

@@ -3,8 +3,6 @@ package Generator;
 import java.io.File;
 import java.util.LinkedList;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
 import AbstractGenerator.Writer;
 import GrammarAndClauses.Clauses;
 import Units.Behaviour;
@@ -201,8 +199,7 @@ public class InsenseWriter extends Writer
         if (behaviour.getTemplate ( ).getObject ( ) instanceof Send)
         {
             Send send = (Send) behaviour.getTemplate ( ).getObject ( );
-            writer.println();
-            writer.write("\t\t" + String.format(Clauses.send, send.getInderntifier(), send.getOn()) + "}");
+            writer.write(" " + String.format(Clauses.send, send.getInderntifier(), send.getOn()) + "  }");
             
         }
         else
@@ -210,8 +207,9 @@ public class InsenseWriter extends Writer
             Receive receive = (Receive) behaviour.getTemplate ( ).getObject ( );
             writer.write("\t\t" + String.format(Clauses.receive, receive.getInderntifier(), receive.getFrom()));
         }
+        writer.println();
         String expression = Clauses.openBracket + behaviour.getTemplate ( ).getPrint ( ).getVariable() + Clauses.closeBracket;
-        writer.write("\t\tdefault: {" + String.format(Clauses.printString, expression) + "}");
+        writer.write("\t\tdefault: {  " + String.format(Clauses.printString, expression) + "  }");
     }
 
     private void writeVariable(Behaviour behaviour)
@@ -447,7 +445,7 @@ public class InsenseWriter extends Writer
                template.setObject ( send );
                Print print = new Print();
                print.setType ( "String" );
-               print.setVariable ( "\"unknown type???\n\"" );
+               print.setVariable ( "\"unknown type???\"" );
                template.setPrint ( print );
                beh.setOperation ( "template" );
                beh.setTemplate ( template );
@@ -474,7 +472,7 @@ public class InsenseWriter extends Writer
                beh.setOperation ( "receive" );
                beh.setReceive ( receive );
                Variable var = new Variable();
-               var.setBindingTo ( "RadioPacket()" );
+               var.setBindingTo ( String.format ( "RadioPacket(%s, any(value))", nodeInfo.getConnectToNode ( )) );
                var.setNewOp ( true );
                var.setName ( "packet" );
                beh.setOperation ( "variable" );
@@ -491,12 +489,7 @@ public class InsenseWriter extends Writer
                break;
            }
        }
-       Instance instance = new Instance();
-       writeInterface(interfs);
-       writeComponent ( component );
-       instance.setType ( component.getName ( ) );
-       instance.setName ( Character.toLowerCase (  component.getName ( ).charAt ( 0 ) ) + component.getName ( ).substring(1));
-       writeInstance(instance);
+       Instance instance = writeTemplateInfo (nodeInfo, interfs, component );
        connect.setFromName ( instance.getName ( ) );
        writeConnection(connect);
        if ("send".equals ( nodeInfo.getDirection ( )))
@@ -517,6 +510,27 @@ public class InsenseWriter extends Writer
        }
     }
 
+    private void writeInstances ( InsenseNode nodeInfo )
+    {
+        for(int i = 0; i < nodeInfo.getInstances ( ).size ( ); i++)
+        {
+            this.writeInstance ( nodeInfo.getInstances ( ).get ( i ) );
+        }
+    }
+
+    private Instance writeTemplateInfo ( InsenseNode nodeInfo, Interface interfs,
+            Component component )
+    {
+        Instance instance = new Instance();
+           writeInterface(interfs);
+           writeComponent ( component );
+           writeInstances(nodeInfo);
+           instance.setType ( component.getName ( ) );
+           instance.setName ( Character.toLowerCase (  component.getName ( ).charAt ( 0 ) ) + component.getName ( ).substring(1));
+           writeInstance(instance);
+        return instance;
+    }
+
     private void fulfilNodeChannelSend ( InsenseNode nodeInfo, Interface interfs )
     {
            Channel chan = new Channel();
@@ -525,7 +539,7 @@ public class InsenseWriter extends Writer
            chan.setName ( "input" );
            interfs.setChannel ( chan );
            chan = new Channel();
-           chan.setDirection ( "in" );
+           chan.setDirection ( "out" );
            chan.setType ( "RadioPacket" );
            chan.setName ( "unicast" );
            interfs.setChannel ( chan );
