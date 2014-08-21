@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	<xs:element name="nodeName">
 		<xs:complexType>
 			<xs:attribute name="name"  type="xs:string" use="required"/>
+			<xs:attribute name="ofTotal"  type="xs:integer" use="required"/>
+			<xs:attribute name="orderNumber"  type="xs:integer" use="required"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="struct">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="field" minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="field" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:attribute name="name" type="xs:string" use="required"/>
 						<xs:attribute name="type" type="xs:string" use="required"/>
@@ -23,7 +25,7 @@
 	<xs:element name="interface">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="channel">
+				<xs:element name="channel" minOccurs="1" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:attribute name="name" type="xs:string" use="required"/>
 						<xs:attribute name="type" type="xs:string" use="required"/>
@@ -63,44 +65,44 @@
 	<xs:element name="component">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="field" minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="field" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:attribute name="name" type="xs:string" use="required"/>
 						<xs:attribute name="type" type="xs:string"/>
 						<xs:attribute name="value" type="xs:string"/>
 					</xs:complexType>
 				</xs:element>				
-				<xs:element name="constructor"/>
-					<xs:element name="behaviour">
+				<xs:element name="constructor" minOccurs="1" maxOccurs="unbounded"/>
+					<xs:element name="behaviour" maxOccurs="1">
 						<xs:complexType>
-							<xs:all>
-								<xs:element name="send">
+							<xs:sequence>
+								<xs:element name="send" maxOccurs="unbounded">
 									<xs:complexType>
 										<xs:attribute name="identifier" type="xs:string" use="required"/>
 										<xs:attribute name="on" type="xs:string" use="required"/>
 									</xs:complexType>
 								</xs:element>
-								<xs:element name="receive">
+								<xs:element name="receive" maxOccurs="unbounded">
 									<xs:complexType>
 										<xs:attribute name="identifier" type="xs:string" use="required"/>
 										<xs:attribute name="from" type="xs:string" use="required"/>
 									</xs:complexType>
 								</xs:element>
-								<xs:element name="variable">
+								<xs:element name="variable" maxOccurs="unbounded">
 									<xs:complexType>
 										<xs:attribute name="type" type="xs:string" use="required"/>
-										<xs:attribute name="allocation" type="xs:string" use="required"/>
+										<xs:attribute name="new" type="xs:string" use="required"/>
 										<xs:attribute name="bindingTo" type="xs:string" />
 										<xs:attribute name="name" type="xs:string" use="required"/>
 									</xs:complexType>
 								</xs:element>
-								<xs:element name="print">
+								<xs:element name="print" maxOccurs="unbounded">
 									<xs:complexType>
-										<xs:attribute name="type" type="xs:string" use="required"/>
+										<xs:attribute name="type"     type="xs:string" use="required"/>
 										<xs:attribute name="variable" type="xs:string" use="required"/>
 									</xs:complexType>
 								</xs:element>
-							</xs:all>
+							</xs:sequence>
 						</xs:complexType>
 				</xs:element>			
 			</xs:sequence>
