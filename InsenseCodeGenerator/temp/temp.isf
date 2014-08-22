@@ -1,28 +1,9 @@
 
-type ITimedTempReader is interface
-(
-	out integer output;
-)
-component TimedTempReader presents ITimedTempReader
-{
-
-	constructor ()
-	{
-	}
-
-	behaviour 
-	{
-		temp = tempReading()
-
-		send temp on output
-	}
-}
-type IRadioSensorSend1 is interface
+type IPrinter is interface
 (
 	in integer input;
-	out RadioPacket unicast;
 )
-component RadioSensorSend1 presents IRadioSensorSend1
+component Printer presents IPrinter
 {
 
 	constructor ()
@@ -31,13 +12,34 @@ component RadioSensorSend1 presents IRadioSensorSend1
 
 	behaviour 
 	{
-		receive value from input
-		packet = new RadioPacket(5785678, any(value))
+		receive temp from input
 
-		send packet on unicast
+		printInt(temp)
+
+		printString(" is the current temp\n")
 	}
 }
-tr = new TimedTempReader()
-radioSensorSend1 = new RadioSensorSend1()
-connect radioSensorSend1.unicast to radio.unicastSend
-connect tr.output to radioSensorSend1.input
+type IRadioSensorReceive2 is interface
+(
+	out integer output;
+	in RadioPacket received;
+)
+component RadioSensorReceive2 presents IRadioSensorReceive2
+{
+
+	constructor ()
+	{
+	}
+
+	behaviour 
+	{
+		receive packet from received
+		project packet.payload as value onto
+		integer: { send value on output  }
+		default: {  printString("unknown type???")  }
+	}
+}
+pr = new Printer()
+radioSensorReceive2 = new RadioSensorReceive2()
+connect radioSensorReceive2.received to radio.received
+connect radioSensorReceive2.output to pr.input

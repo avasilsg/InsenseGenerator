@@ -11,8 +11,6 @@ public class TestConsoleParsing
         window.setVisible(true);
         window.setAlwaysOnTop(false);
         window.setLocation(500, 180);
-//        XmlParser parser = new XmlParser("/Temp/example5.xml");
-//        parser.parseXML();
     }
     
 }

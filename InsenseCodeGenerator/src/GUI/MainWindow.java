@@ -111,8 +111,8 @@ public class MainWindow extends JFrame implements ActionListener
         menuItem.addActionListener(this);
         mnOpen.add(menuItem);
         
-        menuItem = new JMenuItem("Validate XML");
-        mnOpen.add(menuItem);
+//        menuItem = new JMenuItem("Validate XML");
+//        mnOpen.add(menuItem);
         
         menuItem = new JMenuItem("View XML");
         menuItem.addActionListener(this);
@@ -324,7 +324,7 @@ public class MainWindow extends JFrame implements ActionListener
     private void parseInsense(String filePath)
     {
         InsenseCodeParser parser = new InsenseCodeParser(filePath);
-        parser.parseInsense();
+        this.xmlFile.setFilePath ( parser.parseInsense() );
     }
     
     private void openDialog(String title)

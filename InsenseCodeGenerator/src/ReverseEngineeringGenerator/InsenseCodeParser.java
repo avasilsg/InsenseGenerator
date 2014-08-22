@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import Units.Component;
 import Units.Connect;
 import Units.Interface;
@@ -39,7 +41,14 @@ public class InsenseCodeParser
             isCloseCurlyBracket = false;
             lastComputationalUnit = "";
             writer = new XMLWriter ( );
-            reader = new BufferedReader ( new FileReader ( filePath ) );
+            if (null == filePath || filePath.equals ( "" ))
+            {
+                JOptionPane.showMessageDialog(null, "Choose an Insense file!");
+            }
+            else
+            {
+                reader = new BufferedReader ( new FileReader ( filePath ) );
+            }
         }
         catch (FileNotFoundException e)
         {
@@ -47,7 +56,7 @@ public class InsenseCodeParser
         }
     }
     
-    public void parseInsense ( )
+    public String parseInsense ( )
     {
         String line = "";
         while (line != null)
@@ -88,6 +97,7 @@ public class InsenseCodeParser
             }
         }
         this.writer.writeXMLToFile ( );
+        return this.writer.getPathToTheNewCreatedFile ( );
     }
     private void removeEmptyElements()
     {
