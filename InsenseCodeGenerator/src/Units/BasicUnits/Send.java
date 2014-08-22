@@ -1,6 +1,6 @@
 package Units.BasicUnits;
 
-public class Send
+public class Send extends Operator
 {
     private String inderntifier;
     private String value;

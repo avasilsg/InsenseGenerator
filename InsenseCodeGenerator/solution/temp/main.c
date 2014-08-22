@@ -1,36 +1,48 @@
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.CompilationUnit::printHeaders
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.CompilationUnit::printHeaders
 #include "main.h"
-#ifndef TIMEDTEMPREADER_H_
- #include "Insense_TimedTempReader.h"
-#endif 
 #ifndef PRINTER_H_
  #include "Insense_Printer.h"
 #endif 
+#ifndef RADIOSENSORRECEIVE2_H_
+ #include "Insense_RadioSensorReceive2.h"
+#endif 
 
 
+#ifndef DALSMALL
+static char *file_name = "main";
+#endif
 
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.CompilationUnit::printGlobals
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.CompilationUnit::printGlobals
 
 // main_stack_size definition so that InceOS knows size of main component
 int main_stack_size = 94;
 
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.CompilationUnit::printGlobalFunctions
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.CompilationUnit::printGlobalFunctions
 
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.CompilationUnit::printMain
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.CompilationUnit::printMain
 void primordial_main( void *this ) {
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Sequence::complete
-	TimedTempReaderPNTR tr_glob = NULL;
-	DAL_assign(&tr_glob , component_create( ((behaviour_ft)&Construct_TimedTempReader0), sizeof( TimedTempReaderStruct ) , 6, 0, NULL , -1) );
-	component_yield(  ) ;
-;
+	inceos_event_t op_status;// for exception handling
+	DAL_assign( &serialiserMap,Construct_StringMap(  )  ) ;
+	initializeSerializerFunctions(  ) ;
+	initDALGlobalObjects(  ) ;
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.Sequence::complete
 	PrinterPNTR pr_glob = NULL;
-	DAL_assign(&pr_glob , component_create( ((behaviour_ft)&Construct_Printer0), sizeof( PrinterStruct ) , 6, 0, NULL , -1) );
+	DAL_assign(&pr_glob , component_create( Construct_Printer0, sizeof( PrinterStruct ) , 22, 0, NULL ) );
+	component_yield(  ) ;
+;
+	RadioSensorReceive2PNTR radioSensorReceive2_glob = NULL;
+	DAL_assign(&radioSensorReceive2_glob , component_create( Construct_RadioSensorReceive20, sizeof( RadioSensorReceive2Struct ) , 104, 0, NULL ) );
 	component_yield(  ) ;
 ;
 
 
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Connect::complete
-	channel_bind( tr_glob->output_comp,pr_glob->input_comp ) ;
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.Connect::complete
+	channel_bind( radioSensorReceive2_glob->received_comp,radio_glob->received_comp ) ;
+;
+
+
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.Connect::complete
+	channel_bind( radioSensorReceive2_glob->output_comp,pr_glob->input_comp ) ;
 ;
 	// End of sequence
 

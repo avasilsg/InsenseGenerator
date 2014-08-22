@@ -3,7 +3,7 @@ package Units.BasicUnits;
 //<variable name = "printOutput" new = "true"/>
 //<variable type = "" name = "photoValue" new = "true" bindingTo =
 //"photoReading()"/>
-public class Variable
+public class Variable extends Operator
 {
     private String  name;
     private boolean newOp;

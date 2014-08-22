@@ -1,40 +1,33 @@
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Component::print_ifdef
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.Component::print_ifdef
 #ifndef TIMEDTEMPREADER_H_
 #define TIMEDTEMPREADER_H_
 
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Component::printImplIncludes
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.Component::printImplIncludes
 #include "main.h"
-#include "semaphore.h"
-#include "my_semaphore.h"
-#include "pthread.h"
 // TODO put remainder of impl includes here
 
 
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Component::printStructDecl
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.Component::printStructDecl
 typedef struct TimedTempReader *TimedTempReaderPNTR , TimedTempReaderStruct ;
 struct TimedTempReader { 
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Component::printCommonDecls
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.Component::printCommonDecls
 	void (*decRef)(TimedTempReaderPNTR pntr);
 	bool stopped;
-	pthread_t behav_thread;
-	my_sem_t component_create_sem;
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Component::printStructChannelDecls
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.Component::printStructChannelDecls
 	chan_id output_comp;
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.DeclarationContainer::printLocationDecls
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.DeclarationContainer::locationDecls
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.DeclarationContainer::printLocationDecls
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.DeclarationContainer::locationDecls
 
 } ;
 
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Component::printConstructorArrayFunctionDecls
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.Component::printConstructorArrayFunctionDecls
 
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Component::printComponentFuncsDecls
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.Component::printComponentFuncsDecls
 
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Component::printConstructorSignatures
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.Component::printConstructorSignatures
 extern void Construct_TimedTempReader0( TimedTempReaderPNTR this, int _argc, void* _argv[] ) ;
 
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.Component::printBehaviourForwardDecl
+// Generated from: uk.ac.stand.cs.insense.compiler.incesosCCgen.Component::printBehaviourForwardDecl
 extern void behaviour_TimedTempReader( TimedTempReaderPNTR this ) ;
-// Generated from: uk.ac.stand.cs.insense.compiler.unixCCgen.DeclarationContainer::printHoistedHeaderCode
-
 #endif /* TIMEDTEMPREADER_H_*/ 
 

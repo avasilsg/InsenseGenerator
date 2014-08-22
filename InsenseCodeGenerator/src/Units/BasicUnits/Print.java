@@ -1,7 +1,7 @@
 package Units.BasicUnits;
 
 //<print variable = "reading" attribute = "solar" titleString = "Solar"/>
-public class Print
+public class Print extends Operator
 {
     private String variable;
     private String type;

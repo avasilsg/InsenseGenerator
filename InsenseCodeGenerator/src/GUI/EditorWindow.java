@@ -43,7 +43,7 @@ public class EditorWindow extends JFrame
 
                 while (wordR <= after) {
                     if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
-                        if (text.substring(wordL, wordR).matches("(\\W)*(Program|Compiles)"))
+                        if (text.substring(wordL, wordR).matches("(\\W)*(Program|Compiles|error)"))
                             setCharacterAttributes(wordL, wordR - wordL, attr, false);
                         else
                             setCharacterAttributes(wordL, wordR - wordL, attrBlack, false);

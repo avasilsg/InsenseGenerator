@@ -28,7 +28,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.Document;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -59,7 +58,6 @@ public class MainWindow extends JFrame implements ActionListener
     private JPanel            panel;
     private boolean           isTheCycleCompleted;
     private boolean           isGeneratedInsens;
-    private boolean           isTheFileChanged;
     private XMLFileContainer  xmlFile;
     private CompilerCaller    compileCaller;
     private JLabel            lblInsenseCodeGenerator;
@@ -74,7 +72,6 @@ public class MainWindow extends JFrame implements ActionListener
     {
         isTheCycleCompleted  = false;
         isGeneratedInsens    = false;
-        isTheFileChanged     = false;
         fileFormat           = "";
         xmlFile              = new XMLFileContainer();
         compileCaller        = new CompilerCaller();
@@ -151,7 +148,6 @@ public class MainWindow extends JFrame implements ActionListener
         lblInsenseCodeGenerator.setFont(new Font("URW Bookman L", Font.PLAIN, 17));
     }
     
-    @SuppressWarnings ("serial")
     private void init()
     {
         setAlwaysOnTop(true);
@@ -177,8 +173,17 @@ public class MainWindow extends JFrame implements ActionListener
         textVisualizerArea.setEnabled(false);
         textVisualizerArea.setEditable(false);
         textVisualizerArea.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        setupDocumentLayer ( );
+        textVisualizerArea.setDocument ( documentPresentationLayer );
+        getContentPane().add(new JScrollPane(textVisualizerArea));
+        panel.setLayout(gl_panel);
+    }
+
+    private void setupDocumentLayer ( )
+    {
         documentPresentationLayer = new DefaultStyledDocument() 
         {
+            private static final long serialVersionUID = 1L;
             public void insertString (int offset, String str, AttributeSet a) throws BadLocationException {
                 super.insertString(offset, str, a);
 
@@ -186,8 +191,7 @@ public class MainWindow extends JFrame implements ActionListener
                 int before = Grammer.findLastNonWordChar(text, offset);
                 if (before < 0) before = 0;
                 int after = Grammer.findFirstNonWordChar(text, offset + str.length());
-                int wordL = before;
-                int wordR = before;
+                int wordL = before, wordR = before;
 
                 while (wordR <= after) {
                     if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) 
@@ -219,9 +223,6 @@ public class MainWindow extends JFrame implements ActionListener
             }
             
         };
-        textVisualizerArea.setDocument ( documentPresentationLayer );
-        getContentPane().add(new JScrollPane(textVisualizerArea));
-        panel.setLayout(gl_panel);
     }
     
     public void actionPerformed(ActionEvent event)
@@ -280,7 +281,6 @@ public class MainWindow extends JFrame implements ActionListener
                 System.exit(EXIT_ON_CLOSE);
             }
         }
-        System.out.println("Menu Selected: " + myMenu.getText());
     }
     
     private void actionEventView(String eventType)
@@ -374,14 +374,12 @@ public class MainWindow extends JFrame implements ActionListener
                 {
                     case "xml":
                     {
-                        System.out.println("xml");
                         String file = fileChooser.getSelectedFile().getAbsolutePath() + ".xml";
                         saveToFile(file);
                         break;
                     }
                     case "isf":
                     {
-                        System.out.println("isf");
                         String file = fileChooser.getSelectedFile().getAbsolutePath() + ".isf";
                         saveToFile(file);
                         break;
@@ -396,6 +394,7 @@ public class MainWindow extends JFrame implements ActionListener
         FileOutputStream out;
         try
         {
+            //TODO: check
             out = new FileOutputStream(fileName, false);
             this.compileCaller.setInsenseFilePath ( fileName );
             this.compileCaller.setInsenseFileName ( fileChooser.getSelectedFile().getName ( ) );
@@ -434,7 +433,6 @@ public class MainWindow extends JFrame implements ActionListener
         {
             JOptionPane.showMessageDialog(null, "Choose an xml file!");
         }
-        System.out.print(file.getName());
     }
     
     private void activateTextArea()
@@ -474,39 +472,20 @@ public class MainWindow extends JFrame implements ActionListener
         }
 
         textVisualizerArea.getDocument ( ).addDocumentListener ( new DocumentListener ()
-        {           
-            public void insertUpdate(DocumentEvent e) {
-                updateLog(e, "inserted into");
-            }
-            public void removeUpdate(DocumentEvent e) {
-                updateLog(e, "removed from");
-            }
-            public void changedUpdate(DocumentEvent e) {
-                updateLog(e, "change from");
-            }
-            public void updateLog(DocumentEvent documentEvent, String action) 
+        {
+            public void insertUpdate ( DocumentEvent e )
             {
-                DocumentEvent.EventType type = documentEvent.getType();
-                Document source = documentEvent.getDocument();
-                                    
-                String typeString = null;
-                if (type.equals(DocumentEvent.EventType.CHANGE)) 
-                {
-                  typeString = "Change";
-                  isTheFileChanged = true;
-                }  
-                else if (type.equals(DocumentEvent.EventType.INSERT)) 
-                {
-                  typeString = "Insert";                 
-                }  
-                else if (type.equals(DocumentEvent.EventType.REMOVE)) 
-                {
-
-                }
-                System.out.println("Type : " + typeString + " : " + isTheFileChanged + " : ");
-                int length = source.getLength();
-                System.out.println("Length: " + length);
             }
+
+            public void removeUpdate ( DocumentEvent e )
+            {
+//                isTheFileChanged = true;
+            }
+
+            public void changedUpdate ( DocumentEvent e )
+            {
+//                isTheFileChanged = true;
+            }           
         });
     } 
     private void addToDocument(DefaultStyledDocument doc,  String keyWords)

@@ -1,6 +1,6 @@
 package Units.BasicUnits;
 
-public class Receive
+public class Receive extends Operator
 {
     private String inderntifier;
     private String from;
