@@ -3,13 +3,11 @@
 <interface>
 <attribute name="ITimedTempReader"/>
 <channel direction="out" name="output" type="integer"/>
-<channel direction="in" name="receiver" type="integer"/>
-<channel direction="out" name="output" type="integer"/>
+<channel direction="out" name="output2" type="integer"/>
 </interface>
 <interface>
 <attribute name="IPrinter"/>
 <channel direction="in" name="input" type="integer"/>
-<channel direction="out" name="sender" type="real"/>
 </interface>
 <component>
 <attribute name="TimedTempReader"/>
