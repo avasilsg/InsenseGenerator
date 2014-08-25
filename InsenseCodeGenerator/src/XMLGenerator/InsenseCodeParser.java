@@ -1,4 +1,4 @@
-package ReverseEngineeringGenerator;
+package XMLGenerator;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

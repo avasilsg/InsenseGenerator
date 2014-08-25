@@ -1,5 +1,6 @@
 package Units;
 
+import Units.BasicUnits.Operator;
 import Units.BasicUnits.Print;
 
 public class Template
@@ -9,7 +10,7 @@ public class Template
     private String packetKey;
     private String packetValue;
     private Print  print;
-    private Object object;
+    private Operator operator;
     public String getExpression ( )
     {
         return expression;
@@ -50,12 +51,12 @@ public class Template
     {
         this.packetKey = packetKey;
     }
-    public Object getObject ( )
+    public Operator getOperator ( )
     {
-        return object;
+        return operator;
     }
-    public void setObject ( Object object )
+    public void setObject ( Operator operator )
     {
-        this.object = object;
+        this.operator = operator;
     }
 }

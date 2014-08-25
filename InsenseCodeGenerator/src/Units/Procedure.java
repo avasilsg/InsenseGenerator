@@ -4,11 +4,10 @@ import java.util.LinkedList;
 
 import Units.BasicUnits.Field;
 
-public class Procedure
+public class Procedure extends Body
 {
     private String name;
     private String type;
-    private Behaviour body;
     private LinkedList<Field> parameters;
     
     public Procedure()
@@ -42,15 +41,4 @@ public class Procedure
     {
         this.type = type;
     }
-
-    public Behaviour getBody()
-    {
-        return body;
-    }
-
-    public void setBody(Behaviour body)
-    {
-        this.body = body;
-    }
-     
 }

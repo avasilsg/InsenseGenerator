@@ -1,4 +1,4 @@
-package Generator;
+package InsenseGenerator;
 
 import javax.management.openmbean.OpenDataException;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -11,6 +11,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import Units.Behaviour;
+import Units.Body;
 import Units.Component;
 import Units.Connect;
 import Units.Constructor;
@@ -23,6 +24,7 @@ import Units.BasicUnits.Field;
 import Units.BasicUnits.Instance;
 import Units.BasicUnits.Print;
 import Units.BasicUnits.Receive;
+import Units.BasicUnits.Return;
 import Units.BasicUnits.Send;
 import Units.BasicUnits.Variable;
 
@@ -413,9 +415,7 @@ public class XmlParser
             }
             if ("body".equals(node.getNodeName().toLowerCase()))
             {
-                Behaviour behaviour = parseBehaviour(node.getChildNodes());
-                constructor.setBody ( behaviour );
-                behaviour = null;
+                parseBody(childNodes, constructor);
             }
         }
         return constructor;
@@ -456,9 +456,7 @@ public class XmlParser
             }
             if ("body".equals(node.getNodeName().toLowerCase()))
             {
-                Behaviour behaviour = parseBehaviour(node.getChildNodes());
-                procedure.setBody ( behaviour );
-                behaviour = null;
+                parseBody(childNodes, procedure);
             }
         }
         return procedure;
@@ -532,52 +530,56 @@ public class XmlParser
     private Behaviour parseBehaviour(NodeList childNodes)
     {
         Behaviour behaviour = new Behaviour();
+        
+        parseBody(childNodes, behaviour);
+        
+        return behaviour;
+    }
+    
+    private void parseBody(NodeList childNodes, Body body)
+    {
         for (int count = 0; count < childNodes.getLength(); count++)
         {
             Node node = childNodes.item(count);
             if ("send".equals(node.getNodeName().toLowerCase()))
             {
-                behaviour.setOperation(node.getNodeName().toLowerCase());
                 Send send = parseAttributesSend(node.getAttributes());
-                behaviour.setSend(send);
+                body.insertOperator(send);
                 send = null;
                 continue;
             }
             
             if ("receive".equals(node.getNodeName().toLowerCase()))
             {
-                behaviour.setOperation(node.getNodeName().toLowerCase());
                 Receive receive = parseAttributesReceive(node.getAttributes());
-                behaviour.setReceive(receive);
+                body.insertOperator(receive);
                 receive = null;
                 continue;
             }
             
             if ("print".equals(node.getNodeName().toLowerCase()))
             {
-                behaviour.setOperation(node.getNodeName().toLowerCase());
                 Print print = parsePrintAttributes(node.getAttributes());
-                behaviour.setPrint(print);
+                body.insertOperator(print);
                 print = null;
                 continue;
             }
             if ("variable".equals(node.getNodeName().toLowerCase()))
             {
-                behaviour.setOperation(node.getNodeName().toLowerCase());
                 Variable variable = parseVariableAttributes(node.getAttributes());
-                behaviour.setVariable(variable);
+                body.insertOperator(variable);
                 variable = null;
                 continue;
             }
             if ("return".equals(node.getNodeName().toLowerCase()))
             {
-                behaviour.setOperation(node.getNodeName().toLowerCase());
-                behaviour.setReturnStatement(parseReturn(node.getChildNodes()));
+                Return returns = new Return();
+                returns.setExpression( parseReturn(node.getChildNodes()));
+                body.insertOperator(returns);
             }
         }
-        return behaviour;
     }
-    
+
     private Variable parseVariableAttributes(NamedNodeMap attributes)
     {
         Variable variable = new Variable();

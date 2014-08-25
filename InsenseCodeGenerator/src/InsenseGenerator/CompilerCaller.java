@@ -1,4 +1,4 @@
-package Generator;
+package InsenseGenerator;
 
 import java.io.File;
 import java.io.IOException;

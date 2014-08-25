@@ -1,11 +1,13 @@
-package Generator;
+package InsenseGenerator;
 
 import java.io.File;
+import java.rmi.UnexpectedException;
 import java.util.LinkedList;
 
 import AbstractGenerator.Writer;
 import GrammarAndClauses.Clauses;
 import Units.Behaviour;
+import Units.Body;
 import Units.Component;
 import Units.Connect;
 import Units.Constructor;
@@ -17,6 +19,7 @@ import Units.Template;
 import Units.BasicUnits.Channel;
 import Units.BasicUnits.Field;
 import Units.BasicUnits.Instance;
+import Units.BasicUnits.Operator;
 import Units.BasicUnits.Print;
 import Units.BasicUnits.Receive;
 import Units.BasicUnits.Send;
@@ -79,20 +82,20 @@ public class InsenseWriter extends Writer
         {
             throw new NullPointerException();
         }
-        writer.println();      
+        writer.println();
         if (null != component.getName())
         {
             this.componentNames.add(component.getName());
         }
         String compTitle = String.format(Clauses.component, component.getName());
-        compTitle = writeComponentPresents ( component, compTitle );
+        compTitle = writeComponentPresents(component, compTitle);
         writer.write(compTitle);
         writer.println();
         writer.write(Clauses.openCurlyBracket);
         writer.println();
         writeFields(component.getFields());
         writer.println();
-        writeContructor (component.getConstructors ( ) );
+        writeContructor(component.getConstructors());
         writeProcedures(component.getProcedures());
         writer.println();
         writer.write("\t" + Clauses.behaviour);
@@ -101,16 +104,15 @@ public class InsenseWriter extends Writer
         Behaviour behaviour = component.getBehaviour();
         if (null != behaviour)
         {
-            writeBehaviour ( behaviour );
-        }        
+            writeBehaviour(behaviour);
+        }
         writer.println();
         writer.write("\t" + Clauses.closeCurlyBracket);
         writer.println();
         writer.write(Clauses.closeCurlyBracket);
     }
-
-    private String writeComponentPresents ( Component component,
-            String compTitle )
+    
+    private String writeComponentPresents(Component component, String compTitle)
     {
         for (int i = 0; i < component.getPresents().size(); i++)
         {
@@ -122,99 +124,99 @@ public class InsenseWriter extends Writer
         }
         return compTitle;
     }
-
-    private void writeContructor (LinkedList<Constructor> constructors)
+    
+    private void writeContructor(LinkedList<Constructor> constructors)
     {
-        for(int i = 0; i < constructors.size ( ); i++)
+        for (int i = 0; i < constructors.size(); i++)
         {
-            Constructor constructor = constructors.get ( i );
+            Constructor constructor = constructors.get(i);
             writer.write("\t" + Clauses.constructor);
             writer.write(Clauses.openBracket);
-            if (null != constructor.getParameters ( ))
+            if (null != constructor.getParameters())
             {
-                extractParameters(constructor.getParameters ( ));
+                extractParameters(constructor.getParameters());
             }
             writer.write(Clauses.closeBracket);
             writer.println();
             writer.write("\t" + Clauses.openCurlyBracket);
             writer.println();
-            if (null != constructor.getBody ( ))
-            {
-                writeBehaviour(constructor.getBody ( ));
-            }
+            writeBody(constructor);
             writer.write("\t" + Clauses.closeCurlyBracket);
             writer.println();
         }
         constructors = null;
     }
-
-    private void writeBehaviour ( Behaviour behaviour )
+    
+    private void writeBehaviour(Behaviour behaviour)
     {
-        for (int i = 0; i < behaviour.getOrder().size(); i++)
+        writeBody(behaviour);
+        
+        if (!behaviour.isTemplateEmpty())
         {
-            switch (behaviour.getOrder().get(i))
+            writeTemplate(behaviour.getTemplate());
+        }
+    }
+
+    private void writeBody(Body body)
+    {
+        while (!body.isOperationsEmpty())
+        {
+            Operator operator;
+            try
             {
-                case "send":
+                operator = body.getCurrentOperator();
+                if (operator instanceof Send)
                 {
-                    writeSend(behaviour);
-                    break;
+                    writeSend((Send) operator);
                 }
-                case "receive":
+                
+                if (operator instanceof Receive)
                 {
-                    writeReceive(behaviour);
-                    break;
+                    writeReceive((Receive) operator);
                 }
-                case "print":
+                
+                if (operator instanceof Print)
                 {
-                    writePrint(behaviour);
-                    break;
+                    writePrint((Print) operator);
                 }
-                case "variable":
+                
+                if (operator instanceof Variable)
                 {
-                    writeVariable(behaviour);
-                    break;
+                    writeVariable((Variable) operator);
                 }
-                case "return":
-                {
-                    writer.write("\t\t" + "return " + behaviour.getReturnStatements ( ).get ( 0 ));
-                    behaviour.getReturnStatements ( ).remove ( 0 );
-                    break;
-                }
-                case "template":
-                {
-                    writeTemplate(behaviour);
-                    break;
-                }
+            }
+            catch (UnexpectedException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
     }
-//  project packet.payload as value onto integer : { send value on output } 
-//default : { printString( "unknown type???\n" ) }
-//}  
-    private void writeTemplate ( Behaviour behaviour )
+    
+    private void writeTemplate(Template template)
     {
         writer.println();
-        writer.write("\t\t" + behaviour.getTemplate ( ).getExpression ( ) + "\n");
-        writer.write ( "\t\t" + behaviour.getTemplate ( ).getType ( ) + ": {" );
-        if (behaviour.getTemplate ( ).getObject ( ) instanceof Send)
+        writer.write("\t\t" + template.getExpression() + "\n");
+        writer.write("\t\t" + template.getType() + ": {");
+        Operator operator = template.getOperator();
+        if (operator instanceof Send)
         {
-            Send send = (Send) behaviour.getTemplate ( ).getObject ( );
+            Send send = (Send) operator;
             writer.write(" " + String.format(Clauses.send, send.getInderntifier(), send.getOn()) + "  }");
             
         }
         else
         {
-            Receive receive = (Receive) behaviour.getTemplate ( ).getObject ( );
+            Receive receive = (Receive) operator;
             writer.write("\t\t" + String.format(Clauses.receive, receive.getInderntifier(), receive.getFrom()));
         }
         writer.println();
-        String expression = Clauses.openBracket + behaviour.getTemplate ( ).getPrint ( ).getVariable() + Clauses.closeBracket;
+        String expression = Clauses.openBracket + template.getPrint().getVariable() + Clauses.closeBracket;
         writer.write("\t\tdefault: {  " + String.format(Clauses.printString, expression) + "  }");
     }
-
-    private void writeVariable(Behaviour behaviour)
+    
+    private void writeVariable(Variable variable)
     {
-        Variable variable = behaviour.getVariables().get(0);
         if (null != variable.getName())
         {
             writer.println();
@@ -227,7 +229,6 @@ public class InsenseWriter extends Writer
                 writer.write("\t\t" + String.format(Clauses.variableNotNew, variable.getName(), variable.getBindingTo(), ""));
             }
             writer.println();
-            behaviour.getVariables().remove(0);
         }
     }
     
@@ -235,15 +236,15 @@ public class InsenseWriter extends Writer
     {
         for (int i = 0; i < procedures.size(); i++)
         {
-            writer.println();            
+            writer.println();
             Procedure procedure = procedures.get(i);
             writer.write("\t" + String.format(Clauses.procedureSyntax, procedure.getName()));
-            extractParameters(procedure.getParameters ( ));
+            extractParameters(procedure.getParameters());
             writer.write(String.format(Clauses.closeProcedureDeclaration, procedure.getType()));
             writer.println();
             writer.write("\t" + Clauses.openCurlyBracket);
             writer.println();
-            writeBehaviour(procedure.getBody ( ));
+            writeBody(procedure);
             writer.println();
             writer.write("\t" + Clauses.closeCurlyBracket);
         }
@@ -297,17 +298,14 @@ public class InsenseWriter extends Writer
         }
     }
     
-    private void writeReceive(Behaviour behaviour)
+    private void writeReceive(Receive receive)
     {
-        Receive receive = behaviour.getReceives().get(0);
         writer.println();
         writer.write("\t\t" + String.format(Clauses.receive, receive.getInderntifier(), receive.getFrom()));
-        behaviour.getReceives().remove(0);
     }
     
-    private void writeSend(Behaviour behaviour)
+    private void writeSend(Send send)
     {
-        Send send = behaviour.getSends().get(0);
         if ((null == send.getValue()) && (false == "any".equals(send.getInderntifier())))
         {
             writer.println();
@@ -318,14 +316,12 @@ public class InsenseWriter extends Writer
             writer.println();
             writer.write("\t\t" + String.format(Clauses.sendWithValue, send.getInderntifier(), send.getValue(), send.getOn()));
         }
-        behaviour.getSends().remove(0);
     }
     
-    private void writePrint(Behaviour behaviour)
+    private void writePrint(Print print)
     {
-        Print print = behaviour.getPrints().get(0);
         boolean flagAttribute = false;
-        writer.println();        
+        writer.println();
         if (null != print.getAttribute() && !"".equals(print.getAttribute()))
         {
             flagAttribute = true;
@@ -363,7 +359,6 @@ public class InsenseWriter extends Writer
                 break;
             }
         }
-        behaviour.getPrints().remove(0);
     }
     
     public void writeInstance(Instance instance)
@@ -409,153 +404,145 @@ public class InsenseWriter extends Writer
     
     public void deleteDefaultFolder()
     {
-        File tempFile = new File(dir.getAbsolutePath ( ));
+        File tempFile = new File(dir.getAbsolutePath());
         tempFile.delete();
     }
-//TODO: rember to check the version with the keys
-    public void writeNodePattern ( InsenseNode nodeInfo )
+    
+    public void writeNodePattern(InsenseNode nodeInfo)
     {
-       Interface interfs = new Interface();
-       Component component = new Component();
-       Connect connect = new Connect();
-       
-       switch(nodeInfo.getDirection ( ))
-       {
-           case "receive":
-           {
-               String interfaceRadioName = String.format ( Clauses.IRadioSensorReceive, Integer.toString (nodeInfo.getNodeOrderNumber ( ) )); 
-               interfs.setName ( interfaceRadioName );
-               fulfilNodeChannelReceive ( nodeInfo, interfs );
-               component = new Component();
-               component.setName ( String.format(Clauses.RadioSensorReceive, Integer.toString (nodeInfo.getNodeOrderNumber ( ) ) ));
-               component.setPresent ( interfs.getName ( ) );
-               component.setConstructor ( new Constructor() );
-               Behaviour beh = new Behaviour();
-               Receive receive = new Receive();
-               receive.setFrom ( "received" );
-               receive.setInderntifier ( "packet" );
-               beh.setOperation ( "receive" );
-               beh.setReceive ( receive );
-               Send send = new Send();
-               send.setInderntifier ( "value" );
-               send.setOn ( "output" );
-               Template template = new Template();
-               template.setExpression ( "project packet.payload as value onto" );
-               template.setType ( nodeInfo.getInstance ( ) );
-               template.setObject ( send );
-               Print print = new Print();
-               print.setType ( "String" );
-               print.setVariable ( "\"unknown type???\"" );
-               template.setPrint ( print );
-               beh.setOperation ( "template" );
-               beh.setTemplate ( template );
-               component.setBehaviour ( beh );
-               connect.setFromNameOn ( "received" );
-               connect.setToName ( "radio" );
-               connect.setToNameOn ( "received" );
-               break;
-           }
-           //TODO:
-//           packet = new RadioPacket(NodeB, any(value))
-           case "send":
-           {
-               String interfaceRadioName = String.format ( Clauses.IRadioSensorSend, Integer.toString (nodeInfo.getNodeOrderNumber ( ) )); 
-               interfs.setName ( interfaceRadioName );
-               fulfilNodeChannelSend (nodeInfo, interfs );
-               component.setName ( String.format(Clauses.RadioSensorSend, Integer.toString (nodeInfo.getNodeOrderNumber ( ) ) ));
-               component.setPresent ( interfs.getName ( ) );
-               component.setConstructor ( new Constructor() );
-               Behaviour beh = new Behaviour();
-               Receive receive = new Receive();
-               receive.setFrom ( "input" );
-               receive.setInderntifier ( "value" );
-               beh.setOperation ( "receive" );
-               beh.setReceive ( receive );
-               Variable var = new Variable();
-               var.setBindingTo ( String.format ( "RadioPacket(%s, any(value))", nodeInfo.getConnectToNode ( )) );
-               var.setNewOp ( true );
-               var.setName ( "packet" );
-               beh.setOperation ( "variable" );
-               beh.setVariable ( var );
-               Send send = new Send();
-               send.setInderntifier ( "packet" );
-               send.setOn ( "unicast" );
-               beh.setOperation ( "send" );
-               beh.setSend ( send );
-               component.setBehaviour ( beh );
-               connect.setFromNameOn ( "unicast" );
-               connect.setToName ( "radio" );
-               connect.setToNameOn ( "unicastSend" );
-               break;
-           }
-       }
-       Instance instance = writeTemplateInfo (nodeInfo, interfs, component );
-       connect.setFromName ( instance.getName ( ) );
-       writeConnection(connect);
-       if ("send".equals ( nodeInfo.getDirection ( )))
-       {
-           connect.setFromNameOn ( nodeInfo.getConnect ( ).getFromNameOn ( ) );
-           connect.setFromName(nodeInfo.getConnect ( ).getFromName ( ));
-           connect.setToName ( instance.getName ( ) );
-           connect.setToNameOn ( "input" );
-           writeConnection(connect);
-       }
-       else
-       {
-           connect.setFromNameOn ( "output" );
-           connect.setFromName(instance.getName ( ));
-           connect.setToName ( nodeInfo.getConnect ( ).getToName ( ) );
-           connect.setToNameOn ( nodeInfo.getConnect ( ).getToNameOn ( ) );
-           writeConnection(connect); 
-       }
-    }
-
-    private void writeInstances ( InsenseNode nodeInfo )
-    {
-        for(int i = 0; i < nodeInfo.getInstances ( ).size ( ); i++)
+        Interface interfs = new Interface();
+        Component component = new Component();
+        Connect connect = new Connect();
+        
+        switch (nodeInfo.getDirection())
         {
-            this.writeInstance ( nodeInfo.getInstances ( ).get ( i ) );
+            case "receive":
+            {
+                String interfaceRadioName = String.format(Clauses.IRadioSensorReceive, Integer.toString(nodeInfo.getNodeOrderNumber()));
+                interfs.setName(interfaceRadioName);
+                fulfilNodeChannelReceive(nodeInfo, interfs);
+                component = new Component();
+                component.setName(String.format(Clauses.RadioSensorReceive, Integer.toString(nodeInfo.getNodeOrderNumber())));
+                component.setPresent(interfs.getName());
+                component.setConstructor(new Constructor());
+                Behaviour beh = new Behaviour();
+                Receive receive = new Receive();
+                receive.setFrom("received");
+                receive.setInderntifier("packet");
+                beh.insertOperator(receive);
+                Send send = new Send();
+                send.setInderntifier("value");
+                send.setOn("output");
+                Template template = new Template();
+                template.setExpression("project packet.payload as value onto");
+                template.setType(nodeInfo.getInstance());
+                template.setObject(send);
+                Print print = new Print();
+                print.setType("String");
+                print.setVariable("\"unknown type???\"");
+                template.setPrint(print);
+                beh.setTemplate(template);
+                component.setBehaviour(beh);
+                connect.setFromNameOn("received");
+                connect.setToName("radio");
+                connect.setToNameOn("received");
+                break;
+            }
+            case "send":
+            {
+                String interfaceRadioName = String.format(Clauses.IRadioSensorSend, Integer.toString(nodeInfo.getNodeOrderNumber()));
+                interfs.setName(interfaceRadioName);
+                fulfilNodeChannelSend(nodeInfo, interfs);
+                component.setName(String.format(Clauses.RadioSensorSend, Integer.toString(nodeInfo.getNodeOrderNumber())));
+                component.setPresent(interfs.getName());
+                component.setConstructor(new Constructor());
+                Behaviour beh = new Behaviour();
+                Receive receive = new Receive();
+                receive.setFrom("input");
+                receive.setInderntifier("value");
+                beh.insertOperator(receive);
+                Variable var = new Variable();
+                var.setBindingTo(String.format("RadioPacket(%s, any(value))", nodeInfo.getConnectToNode()));
+                var.setNewOp(true);
+                var.setName("packet");
+                beh.insertOperator(var);
+                Send send = new Send();
+                send.setInderntifier("packet");
+                send.setOn("unicast");
+                beh.insertOperator(send);
+                component.setBehaviour(beh);
+                connect.setFromNameOn("unicast");
+                connect.setToName("radio");
+                connect.setToNameOn("unicastSend");
+                break;
+            }
+        }
+        Instance instance = writeTemplateInfo(nodeInfo, interfs, component);
+        connect.setFromName(instance.getName());
+        writeConnection(connect);
+        if ("send".equals(nodeInfo.getDirection()))
+        {
+            connect.setFromNameOn(nodeInfo.getConnect().getFromNameOn());
+            connect.setFromName(nodeInfo.getConnect().getFromName());
+            connect.setToName(instance.getName());
+            connect.setToNameOn("input");
+            writeConnection(connect);
+        }
+        else
+        {
+            connect.setFromNameOn("output");
+            connect.setFromName(instance.getName());
+            connect.setToName(nodeInfo.getConnect().getToName());
+            connect.setToNameOn(nodeInfo.getConnect().getToNameOn());
+            writeConnection(connect);
         }
     }
-
-    private Instance writeTemplateInfo ( InsenseNode nodeInfo, Interface interfs,
-            Component component )
+    
+    private void writeInstances(InsenseNode nodeInfo)
     {
-        Instance instance = new Instance();
-           writeInterface(interfs);
-           writeComponent ( component );
-           writeInstances(nodeInfo);
-           instance.setType ( component.getName ( ) );
-           instance.setName ( Character.toLowerCase (  component.getName ( ).charAt ( 0 ) ) + component.getName ( ).substring(1));
-           writeInstance(instance);
-        return instance;
-    }
-
-    private void fulfilNodeChannelSend ( InsenseNode nodeInfo, Interface interfs )
-    {
-           Channel chan = new Channel();
-           chan.setDirection ( "in" );
-           chan.setType ( nodeInfo.getInstance ( ) );
-           chan.setName ( "input" );
-           interfs.setChannel ( chan );
-           chan = new Channel();
-           chan.setDirection ( "out" );
-           chan.setType ( "RadioPacket" );
-           chan.setName ( "unicast" );
-           interfs.setChannel ( chan );
+        for (int i = 0; i < nodeInfo.getInstances().size(); i++)
+        {
+            this.writeInstance(nodeInfo.getInstances().get(i));
+        }
     }
     
-    private void fulfilNodeChannelReceive ( InsenseNode nodeInfo, Interface interfs )
+    private Instance writeTemplateInfo(InsenseNode nodeInfo, Interface interfs, Component component)
     {
-           Channel chan = new Channel();
-           chan.setDirection ( "out" );
-           chan.setType ( nodeInfo.getInstance ( ) );
-           chan.setName ( "output" );
-           interfs.setChannel ( chan );
-           chan = new Channel();
-           chan.setDirection ( "in" );
-           chan.setType ( "RadioPacket" );
-           chan.setName ( "received" );
-           interfs.setChannel ( chan );
+        Instance instance = new Instance();
+        writeInterface(interfs);
+        writeComponent(component);
+        writeInstances(nodeInfo);
+        instance.setType(component.getName());
+        instance.setName(Character.toLowerCase(component.getName().charAt(0)) + component.getName().substring(1));
+        writeInstance(instance);
+        return instance;
+    }
+    
+    private void fulfilNodeChannelSend(InsenseNode nodeInfo, Interface interfs)
+    {
+        Channel chan = new Channel();
+        chan.setDirection("in");
+        chan.setType(nodeInfo.getInstance());
+        chan.setName("input");
+        interfs.setChannel(chan);
+        chan = new Channel();
+        chan.setDirection("out");
+        chan.setType("RadioPacket");
+        chan.setName("unicast");
+        interfs.setChannel(chan);
+    }
+    
+    private void fulfilNodeChannelReceive(InsenseNode nodeInfo, Interface interfs)
+    {
+        Channel chan = new Channel();
+        chan.setDirection("out");
+        chan.setType(nodeInfo.getInstance());
+        chan.setName("output");
+        interfs.setChannel(chan);
+        chan = new Channel();
+        chan.setDirection("in");
+        chan.setType("RadioPacket");
+        chan.setName("received");
+        interfs.setChannel(chan);
     }
 }

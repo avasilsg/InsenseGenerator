@@ -1,6 +1,6 @@
 package Units.BasicUnits;
 
-public class Array
+public class Array extends Operator
 {
     private String elementType;
     private int size;

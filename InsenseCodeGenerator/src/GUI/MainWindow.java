@@ -22,8 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -34,11 +32,11 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 import javax.swing.SwingConstants;
 
-import Generator.CompilerCaller;
-import Generator.XmlParser;
 import GrammarAndClauses.Grammer;
-import ReverseEngineeringGenerator.InsenseCodeParser;
-import ReverseEngineeringGenerator.XMLFileContainer;
+import InsenseGenerator.CompilerCaller;
+import InsenseGenerator.XmlParser;
+import XMLGenerator.InsenseCodeParser;
+import XMLGenerator.XMLFileContainer;
 
 public class MainWindow extends JFrame implements ActionListener
 {
@@ -65,6 +63,7 @@ public class MainWindow extends JFrame implements ActionListener
     private JTextPane         textVisualizerArea;
     private DefaultStyledDocument documentPresentationLayer;
     private String            fileFormat;
+    private WordSuggester     test;
     /**
      * Create main window.
      */
@@ -111,9 +110,6 @@ public class MainWindow extends JFrame implements ActionListener
         menuItem.addActionListener(this);
         mnOpen.add(menuItem);
         
-//        menuItem = new JMenuItem("Validate XML");
-//        mnOpen.add(menuItem);
-        
         menuItem = new JMenuItem("View XML");
         menuItem.addActionListener(this);
         mnOpen.add(menuItem);
@@ -137,7 +133,6 @@ public class MainWindow extends JFrame implements ActionListener
         menuItem = new JMenuItem("Compile for InsenseOS");
         menuItem.addActionListener(this);
         mnOpen.add(menuItem);
-        
         
         menuItem = new JMenuItem("Compile for Contiki");
         menuItem.addActionListener(this);
@@ -176,6 +171,8 @@ public class MainWindow extends JFrame implements ActionListener
         setupDocumentLayer ( );
         textVisualizerArea.setDocument ( documentPresentationLayer );
         getContentPane().add(new JScrollPane(textVisualizerArea));
+        test = new WordSuggester(textVisualizerArea);
+        test.initUI();
         panel.setLayout(gl_panel);
     }
 
@@ -470,23 +467,6 @@ public class MainWindow extends JFrame implements ActionListener
                 
             }
         }
-
-        textVisualizerArea.getDocument ( ).addDocumentListener ( new DocumentListener ()
-        {
-            public void insertUpdate ( DocumentEvent e )
-            {
-            }
-
-            public void removeUpdate ( DocumentEvent e )
-            {
-//                isTheFileChanged = true;
-            }
-
-            public void changedUpdate ( DocumentEvent e )
-            {
-//                isTheFileChanged = true;
-            }           
-        });
     } 
     private void addToDocument(DefaultStyledDocument doc,  String keyWords)
     {

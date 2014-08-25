@@ -1,4 +1,4 @@
-package ReverseEngineeringGenerator;
+package XMLGenerator;
 
 public class XMLFileContainer
 {
