@@ -21,7 +21,7 @@ import Units.BasicUnits.Send;
 import Units.BasicUnits.Variable;
 import GrammarAndClauses.Grammer;
 
-public class InsenseCodeParser
+public class InsenseCodeParser 
 {
     private BufferedReader    reader;
     private XMLWriter         writer;
