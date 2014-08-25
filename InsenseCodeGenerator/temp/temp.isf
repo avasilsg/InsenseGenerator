@@ -59,10 +59,24 @@ component PrintOutput presents IPrintOutput
 		printString("Cycle ")
 
 
-		receive tick from ticks
-		reading = new  SensorReading( photoValue, solarValue, tempValue, humidityValuereading)
 
-		send reading on ledsChan
+		printString(":\tphoto = ")
+
+
+
+		printString("\tsolar = ")
+
+
+
+		printString("\ttemp = ")
+
+
+
+		printString("\thumid = ")
+
+
+
+		printInt("\n")
 		cycle = cycle+1
 
 	}

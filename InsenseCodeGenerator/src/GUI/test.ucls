@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.6" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <package id="1" language="java" name="GUI" project="InsenseCodeGenerator" file="/InsenseCodeGenerator/src/GUI" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="513" width="787" x="49" y="3"/>    
+    <display autosize="false" stereotype="true" accessors="true"/>  
+  </package>  
+  <class id="2" language="java" name="GUI.WordSuggester.SuggestionPanel" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/GUI/WordSuggester.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="501" y="188"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="GUI.EditorWindow" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/GUI/EditorWindow.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="173" y="95"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="GUI.MainWindow" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/GUI/MainWindow.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="329" x="234" y="69"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="GUI.WordSuggester" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/GUI/WordSuggester.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="293" y="189"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <package id="6" language="java" name="GrammarAndClauses" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/GrammarAndClauses" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="200" width="236" x="67" y="240"/>    
+    <display autosize="false" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="7" language="java" name="InsenseGenerator" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/InsenseGenerator" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="256" width="268" x="310" y="239"/>    
+    <display autosize="false" stereotype="true" accessors="true"/>  
+  </package>  
+  <package id="8" language="java" name="XMLGenerator" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/XMLGenerator" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="284" width="232" x="585" y="41"/>    
+    <display autosize="false" stereotype="true" accessors="true"/>  
+  </package>  
+  <class id="9" language="java" name="XMLGenerator.InsenseCodeParser" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/XMLGenerator/InsenseCodeParser.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="203" x="595" y="171"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="XMLGenerator.XMLFileContainer" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/XMLGenerator/XMLFileContainer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="206" x="592" y="112"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="XMLGenerator.XMLWriter" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/XMLGenerator/XMLWriter.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="197" x="597" y="255"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="GrammarAndClauses.Clauses" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/GrammarAndClauses/Clauses.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="222" x="73" y="301"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="GrammarAndClauses.Grammer" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/GrammarAndClauses/Grammer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="222" x="74" y="361"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <package id="14" language="java" name="ConformanceChecking" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/ConformanceChecking" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="112" width="234" x="584" y="326"/>    
+    <display autosize="false" stereotype="true" accessors="true"/>  
+  </package>  
+  <class id="15" language="java" name="ConformanceChecking.xmlValidator" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/ConformanceChecking/xmlValidator.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="223" x="591" y="382"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="InsenseGenerator.InsenseWriter" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/InsenseGenerator/InsenseWriter.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="257" x="317" y="289"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="InsenseGenerator.XmlParser" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/InsenseGenerator/XmlParser.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="254" x="320" y="371"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="InsenseGenerator.CompilerCaller" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/InsenseGenerator/CompilerCaller.java" binary="false" corner="TOP_LEFT">    
+    <position height="53" width="249" x="324" y="434"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <association id="19">    
+    <bendpoint x="338" y="390"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="20" name="compileCaller"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="23" name="suggestion"/>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="26" name="codeGenerator"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="28">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="29" name="xmlFile"/>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="31">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="32" name="test"/>      
+      <multiplicity id="33" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="34">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
+  </nesting>  
+  <association id="35">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="36" name="writer"/>      
+      <multiplicity id="37" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

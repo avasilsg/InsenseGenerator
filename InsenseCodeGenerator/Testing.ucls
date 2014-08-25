@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.6" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" name="Units.BasicUnits.Send" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/Units/BasicUnits/Send.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="151" x="82" y="114"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="Units.BasicUnits.Print" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/Units/BasicUnits/Print.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="141" x="282" y="115"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="Units.BasicUnits.Variable" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/Units/BasicUnits/Variable.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="297" width="147" x="540" y="141"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="Units.BasicUnits.Return" project="InsenseCodeGenerator" 
+    file="/InsenseCodeGenerator/src/Units/BasicUnits/Return.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="148" x="540" y="0"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
